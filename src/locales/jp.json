@@ -48,6 +48,7 @@
     "cancel": "キャンセル",
     "close": "閉じる",
     "create": "作成",
+    "update": "更新",
     "delete": "削除",
     "success": "成功",
     "bulk": "一括操作",
@@ -498,6 +499,13 @@
         "confirm": "リポジトリ '{name}' とその中のすべてのスナップショットを削除しますか？",
         "growl": "リポジトリ '{name}' は正常に削除されました。"
       }
+    },
+    "repository_policies": {
+      "text": "ポリシー",
+      "heading": "スナップショットポリシーの管理",
+      "repository": "リポジトリ: {repository}",
+      "new_policy": "新しいポリシー",
+      "edit_policy": "ポリシーを編集"
     }
   },
   "search": {
@@ -843,6 +851,75 @@
           "failed_shards": "失敗したシャード",
           "total_shards": "総シャード数"
         }
+      }
+    }
+  },
+  "snapshot_policies": {
+    "new_policy": {
+      "create_policy": {
+        "growl": "スナップショットポリシー '{name}' が正常に作成されました。"
+      },
+      "form": {
+        "id": {
+          "label": "ポリシーID*"
+        },
+        "name": {
+          "label": "ポリシー名*"
+        },
+        "schedule": {
+          "label": "スケジュール*",
+          "hint": "Cron 式（例：'0 30 1 * * ?' は毎日午前 1:30）"
+        },
+        "repository": {
+        },
+        "indices": {
+          "label": "インデックス",
+          "hint": "含めるインデックスのカンマ区切りリスト（デフォルト：'*'）"
+        },
+        "ignore_unavailable": {
+          "label": "利用できないインデックスを無視"
+        },
+        "include_global_state": {
+          "label": "グローバル状態を含める"
+        },
+        "retention": {
+          "heading": "保持設定",
+          "expire_after": {
+            "label": "有効期限",
+            "hint": "スナップショットが期限切れになる期間（例：'3d'、'12h'）"
+          },
+          "max_count": {
+            "label": "最大数",
+            "hint": "保持するスナップショットの最大数"
+          },
+          "min_count": {
+            "label": "最小数",
+            "hint": "保持するスナップショットの最小数"
+          }
+        }
+      }
+    },
+    "policies_table": {
+      "table": {
+        "headers": {
+          "id": "ID",
+          "name": "名前",
+          "schedule": "スケジュール",
+          "retention": "保持"
+        }
+      },
+      "delete_policy": {
+        "confirm": "スナップショットポリシー '{name}' を削除しますか？",
+        "growl": "スナップショットポリシー '{name}' が正常に削除されました。"
+      },
+      "execute_policy": {
+        "confirm": "スナップショットポリシー '{name}' を今すぐ実行しますか？",
+        "growl": "スナップショットポリシー '{name}' が正常に実行されました。"
+      }
+    },
+    "edit_policy": {
+      "update_policy": {
+        "growl": "スナップショットポリシー '{name}' が正常に更新されました。"
       }
     }
   },

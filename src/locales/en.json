@@ -48,6 +48,7 @@
     "cancel": "Cancel",
     "close": "Close",
     "create": "Create",
+    "update": "Update",
     "delete": "Delete",
     "success": "Success",
     "bulk": "Bulk Action",
@@ -498,6 +499,13 @@
         "confirm": "Delete repository '{name}' and all snapshots inside?",
         "growl": "The repository '{name}' was successfully deleted."
       }
+    },
+    "repository_policies": {
+      "text": "Policies",
+      "heading": "Manage Snapshot Policies",
+      "repository": "Repository: {repository}",
+      "new_policy": "New Policy",
+      "edit_policy": "Edit Policy"
     }
   },
   "search": {
@@ -843,6 +851,75 @@
           "failed_shards": "failed_shards",
           "total_shards": "total_shards"
         }
+      }
+    }
+  },
+  "snapshot_policies": {
+    "new_policy": {
+      "create_policy": {
+        "growl": "The snapshot policy '{name}' was successfully created."
+      },
+      "form": {
+        "id": {
+          "label": "Policy ID*"
+        },
+        "name": {
+          "label": "Policy name*"
+        },
+        "schedule": {
+          "label": "Schedule*",
+          "hint": "Cron expression (e.g., '0 30 1 * * ?' for daily at 1:30 AM)"
+        },
+        "repository": {
+        },
+        "indices": {
+          "label": "Indices",
+          "hint": "Comma-separated list of indices to include (default: '*')"
+        },
+        "ignore_unavailable": {
+          "label": "Ignore unavailable indices"
+        },
+        "include_global_state": {
+          "label": "Include global state"
+        },
+        "retention": {
+          "heading": "Retention Settings",
+          "expire_after": {
+            "label": "Expire after",
+            "hint": "Time period after which snapshots expire (e.g., '3d', '12h')"
+          },
+          "max_count": {
+            "label": "Maximum count",
+            "hint": "Maximum number of snapshots to keep"
+          },
+          "min_count": {
+            "label": "Minimum count",
+            "hint": "Minimum number of snapshots to keep"
+          }
+        }
+      }
+    },
+    "policies_table": {
+      "table": {
+        "headers": {
+          "id": "ID",
+          "name": "Name",
+          "schedule": "Schedule",
+          "retention": "Retention"
+        }
+      },
+      "delete_policy": {
+        "confirm": "Delete snapshot policy '{name}'?",
+        "growl": "The snapshot policy '{name}' was successfully deleted."
+      },
+      "execute_policy": {
+        "confirm": "Execute snapshot policy '{name}' now?",
+        "growl": "The snapshot policy '{name}' was successfully executed."
+      }
+    },
+    "edit_policy": {
+      "update_policy": {
+        "growl": "The snapshot policy '{name}' was successfully updated."
       }
     }
   },

@@ -1,15 +1,15 @@
+import stripJsonComments from 'strip-json-comments'
 import { computed, ref, toRaw, watch, nextTick } from 'vue'
 import { clusterAuthHeader } from '../../../helpers/elasticsearchAdapter.ts'
 import { REQUEST_DEFAULT_HEADERS } from '../../../consts'
 import { useConnectionStore } from '../../../store/connection'
 import { useSnackbar } from '../../Snackbar'
 import { useIdbStore } from '../../../db/Idb'
-import { removeComments } from '../../../helpers/json/parse'
 import { fetchMethod } from '../../../helpers/fetch'
 import { IdbRestQueryTab, IdbRestQueryTabRequest } from '../../../db/types.ts'
 import { debounce } from '../../../helpers/debounce.ts'
 import { parseKibana } from '../../../helpers/parseKibana.ts'
-import { cleanIndexName } from '../../../helpers/cleanIndexName.ts'
+import { cleanRestPath } from '../../../helpers/cleanRestPath.ts'
 
 type RestQueryFormProps = {
   tab: IdbRestQueryTab
@@ -39,7 +39,7 @@ export const useRestQueryForm = (props: RestQueryFormProps, emit: any) => {
 
     const options: RestFetchOptions = {
       method: props.tab.request.method,
-      body: ['GET', 'HEAD'].includes(props.tab.request.method) ? null : removeComments(props.tab.request.body),
+      body: ['GET', 'HEAD'].includes(props.tab.request.method) ? null : stripJsonComments(props.tab.request.body),
       headers: Object.assign({}, REQUEST_DEFAULT_HEADERS)
     }
 
@@ -48,7 +48,7 @@ export const useRestQueryForm = (props: RestQueryFormProps, emit: any) => {
 
     let url = connectionStore.activeCluster.uri
     if (!url.endsWith('/') && !props.tab.request.path.startsWith('/')) url += '/'
-    url += cleanIndexName(props.tab.request.path)
+    url += cleanRestPath(props.tab.request.path)
 
     try {
       const fetchResponse = await fetchMethod(url, options)
@@ -109,10 +109,10 @@ export const useRestQueryForm = (props: RestQueryFormProps, emit: any) => {
     emit('reloadSavedQueries')
   }
 
-  watch(ownTab.value.request, value => {
+  watch(ownTab.value.request, (value) => {
     if (updateIdb) updateTab({ request: toRaw(value) })
   })
-  watch(ownTab.value.response, value => {
+  watch(ownTab.value.response, (value) => {
     if (updateIdb) updateTab({ response: toRaw(value) })
   })
   const updateTab = debounce((value: object) => {
@@ -120,30 +120,35 @@ export const useRestQueryForm = (props: RestQueryFormProps, emit: any) => {
     restQueryTabs.update(obj)
   }, 100)
 
-  watch(() => props.tab, newValue => {
-    updateIdb = false
-    ownTab.value.request.method = newValue.request.method
-    ownTab.value.request.path = newValue.request.path
-    ownTab.value.request.body = newValue.request.body
-    updateIdb = true
-  })
+  watch(
+    () => props.tab,
+    (newValue) => {
+      updateIdb = false
+      ownTab.value.request.method = newValue.request.method
+      ownTab.value.request.path = newValue.request.path
+      ownTab.value.request.body = newValue.request.body
+      updateIdb = true
+    }
+  )
 
   const editorCommands = [
     {
-      key: 'Ctrl-Enter', run: () => {
+      key: 'Ctrl-Enter',
+      run: () => {
         sendRequest()
         return true
-      },
+      }
     },
     {
-      key: 'Cmd-Enter', run: () => {
+      key: 'Cmd-Enter',
+      run: () => {
         sendRequest()
         return true
-      },
+      }
     }
   ]
 
-  const generateDownloadData = () => (ownTab.value.response.bodyText)
+  const generateDownloadData = () => ownTab.value.response.bodyText
   const downloadFileName = computed(() => {
     return `${ownTab.value.request.method.toLowerCase()}_${ownTab.value.request.path.replace(/[\W_]+/g, '_')}.json`
   })

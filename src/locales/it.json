@@ -48,6 +48,7 @@
     "cancel": "Annulla",
     "close": "Chiudi",
     "create": "Crea",
+    "update": "Aggiorna",
     "delete": "Elimina",
     "success": "Successo",
     "bulk": "Azione di massa",
@@ -498,6 +499,13 @@
         "confirm": "Eliminare il repository '{name}' e tutte le istantanee al suo interno?",
         "growl": "Il repository '{name}' è stato eliminato con successo."
       }
+    },
+    "repository_policies": {
+      "text": "Politiche",
+      "heading": "Gestisci Politiche Snapshot",
+      "repository": "Repository: {repository}",
+      "new_policy": "Nuova Politica",
+      "edit_policy": "Modifica Politica"
     }
   },
   "search": {
@@ -843,6 +851,75 @@
           "failed_shards": "frammenti_falliti",
           "total_shards": "frammenti_totali"
         }
+      }
+    }
+  },
+  "snapshot_policies": {
+    "new_policy": {
+      "create_policy": {
+        "growl": "La politica di snapshot '{name}' è stata creata con successo."
+      },
+      "form": {
+        "id": {
+          "label": "ID della politica*"
+        },
+        "name": {
+          "label": "Nome della politica*"
+        },
+        "schedule": {
+          "label": "Programmazione*",
+          "hint": "Espressione cron (es: '0 30 1 * * ?' per ogni giorno alle 1:30)"
+        },
+        "repository": {
+        },
+        "indices": {
+          "label": "Indici",
+          "hint": "Lista di indici da includere separati da virgole (default: '*')"
+        },
+        "ignore_unavailable": {
+          "label": "Ignora indici non disponibili"
+        },
+        "include_global_state": {
+          "label": "Includi stato globale"
+        },
+        "retention": {
+          "heading": "Impostazioni di Conservazione",
+          "expire_after": {
+            "label": "Scade dopo",
+            "hint": "Periodo di tempo dopo il quale gli snapshot scadono (es: '3d', '12h')"
+          },
+          "max_count": {
+            "label": "Conteggio massimo",
+            "hint": "Numero massimo di snapshot da mantenere"
+          },
+          "min_count": {
+            "label": "Conteggio minimo",
+            "hint": "Numero minimo di snapshot da mantenere"
+          }
+        }
+      }
+    },
+    "policies_table": {
+      "table": {
+        "headers": {
+          "id": "ID",
+          "name": "Nome",
+          "schedule": "Programmazione",
+          "retention": "Conservazione"
+        }
+      },
+      "delete_policy": {
+        "confirm": "Eliminare la politica di snapshot '{name}'?",
+        "growl": "La politica di snapshot '{name}' è stata eliminata con successo."
+      },
+      "execute_policy": {
+        "confirm": "Eseguire la politica di snapshot '{name}' ora?",
+        "growl": "La politica di snapshot '{name}' è stata eseguita con successo."
+      }
+    },
+    "edit_policy": {
+      "update_policy": {
+        "growl": "La politica snapshot '{name}' è stata aggiornata con successo."
       }
     }
   },

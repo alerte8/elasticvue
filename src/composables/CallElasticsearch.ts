@@ -8,14 +8,14 @@ import { parseJson } from '../helpers/json/parse.ts'
 let elasticsearchAdapter: ElasticsearchAdapter
 
 export interface RequestState {
-  loading: boolean,
-  networkError: boolean,
-  apiError: boolean,
-  apiErrorMessage: string,
+  loading: boolean
+  networkError: boolean
+  apiError: boolean
+  apiErrorMessage: string
   status: number
 }
 
-export function useElasticsearchAdapter () {
+export function useElasticsearchAdapter() {
   const connectionStore = useConnectionStore()
 
   const requestState: Ref<RequestState> = ref({
@@ -141,14 +141,14 @@ const elasticsearchError = (error: any) => {
  *   const { requestState, data, load } = useElasticsearchRequest('clusterInfo')
  *   onMounted(load)
  */
-export function useElasticsearchRequest<T> (method: ElasticsearchMethod, params?: object) {
+export function useElasticsearchRequest<T>(method: ElasticsearchMethod, params?: object) {
   const { requestState, loading, callElasticsearch } = useElasticsearchAdapter()
   const data: Ref<T | null> = ref(null)
 
   const load = () => {
     return callElasticsearch(method, params)
-        .then(body => (data.value = body))
-        .catch(() => (data.value = null))
+      .then((body) => (data.value = body))
+      .catch(() => (data.value = null))
   }
 
   return {
@@ -173,16 +173,17 @@ export function useElasticsearchRequest<T> (method: ElasticsearchMethod, params?
       })
     }
  */
-export const defineElasticsearchRequest = ({ emit, method }: {
-  emit?: (event: string) => void,
-  method: ElasticsearchMethod
-}) => {
+export const defineElasticsearchRequest = ({ emit, method }: { emit?: (event: string) => void; method: ElasticsearchMethod }) => {
   const { requestState, loading, callElasticsearch } = useElasticsearchAdapter()
   const { showSnackbar } = useSnackbar()
 
-  const run = async ({ confirmMsg, snackbarOptions, params = undefined }: {
-    confirmMsg?: string,
-    snackbarOptions?: SnackbarOptions | SnackbarOptionsFunction,
+  const run = async ({
+    confirmMsg,
+    snackbarOptions,
+    params = undefined
+  }: {
+    confirmMsg?: string
+    snackbarOptions?: SnackbarOptions | SnackbarOptionsFunction
     params?: object
   }) => {
     if (confirmMsg) {
