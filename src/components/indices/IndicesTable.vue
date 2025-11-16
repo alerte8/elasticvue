@@ -61,11 +61,13 @@
         </template>
 
         <template #bottom="scope">
-          <table-bottom v-model="indicesStore.pagination.rowsPerPage"
-                        :scope="scope"
-                        :total="items.length"
-                        :rows-per-page="rowsPerPage"
-                        @rows-per-page-accepted="acceptRowsPerPage" />
+          <table-bottom
+            v-model="indicesStore.pagination!.rowsPerPage"
+            :scope="scope"
+            :total="items.length"
+            :rows-per-page="rowsPerPage"
+            @rows-per-page-accepted="acceptRowsPerPage"
+          />
         </template>
       </q-table>
     </resizable-container>
