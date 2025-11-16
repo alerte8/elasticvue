@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { DEFAULT_PAGINATION, DEFAULT_SEARCH_QUERY, DEFAULT_DOCUMENT_FIELD_MAX_LENGTH } from '../consts'
-import { useConnectionStore } from './connection.ts'
+import { useConnectionStore } from './connection'
 
 
 
@@ -34,7 +34,7 @@ export type SearchState = {
 
 export const useSearchStore = () => {
   const connectionStore = useConnectionStore()
-  const clusterUuid = connectionStore.activeCluster?.uuid
+    const clusterUuid = connectionStore.activeCluster?.uuid || ''
 
   return defineStore('search', {
     state: () => {
