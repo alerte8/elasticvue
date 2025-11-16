@@ -43,12 +43,20 @@ export default class ElasticsearchAdapter {
     return this[method](...args)
   }
 
-  async callInChunks ({ method, indices }: { method: keyof ElasticsearchAdapter, indices: string[] }) {
+  async callInChunks({
+    method,
+    indices,
+    ...additionalParams
+  }: {
+    method: keyof ElasticsearchAdapter
+    indices: string[]
+    [key: string]: any
+  }) {
     const chunks = chunk(indices, MAX_INDICES_PER_REQUEST)
     const responses = []
 
     for (const c of chunks) {
-      const response = await this.call(method, { indices: c })
+      const response = await this.call(method, { indices: c, ...additionalParams })
       responses.push(response)
     }
 
@@ -122,7 +130,7 @@ export default class ElasticsearchAdapter {
 
   async indicesGetMapping({ index}: { index: string}) {
    
-    // Récupérer le mapping
+    // R�cup�rer le mapping
       const mappingResponse = await this.request(`${cleanIndexName(index)}/_mapping`, 'GET') as any
       const mapping: any = await mappingResponse.json()
 
@@ -131,15 +139,15 @@ export default class ElasticsearchAdapter {
 
   async indexDump ({ index, onProgress }: { index: string, onProgress?: (progress: { processed: number, total: number, percentage: number }) => void }) {
     try {
-      // Récupérer le mapping
+      // R�cup�rer le mapping
       const mappingResponse = await this.request(`${cleanIndexName(index)}/_mapping`, 'GET') as any
       const mapping: any = await mappingResponse.json()
 
-      // Utiliser scroll API pour récupérer tous les documents
+      // Utiliser scroll API pour r�cup�rer tous les documents
       const scrollSize = 1000
       const allDocuments: any[] = []
 
-      // Première requête avec scroll
+      // Premi�re requ�te avec scroll
       const firstSearchResponse = await this.request(`${cleanIndexName(index)}/_search?scroll=5m`, 'POST', {
         query: { match_all: {} },
         size: scrollSize,
@@ -150,7 +158,7 @@ export default class ElasticsearchAdapter {
       const totalHits = (scrollResponse.hits?.total?.value ?? scrollResponse.hits?.total) || 0
       let processed = 0
       
-      // Traiter la première batch
+      // Traiter la premi�re batch
       const firstBatch = (scrollResponse.hits?.hits || []).map((hit: any) => ({
         _id: hit._id,
         _source: hit._source
@@ -230,17 +238,17 @@ export default class ElasticsearchAdapter {
     onProgress?: (progress: { processed: number, total: number, percentage: number, status: string }) => void 
   }) {
     try {
-      // Callback de progression - début
+      // Callback de progression - d�but
       if (onProgress) {
         onProgress({
           processed: 0,
           total: data.data.length,
           percentage: 0,
-          status: 'Création de l\'index...'
+          status: 'Cr�ation de l\'index...'
         })
       }
       
-      // 1. Créer l'index avec le mapping (seulement s'il n'existe pas)
+      // 1. Cr�er l'index avec le mapping (seulement s'il n'existe pas)
       const exists = await this.indexExists({ index }) as unknown as boolean
       if (!exists) {
         const cleanMapping = this.fixMappingStructure(data.mapping)
@@ -255,7 +263,7 @@ export default class ElasticsearchAdapter {
             processed: 0,
             total: 0,
             percentage: 100,
-            status: 'Index créé (aucune donnée à restaurer)'
+            status: 'Index cr�� (aucune donn�e � restaurer)'
           })
         }
         return {
@@ -266,7 +274,7 @@ export default class ElasticsearchAdapter {
         }
       }
       
-      // 2. Préparer les documents pour bulk insert
+      // 2. Pr�parer les documents pour bulk insert
       const bulkBody: string[] = []
       data.data.forEach(doc => {
         bulkBody.push(JSON.stringify({
@@ -278,7 +286,7 @@ export default class ElasticsearchAdapter {
         bulkBody.push(JSON.stringify(doc._source))
       })
       
-      // 3. Insérer les documents par batch pour éviter les timeouts
+      // 3. Ins�rer les documents par batch pour �viter les timeouts
       const batchSize = 1000
       let processed = 0
       const errors: any[] = []
@@ -314,7 +322,7 @@ export default class ElasticsearchAdapter {
           processed: data.data.length,
           total: data.data.length,
           percentage: 100,
-          status: errors.length > 0 ? `Terminé avec ${errors.length} erreurs` : 'Terminé avec succès'
+          status: errors.length > 0 ? `Termin� avec ${errors.length} erreurs` : 'Termin� avec succ�s'
         })
       }
       
@@ -337,31 +345,31 @@ export default class ElasticsearchAdapter {
 
   // Fonction pour nettoyer et corriger la structure du mapping
  fixMappingStructure(mapping: any): any {
-  // Si le mapping contient une clé qui encapsule les propriétés
+  // Si le mapping contient une cl� qui encapsule les propri�t�s
   // (comme "infra" dans votre cas), on l'extrait
   
   if (!mapping) {
     return { properties: {} }
   }
   
-  // Si le mapping a déjà la structure correcte
+  // Si le mapping a d�j� la structure correcte
   if (mapping.properties) {
     return mapping
   }
   
-  // Chercher la première clé qui contient des propriétés
+  // Chercher la premi�re cl� qui contient des propri�t�s
   const keys = Object.keys(mapping)
   for (const key of keys) {
     const value = mapping[key]
     if (value && typeof value === 'object' && value.properties) {
-      console.log(`Extraction du mapping depuis la clé: ${key}`)
+      console.log(`Extraction du mapping depuis la cl�: ${key}`)
       return {
         properties: value.properties
       }
     }
   }
   
-  // Si aucune structure valide trouvée, traiter comme des propriétés directes
+  // Si aucune structure valide trouv�e, traiter comme des propri�t�s directes
   return {
     properties: mapping
   }
@@ -430,8 +438,16 @@ export default class ElasticsearchAdapter {
     return this.request(`${cleanIndexName(index)}`, 'HEAD')
   }
 
-  indexPutSettings ({ index, body }: { index: string, body: object }) {
-    return this.request(`${cleanIndexName(index)}/_settings`, 'PUT', body)
+  indexGetSettings({ index }: { index: string }) {
+    return this.request(`${cleanIndexName(index)}/_settings`, 'GET')
+  }
+
+  indexPutSettings({ indices, body }: { indices: string[]; body: object }) {
+    if (indices.length > MAX_INDICES_PER_REQUEST) {
+      return this.callInChunks({ method: 'indexPutSettings', indices, body })
+    } else {
+      return this.request(`${cleanIndexName(indices.join(','))}/_settings`, 'PUT', body)
+    }
   }
 
   reindex ({ source, dest }: { source: string, dest: string }) {
@@ -440,6 +456,9 @@ export default class ElasticsearchAdapter {
       dest: { index: dest }
     })
   }
+    lone({ source, dest }: { source: string; dest: string }) {
+        return this.request(`${cleanIndexName(source)}/_clone/${cleanIndexName(dest)}`, 'POST')
+    }
 
   index ({ index, type, id, routing, body }: {
     index: string,

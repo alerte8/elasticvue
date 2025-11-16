@@ -23,6 +23,27 @@
                        icon="clear_all"
                        @done="emitAndCloseMenu('reload')"/>
 
+      <row-menu-action
+        method="indexPutSettings"
+        :method-params="{ indices: selectedIndices, body: { index: { blocks: { write: true } } } }"
+        :text="t('indices.index_row.options.set_readonly.text')"
+        :growl="t('indices.index_row.options.set_readonly.growl', { index: selectedIndices.join(', ') })"
+        :confirm="t('indices.index_row.options.set_readonly.confirm', { index: selectedIndices.join(', ') })"
+        icon="lock"
+        @done="emitAndCloseMenu('reload')"
+      />
+
+      <row-menu-action
+        method="indexPutSettings"
+        :method-params="{ indices: selectedIndices, body: { index: { blocks: { write: false } } } }"
+        :text="t('indices.index_row.options.set_writable.text')"
+        :growl="t('indices.index_row.options.set_writable.growl', { index: selectedIndices.join(', ') })"
+        icon="lock_open"
+        @done="emitAndCloseMenu('reload')"
+      />
+
+      <q-separator />
+
       <q-item :disable="selectedIndices.length === 0" clickable @click="startBulkExport">
         <q-item-section side>
           <q-icon name="file_download" size="xs"/>

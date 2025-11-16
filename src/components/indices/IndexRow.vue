@@ -81,9 +81,8 @@
             <q-separator />
 
             <index-aliases :index="index.index" @reload="emitReloadAndCloseMenu" />
-            <index-reindex
-              v-if="clusterVersionGt(1)"
-              :index="index.index" @reload="emitReloadAndCloseMenu" />
+            <index-reindex v-if="clusterVersionGt(1)" :index="index.index" @reload="emitReloadAndCloseMenu" />
+            <index-clone v-if="clusterVersionGte(7)" :index="index.index" @reload="emitReloadAndCloseMenu" />
 
             <q-separator />
 
@@ -117,6 +116,44 @@
                              icon="clear_all"
                              @done="emitReloadAndCloseMenu" />
 
+            <row-menu-action
+              method="indexPutSettings"
+              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: true } } } }"
+              :text="t('indices.index_row.options.set_readonly.text')"
+              :growl="t('indices.index_row.options.set_readonly.growl', { index: index.index })"
+              :confirm="t('indices.index_row.options.set_readonly.confirm', { index: index.index })"
+              icon="lock"
+              @done="emitReloadAndCloseMenu"
+            />
+
+            <row-menu-action
+              method="indexPutSettings"
+              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: false } } } }"
+              :text="t('indices.index_row.options.set_writable.text')"
+              :growl="t('indices.index_row.options.set_writable.growl', { index: index.index })"
+              icon="lock_open"
+              @done="emitReloadAndCloseMenu"
+            />
+
+            <row-menu-action
+              v-if="index.status === 'open' && !connectionStore.serverless"
+              method="indexClose"
+              :method-params="{ indices: [props.index.index] }"
+              :confirm="t('indices.index_row.options.close.confirm', { index: index.index })"
+              :text="t('indices.index_row.options.close.text')"
+              :growl="t('indices.index_row.options.close.growl', { index: index.index })"
+              icon="lock"
+              @done="emitReloadAndCloseMenu"
+            />
+            <row-menu-action
+              v-else-if="!connectionStore.serverless"
+              method="indexOpen"
+              :method-params="{ indices: [props.index.index] }"
+              :text="t('indices.index_row.options.open.text')"
+              :growl="t('indices.index_row.options.open.growl', { index: index.index })"
+              icon="lock_open"
+              @done="emitReloadAndCloseMenu"
+            />
             <row-menu-action v-if="index.status === 'open' && !connectionStore.serverless"
                              method="indexClose"
                              :method-params="{ indices: [props.index.index] }"
@@ -164,14 +201,15 @@
 </template>
 
 <script setup lang="ts">
-  import IndexAliases from './IndexAliases.vue'
-  import { IndexRowProps, useIndexRow } from '../../composables/components/indices/IndexRow'
-  import { useTranslation } from '../../composables/i18n'
-  import IndexReindex from './IndexReindex.vue'
-  import RowMenuAction from './RowMenuAction.vue'
-  import IndexExport from './IndexExport.vue'  
-  import { clusterVersionGt, clusterVersionGte } from '../../helpers/minClusterVersion.ts'
-  import {useConnectionStore} from '../../store/connection.ts'
+import IndexAliases from './IndexAliases.vue'
+import { IndexRowProps, useIndexRow } from '../../composables/components/indices/IndexRow'
+import { useTranslation } from '../../composables/i18n'
+import IndexReindex from './IndexReindex.vue'
+import IndexClone from './IndexClone.vue'
+import RowMenuAction from './RowMenuAction.vue'
+import { clusterVersionGt, clusterVersionGte } from '../../helpers/minClusterVersion.ts'
+import { useConnectionStore } from '../../store/connection.ts'
+import IndexExport from './IndexExport.vue'  
 
   const t = useTranslation()
   const props = defineProps<IndexRowProps>()
