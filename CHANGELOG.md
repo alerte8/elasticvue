@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.1
+
+* fix another encoding issue, fixes again [#327](https://github.com/cars10/elasticvue/issues/327)
+* fix: redirect after adding first cluster
+
 ## 1.10.0
 
 * fix encoding issue in rest query interface, fixes [#327](https://github.com/cars10/elasticvue/issues/327)
