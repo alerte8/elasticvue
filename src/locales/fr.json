@@ -943,7 +943,15 @@
     "heading": "Sécurité",
     "roles": "Rôles",
     "users": "Utilisateurs",
-    "apikeys": "Clés API",  
+    "apikeys": "Clés API",
+    "add_apikey": "Ajouter une clé API",
+    "api_keys_table": {
+      "new": {
+        "name": "Nom",
+        "expiration": "Expiration (ex: 1j, 7j, 30j)",
+        "roles": "Rôles"
+      }
+    },  
     "table": {
       "roles": "Rôles",
       "name": "Nom",

@@ -944,6 +944,14 @@
     "roles": "Роли",
     "users": "Пользователи",
     "apikeys": "API-ключи",
+    "add_apikey": "Добавить API-ключ",
+    "api_keys_table": {
+      "new": {
+        "name": "Имя",
+        "expiration": "Срок действия (например, 1д, 7д, 30д)",
+        "roles": "Роли"
+      }
+    },
     "table": {
       "roles": "Роли",
       "name": "Имя",

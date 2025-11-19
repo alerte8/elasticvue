@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 import { DEFAULT_HIDE_INDICES_REGEX } from '../consts'
 
+export type NewApiKey = {
+  name: string,
+  expiration: string,
+  roles: string[]
+}
+
 type ApiKeysState = {
   filter: string
   showHiddenIndices: boolean

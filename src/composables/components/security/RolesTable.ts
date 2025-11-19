@@ -27,7 +27,7 @@ export const useRolesTable = (emit: any) => {
     { label: t('security.table.name'), field: 'name', align: 'left'},
     { label: t('security.table.cluster'), field: 'cluster', align: 'left'},
     { label: t('security.table.indices'), field: 'indices', align: 'left' },
-  //  { label: t('security.table.actions'), field: 'actions', align: 'right' }
+    { label: t('security.table.actions'), field: 'actions', align: 'right' }
   ])
  
 

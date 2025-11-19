@@ -590,6 +590,10 @@ export default class ElasticsearchAdapter {
     return this.request('_security/api_key', 'DELETE', { ids : [id] })
   }
 
+  createApiKey ({ body }: { body: object }) {
+    return this.request('_security/api_key', 'POST', body)
+  }
+
   getUsers () {
     return this.request('_security/user', 'GET')
   }

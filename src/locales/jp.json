@@ -944,6 +944,14 @@
     "roles": "ロール",
     "users": "ユーザー",
     "apikeys": "APIキー",
+    "add_apikey": "APIキーを追加",
+    "api_keys_table": {
+      "new": {
+        "name": "名前",
+        "expiration": "有効期限 (例: 1d, 7d, 30d)",
+        "roles": "ロール"
+      }
+    },
     "table": {
       "roles": "ロール",
       "name": "名前",

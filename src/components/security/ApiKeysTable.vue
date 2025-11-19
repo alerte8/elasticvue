@@ -1,6 +1,13 @@
 <template>
   <q-card>    
     <q-card-section>
+      <div class="row q-mb-md items-center justify-between">
+        <div />
+        <div>
+          <q-btn color="primary" flat icon="add" class="q-mr-sm" @click="dialog = true" :label="t('security.add_apikey')" />
+          <add-api-key-dialog v-model="dialog" @created="loadApiKeys" />
+        </div>
+      </div>
       <q-table
         v-model:pagination="apikeysStore.pagination"
         :rows="apiKeys"
@@ -60,6 +67,9 @@
   import { useApiKeysTable } from '../../composables/components/security/ApiKeysTable'
   import TableBottom from '../shared/TableBottom.vue'
   import { DEFAULT_ROWS_PER_PAGE } from '../../consts.ts'
+  import AddApiKeyDialog from './AddApiKeyDialog.vue'
+  import { ref } from 'vue'
+  import { useTranslation } from '../../composables/i18n'
 
   const emit = defineEmits<{ 
     reload: []
@@ -70,8 +80,12 @@
     apiKeys,
     columns,
     deleteApiKey,
+    loadApiKeys,
     rowsPerPage,
     acceptRowsPerPage,
     apikeysStore,
     isCurrentApiKey  } = useApiKeysTable(emit)
+
+  const dialog = ref(false)
+  const t = useTranslation()
 </script>

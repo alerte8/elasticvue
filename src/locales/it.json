@@ -944,6 +944,14 @@
     "roles": "Ruoli",
     "users": "Utenti",
     "apikeys": "Chiavi API",
+    "add_apikey": "Aggiungi chiave API",
+    "api_keys_table": {
+      "new": {
+        "name": "Nome",
+        "expiration": "Scadenza (es: 1g, 7g, 30g)",
+        "roles": "Ruoli"
+      }
+    },
     "table": {
       "roles": "Ruoli",
       "name": "Nome",
