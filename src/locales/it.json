@@ -942,6 +942,14 @@
  "security": {
     "heading": "Sicurezza",
     "roles": "Ruoli",
+    "add_role": "Aggiungi ruolo",
+    "roles_table": {
+      "new": {
+        "name": "Nome",
+        "cluster": "Privilegi cluster (es: all)",
+        "indices": "Privilegi indice (es: *)"
+      }
+    },
     "users": "Utenti",
     "apikeys": "Chiavi API",
     "add_apikey": "Aggiungi chiave API",
@@ -968,7 +976,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "Confermare l'eliminazione della chiave API '{name}'?",
-        "growl": "La chiave API '{name}' è stata eliminata con successo."
+        "confirm_multiple": "Confermare l'eliminazione di {count} chiavi API?",
+        "growl": "La chiave API '{name}' è stata eliminata con successo.",
+        "growl_multiple_success": "{count} chiavi API eliminate con successo.",
+        "growl_multiple_fail": "{count} chiavi API non sono state eliminate."
       },
       "error": {
         "add_failed": "Impossibile creare la chiave API '{name}'.",
@@ -978,7 +989,10 @@
     "roles_result": {
       "delete": {
         "confirm": "Confermare l'eliminazione del ruolo '{name}'?",
-        "growl": "Il ruolo '{name}' è stato eliminato con successo."
+        "confirm_multiple": "Confermare l'eliminazione di {count} ruoli?",
+        "growl": "Il ruolo '{name}' è stato eliminato con successo.",
+        "growl_multiple_success": "{count} ruoli eliminati con successo.",
+        "growl_multiple_fail": "{count} ruoli non sono stati eliminati."
       }
     },
     "add_user": "Aggiungi utente",
@@ -998,7 +1012,10 @@
       },
       "delete": {
         "confirm": "Confermare l'eliminazione dell'utente '{name}'?",
-        "growl": "L'utente '{name}' è stato eliminato con successo."
+        "confirm_multiple": "Confermare l'eliminazione di {count} utenti?",
+        "growl": "L'utente '{name}' è stato eliminato con successo.",
+        "growl_multiple_success": "{count} utenti eliminati con successo.",
+        "growl_multiple_fail": "{count} utenti non sono stati eliminati."
       }
     }
    

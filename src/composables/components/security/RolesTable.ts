@@ -24,9 +24,9 @@ export const useRolesTable = (emit: any) => {
   const acceptRowsPerPage = (value: boolean) => (rolesStore.rowsPerPageAccepted = value)
 
   const columns = genColumns( [
-    { label: t('security.table.name'), field: 'name', align: 'left'},
-    { label: t('security.table.cluster'), field: 'cluster', align: 'left'},
-    { label: t('security.table.indices'), field: 'indices', align: 'left' },
+    { label: t('security.table.name'), field: 'name', align: 'left', sortable: true },
+    { label: t('security.table.cluster'), field: 'cluster', align: 'left', sortable: true },
+    { label: t('security.table.indices'), field: 'indices', align: 'left', sortable: true },
     { label: t('security.table.actions'), field: 'actions', align: 'right' }
   ])
  
@@ -61,27 +61,60 @@ export const useRolesTable = (emit: any) => {
     }
   }
 
-  const { run } = defineElasticsearchRequest({ emit, method: 'deleteRole' })
+  const deleteRole = async (name:string) => {
+    try {
+      const { run } = defineElasticsearchRequest({ emit, method: 'deleteRole' })
+      const result = await run({
+        params: {
+          name: name
+        },
+        confirmMsg: t('security.roles_result.delete.confirm', { name: name }),
+        snackbarOptions: { body: t('security.roles_result.delete.growl',  { name: name }) }
+      })
+      
+      if (result !== true) {
+        throw new Error(t('security.roles_result.error.delete_failed', { name: name }))
+      }
 
-  const deleteRole = async (id:string) => {
+      loadRoles()
+      emit('deleted')
+      return true
+    } catch (e) {
+      handleError(e,true)
+      return false
+    }
+  }
 
-   return run({
-      params:  ({
-        id: id
-        }),
-      confirmMsg: t('security.roles_result.delete.confirm', 1),
-      snackbarOptions: { body: t('security.apiKeys_result.delete.growl', 1) }
-    })
-}
+  const deleteRoles = async (names: string[]) => {
+    const results: { name: string, success: boolean }[] = []
+    for (const name of names) {
+      try {
+        const { run } = defineElasticsearchRequest({ emit, method: 'deleteRole' })
+        const result = await run({
+          params: {
+            name: name
+          },
+          snackbarOptions: { body: t('security.roles_result.delete.growl',  { name: name }) }
+        })
+        results.push({ name, success: result === true })
+      } catch (e) {
+        handleError(e,true)
+        results.push({ name, success: false })
+      }
+    }
+    loadRoles()
+    emit('deleted')
+    return results
+  }
 
 onMounted(loadRoles)
- return {
-    roles,
-    columns,
-    deleteRole,
-    loadRoles,
-    rowsPerPage,
-    acceptRowsPerPage,
-    rolesStore
-  }
-}
+   return {
+     roles,
+     columns,
+     deleteRole,
+     deleteRoles,
+     loadRoles,
+     rowsPerPage,
+     acceptRowsPerPage,
+     rolesStore
+   }}

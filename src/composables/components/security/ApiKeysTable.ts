@@ -26,13 +26,13 @@ export const useApiKeysTable = (emit: any) => {
   const acceptRowsPerPage = (value: boolean) => (apikeysStore.rowsPerPageAccepted = value)
 
   const columns = genColumns([
-    { label: t('security.table.id'), field: 'id', align: 'left'},
-    { label: t('security.table.name'), field: 'name', align: 'left' },
-    { label: t('security.table.creation'), field: 'creation', align: 'left', format: (val: number) => new Date(val).toLocaleString() },
-    { label: t('security.table.expiration'), field: 'expiration', align: 'left', format: (val: number) => val ? new Date(val).toLocaleString() : 'Never' },
-    { label: t('security.table.invalidated'), field: 'invalidated', align: 'center', format: (val: boolean) => val ? 'Yes' : 'No' },
-    { label: t('security.table.username'), field: 'username', align: 'left' },
-    { label: t('security.table.realm'), field: 'realm', align: 'left' },
+    { label: t('security.table.id'), field: 'id', align: 'left', sortable: true },
+    { label: t('security.table.name'), field: 'name', align: 'left', sortable: true },
+    { label: t('security.table.creation'), field: 'creation', align: 'left', format: (val: number) => new Date(val).toLocaleString(), sortable: true },
+    { label: t('security.table.expiration'), field: 'expiration', align: 'left', format: (val: number) => val ? new Date(val).toLocaleString() : 'Never', sortable: true },
+    { label: t('security.table.invalidated'), field: 'invalidated', align: 'center', format: (val: boolean) => val ? 'Yes' : 'No', sortable: true },
+    { label: t('security.table.username'), field: 'username', align: 'left', sortable: true },
+    { label: t('security.table.realm'), field: 'realm', align: 'left', sortable: true },
     { label: t('security.table.actions'), field: 'actions', align: 'right' }
   ])
   
@@ -121,9 +121,33 @@ const deleteApiKey = async (id:string) => {
 
       loadApiKeys()
       emit('deleted')
+      return true
     } catch (e) {
       handleError(e,true)
+      return false
     }
+  }
+
+  const deleteApiKeys = async (ids: string[]) => {
+    const results: { id: string, success: boolean }[] = []
+    for (const id of ids) {
+      try {
+        const { run } = defineElasticsearchRequest({ emit, method: 'deleteApiKey' })
+        const result = await run({
+          params: {
+            id: id
+          },
+          snackbarOptions: { body: t('security.apiKeys_result.delete.growl',  { name: id }) }
+        })
+        results.push({ id, success: result === true })
+      } catch (e) {
+        handleError(e,true)
+        results.push({ id, success: false })
+      }
+    }
+    loadApiKeys()
+    emit('deleted')
+    return results
   }
   
   onMounted(loadApiKeys)
@@ -132,6 +156,7 @@ const deleteApiKey = async (id:string) => {
     apiKeys,
     columns,
     deleteApiKey,
+    deleteApiKeys,
     loadApiKeys,
     rowsPerPage,
     acceptRowsPerPage,

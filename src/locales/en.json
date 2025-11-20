@@ -940,8 +940,15 @@
     }
   },
   "security": {
-    "heading": "Security",
     "roles": "Roles",
+    "add_role": "Add role",
+    "roles_table": {
+      "new": {
+        "name": "Name",
+        "cluster": "Cluster privileges (e.g. all)",
+        "indices": "Index privileges (e.g. *)"
+      }
+    },
     "users": "Users",
     "apikeys": "API keys",
     "add_apikey": "Add API key",
@@ -968,7 +975,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "Confirm deletion of API key '{name}'?",
-        "growl": "API key '{name}' has been successfully deleted."
+        "confirm_multiple": "Confirm deletion of {count} API keys?",
+        "growl": "API key '{name}' has been successfully deleted.",
+        "growl_multiple_success": "{count} API keys successfully deleted.",
+        "growl_multiple_fail": "{count} API keys failed to delete."
       },
       "error": {
         "add_failed": "Failed to create API key '{name}'.",
@@ -978,7 +988,10 @@
     "roles_result": {
       "delete": {
         "confirm": "Confirm deletion of role '{name}'?",
-        "growl": "Role '{name}' has been successfully deleted."
+        "confirm_multiple": "Confirm deletion of {count} roles?",
+        "growl": "Role '{name}' has been successfully deleted.",
+        "growl_multiple_success": "{count} roles successfully deleted.",
+        "growl_multiple_fail": "{count} roles failed to delete."
       }
     },
     "add_user": "Add user",
@@ -991,7 +1004,10 @@
     "users_result": {
       "delete": {
         "confirm": "Confirm deletion of user '{name}'?",
-        "growl": "User '{name}' has been successfully deleted."
+        "confirm_multiple": "Confirm deletion of {count} users?",
+        "growl": "User '{name}' has been successfully deleted.",
+        "growl_multiple_success": "{count} users successfully deleted.",
+        "growl_multiple_fail": "{count} users failed to delete."
       },
       "error": {
         "add_failed": "Failed to create user '{name}'.",

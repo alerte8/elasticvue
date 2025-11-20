@@ -582,6 +582,10 @@ export default class ElasticsearchAdapter {
     return this.request(`_security/role/${name}`, 'DELETE')
   }
 
+  createRole ({ name, body }: { name: string, body: object }) {
+    return this.request(`_security/role/${name}`, 'POST', body)
+  }
+
   getApiKeys () {
     return this.request('_security/api_key', 'GET')
   }

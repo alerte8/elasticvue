@@ -942,7 +942,15 @@
   "security": {
     "heading": "Sécurité",
     "roles": "Rôles",
-    "users": "Utilisateurs",
+    "add_role": "Ajouter un rôle",
+    "roles_table": {
+      "new": {
+        "name": "Nom",
+        "cluster": "Privilèges de cluster (ex: all)",
+        "indices": "Privilèges d'index (ex: *)"
+      }
+    },
+
     "apikeys": "Clés API",
     "add_apikey": "Ajouter une clé API",
     "api_keys_table": {
@@ -968,7 +976,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "Confirmer la suppression de la clé API '{name}' ?",
-        "growl": "La clé API '{name}' a été supprimée avec succès."
+        "confirm_multiple": "Confirmer la suppression de {count} clés API ?",
+        "growl": "La clé API '{name}' a été supprimée avec succès.",
+        "growl_multiple_success": "{count} clés API supprimées avec succès.",
+        "growl_multiple_fail": "{count} clés API n'ont pas pu être supprimées."
       },
       "error": {
         "add_failed": "Échec de la création de la clé API '{name}'.",

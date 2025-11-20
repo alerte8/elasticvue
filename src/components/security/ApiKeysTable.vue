@@ -4,16 +4,19 @@
       <div class="row q-mb-md items-center justify-between">
         <div />
         <div>
+          <q-btn color="negative" flat icon="delete" class="q-mr-sm" :label="t('defaults.delete')" :disable="selectedApiKeys.length === 0" @click="deleteSelectedApiKeys" />
           <q-btn color="primary" flat icon="add" class="q-mr-sm" @click="dialog = true" :label="t('security.add_apikey')" />
           <add-api-key-dialog v-model="dialog" @created="loadApiKeys" />
         </div>
       </div>
       <q-table
         v-model:pagination="apikeysStore.pagination"
+        v-model:selected="selectedApiKeys"
         :rows="apiKeys"
         :columns="columns"
         :rows-per-page-options="DEFAULT_ROWS_PER_PAGE"
         row-key="id"
+        selection="multiple"
         dense
       >
         <template #body-cell-actions="props">
@@ -70,6 +73,9 @@
   import AddApiKeyDialog from './AddApiKeyDialog.vue'
   import { ref } from 'vue'
   import { useTranslation } from '../../composables/i18n'
+  import { askConfirm } from '../../helpers/dialogs'
+  import { Loading } from 'quasar'
+  import { useSnackbar } from '../../composables/Snackbar'
 
   const emit = defineEmits<{ 
     reload: []
@@ -80,6 +86,7 @@
     apiKeys,
     columns,
     deleteApiKey,
+    deleteApiKeys,
     loadApiKeys,
     rowsPerPage,
     acceptRowsPerPage,
@@ -88,4 +95,42 @@
 
   const dialog = ref(false)
   const t = useTranslation()
+  const selectedApiKeys = ref([])
+  const { showSnackbar } = useSnackbar()
+
+  const deleteSelectedApiKeys = async () => {
+    const confirmed = await askConfirm(t('security.apiKeys_result.delete.confirm_multiple', { count: selectedApiKeys.value.length }))
+    if (!confirmed) return
+
+    Loading.show()
+    const idsToDelete = selectedApiKeys.value.map((apiKey: any) => apiKey.id)
+    const results = await deleteApiKeys(idsToDelete)
+    Loading.hide()
+
+    const successfulDeletions = results.filter(r => r.success).length
+    const failedDeletions = results.filter(r => !r.success).length
+
+    if (successfulDeletions > 0) {
+      showSnackbar({
+        apiError: false,
+        networkError: false,
+        loading: false,
+        apiErrorMessage: '',
+        status: 200
+      }, {
+        body: t('security.apiKeys_result.delete.growl_multiple_success', { count: successfulDeletions })
+      })
+    }
+
+    if (failedDeletions > 0) {
+      showSnackbar({
+        apiError: true,
+        networkError: false,
+        loading: false,
+        apiErrorMessage: t('security.apiKeys_result.delete.growl_multiple_fail', { count: failedDeletions }),
+        status: 500
+      })
+    }
+    selectedApiKeys.value = []
+  }
 </script>

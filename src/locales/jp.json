@@ -940,8 +940,15 @@
     }
   },
   "security": {
-    "heading": "セキュリティ",
     "roles": "ロール",
+    "add_role": "ロールを追加",
+    "roles_table": {
+      "new": {
+        "name": "名前",
+        "cluster": "クラスター権限 (例: all)",
+        "indices": "インデックス権限 (例: *)"
+      }
+    },
     "users": "ユーザー",
     "apikeys": "APIキー",
     "add_apikey": "APIキーを追加",
@@ -968,7 +975,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "APIキー「{name}」を削除してもよろしいですか？",
-        "growl": "APIキー「{name}」が正常に削除されました。"
+        "confirm_multiple": "{count} 個のAPIキーを削除してもよろしいですか？",
+        "growl": "APIキー「{name}」が正常に削除されました。",
+        "growl_multiple_success": "{count} 個のAPIキーが正常に削除されました。",
+        "growl_multiple_fail": "{count} 個のAPIキーの削除に失敗しました。"
       },
       "error": {
         "add_failed": "APIキー '{name}' の作成に失敗しました。",
@@ -978,7 +988,10 @@
     "roles_result": {
       "delete": {
         "confirm": "ロール「{name}」を削除してもよろしいですか？",
-        "growl": "ロール「{name}」が正常に削除されました。"
+        "confirm_multiple": "{count} 個のロールを削除してもよろしいですか？",
+        "growl": "ロール「{name}」が正常に削除されました。",
+        "growl_multiple_success": "{count} 個のロールが正常に削除されました。",
+        "growl_multiple_fail": "{count} 個のロールの削除に失敗しました。"
       }
     },
     "users_result": {
@@ -991,7 +1004,10 @@
       },
       "delete": {
         "confirm": "ユーザー「{name}」を削除してもよろしいですか？",
-        "growl": "ユーザー「{name}」が正常に削除されました。"
+        "confirm_multiple": "{count} 個のユーザーを削除してもよろしいですか？",
+        "growl": "ユーザー「{name}」が正常に削除されました。",
+        "growl_multiple_success": "{count} 個のユーザーが正常に削除されました。",
+        "growl_multiple_fail": "{count} 個のユーザーの削除に失敗しました。"
       }
      },
     "add_user": "ユーザーを追加",

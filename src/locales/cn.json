@@ -942,6 +942,14 @@
   "security": {
     "heading": "安全",
     "roles": "角色",
+    "add_role": "添加角色",
+    "roles_table": {
+      "new": {
+        "name": "名称",
+        "cluster": "集群权限 (例如: all)",
+        "indices": "索引权限 (例如: *)"
+      }
+    },
     "users": "用户",
     "apikeys": "API 密钥",
     "add_apikey": "添加 API 密钥",
@@ -968,7 +976,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "确认删除 API 密钥“{name}”吗？",
-        "growl": "API 密钥“{name}”已成功删除。"
+        "confirm_multiple": "确认删除 {count} 个 API 密钥吗？",
+        "growl": "API 密钥“{name}”已成功删除。",
+        "growl_multiple_success": "{count} 个 API 密钥已成功删除。",
+        "growl_multiple_fail": "{count} 个 API 密钥删除失败。"
       },
       "error": {
         "add_failed": "创建 API 密钥 '{name}' 失败。",
@@ -978,7 +989,10 @@
     "roles_result": {
       "delete": {
         "confirm": "确认删除角色“{name}”吗？",
-        "growl": "角色“{name}”已成功删除。"
+        "confirm_multiple": "确认删除 {count} 个角色吗？",
+        "growl": "角色“{name}”已成功删除。",
+        "growl_multiple_success": "{count} 个角色已成功删除。",
+        "growl_multiple_fail": "{count} 个角色删除失败。"
       }
     },
     "add_user": "添加用户",
@@ -991,7 +1005,10 @@
     "users_result": {
       "delete": {
         "confirm": "确认删除用户“{name}”吗？",
-        "growl": "用户“{name}”已成功删除。"
+        "confirm_multiple": "确认删除 {count} 个用户吗？",
+        "growl": "用户“{name}”已成功删除。",
+        "growl_multiple_success": "{count} 个用户已成功删除。",
+        "growl_multiple_fail": "{count} 个用户删除失败。"
       },
       "error": {
         "add_failed": "用户 '{name}' 创建失败。",

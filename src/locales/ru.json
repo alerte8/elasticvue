@@ -968,7 +968,10 @@
     "apiKeys_result": {
       "delete": {
         "confirm": "Подтвердить удаление API-ключа «{name}»?",
-        "growl": "API-ключ «{name}» успешно удалён."
+        "confirm_multiple": "Подтвердить удаление {count} API-ключей?",
+        "growl": "API-ключ «{name}» успешно удалён.",
+        "growl_multiple_success": "{count} API-ключей успешно удалено.",
+        "growl_multiple_fail": "Не удалось удалить {count} API-ключей."
       },
       "error": {
         "add_failed": "Не удалось создать API-ключ '{name}'.",
@@ -978,7 +981,10 @@
     "roles_result": {
       "delete": {
         "confirm": "Подтвердить удаление роли «{name}»?",
-        "growl": "Роль «{name}» успешно удалена."
+        "confirm_multiple": "Подтвердить удаление {count} ролей?",
+        "growl": "Роль «{name}» успешно удалена.",
+        "growl_multiple_success": "{count} ролей успешно удалено.",
+        "growl_multiple_fail": "Не удалось удалить {count} ролей."
       }
     },
     "add_user": "Добавить пользователя",
@@ -998,7 +1004,10 @@
       },
       "delete": {
         "confirm": "Подтвердить удаление пользователя «{name}»?",
-        "growl": "Пользователь «{name}» успешно удалён."
+        "confirm_multiple": "Подтвердить удаление {count} пользователей?",
+        "growl": "Пользователь «{name}» успешно удалён.",
+        "growl_multiple_success": "{count} пользователей успешно удалено.",
+        "growl_multiple_fail": "Не удалось удалить {count} пользователей."
       }
     }
 

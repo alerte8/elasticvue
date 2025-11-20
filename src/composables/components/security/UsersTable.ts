@@ -24,9 +24,9 @@ export const useUsersTable = ( emit: any) => {
   const acceptRowsPerPage = (value: boolean) => (usersStore.rowsPerPageAccepted = value)
 
   const columns = genColumns([
-    { label: t('security.table.username'), field: 'username', align: 'left' },
-    { label: t('security.table.roles'), field: 'roles', align: 'left' },
-    { label: 'Enabled', field: 'enabled', align: 'left' },
+    { label: t('security.table.username'), field: 'username', align: 'left', sortable: true },
+    { label: t('security.table.roles'), field: 'roles', align: 'left', sortable: true },
+    { label: 'Enabled', field: 'enabled', align: 'left', sortable: true },
     { label: t('security.table.actions'), field: 'actions', align: 'right' }
   ])
 
@@ -125,9 +125,33 @@ export const useUsersTable = ( emit: any) => {
 
       loadUsers()
       emit('deleted')
+      return true
     } catch (e) {
       handleError(e,true)
+      return false
     }
+  }
+
+  const deleteUsers = async (usernames: string[]) => {
+    const results: { username: string, success: boolean }[] = []
+    for (const username of usernames) {
+      try {
+        const { run } = defineElasticsearchRequest({ emit, method: 'deleteUser' })
+        const result = await run({
+          params: {
+            username: username
+          },
+          snackbarOptions: { body: t('security.users_result.delete.growl',  { name: username }) }
+        })
+        results.push({ username, success: result === true })
+      } catch (e) {
+        handleError(e,true)
+        results.push({ username, success: false })
+      }
+    }
+    loadUsers()
+    emit('deleted')
+    return results
   }
 
   onMounted(loadUsers)
@@ -172,6 +196,7 @@ export const useUsersTable = ( emit: any) => {
     loadUsers,
     createUser,
     deleteUser,
+    deleteUsers,
     toggleUserEnabled,
     rowsPerPage,
     acceptRowsPerPage,
