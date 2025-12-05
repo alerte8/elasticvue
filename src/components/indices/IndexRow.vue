@@ -154,14 +154,7 @@
               icon="lock_open"
               @done="emitReloadAndCloseMenu"
             />
-            <row-menu-action v-if="index.status === 'open' && !connectionStore.serverless"
-                             method="indexClose"
-                             :method-params="{ indices: [props.index.index] }"
-                             :confirm="t('indices.index_row.options.close.confirm', {index: index.index})"
-                             :text="t('indices.index_row.options.close.text')"
-                             :growl="t('indices.index_row.options.close.growl', {index: index.index})"
-                             icon="lock"
-                             @done="emitReloadAndCloseMenu" />
+           
             <row-menu-action v-else-if="!connectionStore.serverless"
                              method="indexOpen"
                              :method-params="{ indices: [props.index.index] }"
