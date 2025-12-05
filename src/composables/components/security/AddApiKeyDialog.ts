@@ -7,11 +7,6 @@ export const useAddApiKeyDialog = (props: any, emit: any) => {
   const { callElasticsearch } = useElasticsearchAdapter()
 
   const dialog = ref(props.modelValue)
-  watch(dialog, value => {
-    if (props.modelValue !== value) {
-      emit('update:modelValue', value)
-    }
-  })
   watch(() => props.modelValue, value => (dialog.value = value))
 
   const newApiKey = ref<NewApiKey>({
@@ -20,7 +15,15 @@ export const useAddApiKeyDialog = (props: any, emit: any) => {
     roles: []
   })
 
-  const roles = ref([])
+  const reset = () => {
+    newApiKey.value = {
+      name: '',
+      expiration: '',
+      roles: []
+    }
+  }
+
+  const roles = ref<string[]>([])
   const loadRoles = async () => {
     try {
       const response = await callElasticsearch('getRoles')
@@ -30,9 +33,16 @@ export const useAddApiKeyDialog = (props: any, emit: any) => {
       roles.value = []
     }
   }
+
   watch(dialog, value => {
+    if (props.modelValue !== value) {
+      emit('update:modelValue', value)
+    }
+
     if (value) {
       loadRoles()
+    } else {
+      reset()
     }
   })
 

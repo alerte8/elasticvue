@@ -6,17 +6,30 @@ export const useAddRoleDialog = (props: any, emit: any) => {
   const { callElasticsearch } = useElasticsearchAdapter()
 
   const dialog = ref(props.modelValue)
-  watch(dialog, value => {
-    if (props.modelValue !== value) {
-      emit('update:modelValue', value)
-    }
-  })
   watch(() => props.modelValue, value => (dialog.value = value))
 
   const newRole = ref({
     name: '',
     cluster: '',
     indices: ''
+  })
+
+  const reset = () => {
+    newRole.value = {
+      name: '',
+      cluster: '',
+      indices: ''
+    }
+  }
+
+  watch(dialog, value => {
+    if (props.modelValue !== value) {
+      emit('update:modelValue', value)
+    }
+
+    if (!value) {
+      reset()
+    }
   })
 
   const loading = ref(false)
