@@ -82,7 +82,7 @@ export const useSearchDocumentsForm = (props:SearchDocumentormProps) => {
   })
 
   watch(() => (ownTab.q), value => {
-    mergeQuery({ query: { query_string: { query: value } } })
+    mergeQuery({ query: { query_string: { query: value, fields: ['*', '*.*'] } } })
   })
 
   watch(() => ownTab.pagination.columnSorts,
