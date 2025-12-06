@@ -3,6 +3,7 @@ import { useSnackbar } from '../../Snackbar'
 import { useElasticsearchAdapter } from '../../CallElasticsearch'
 import { askConfirm } from '../../../helpers/dialogs'
 import { useTranslation } from '../../i18n'
+import { clusterVersionGte } from '../../../helpers/minClusterVersion'
 
 export type IndexCloneProps = {
   index: string
@@ -24,7 +25,7 @@ export const useIndexClone = (props: IndexCloneProps, emit: any) => {
 
   const setIndexReadOnly = async (readOnly: boolean): Promise<void> => {
     await callElasticsearch('indexPutSettings', {
-      index: props.index,
+      indices: [props.index],
       body: {
         index: {
           blocks: {
@@ -53,7 +54,11 @@ export const useIndexClone = (props: IndexCloneProps, emit: any) => {
         readOnlySet = true
       }
 
-      await callElasticsearch('clone', { source: props.index, dest: dest.value })
+      if (clusterVersionGte(7))
+        await callElasticsearch('clone', { source: props.index, dest: dest.value })
+      else
+        await callElasticsearch('reindex', { source: props.index, dest: dest.value })
+
 
       if (readOnlySet) await setIndexReadOnly(false)
 

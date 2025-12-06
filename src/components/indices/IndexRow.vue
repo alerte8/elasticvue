@@ -82,8 +82,8 @@
 
             <index-aliases :index="index.index" @reload="emitReloadAndCloseMenu" />
             <index-reindex v-if="clusterVersionGt(1)" :index="index.index" @reload="emitReloadAndCloseMenu" />
-            <index-clone v-if="clusterVersionGte(7)" :index="index.index" @reload="emitReloadAndCloseMenu" />
-
+            <index-clone  :index="index.index" @reload="emitReloadAndCloseMenu" />
+            
             <q-separator />
 
             <row-menu-action
@@ -154,15 +154,6 @@
               icon="lock_open"
               @done="emitReloadAndCloseMenu"
             />
-           
-            <row-menu-action v-else-if="!connectionStore.serverless"
-                             method="indexOpen"
-                             :method-params="{ indices: [props.index.index] }"
-                             :text="t('indices.index_row.options.open.text')"
-                             :growl="t('indices.index_row.options.open.growl', {index: index.index})"
-                             icon="lock_open"
-                             @done="emitReloadAndCloseMenu" />
-
             <q-separator />
 
             <row-menu-action

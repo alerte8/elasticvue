@@ -456,7 +456,8 @@ export default class ElasticsearchAdapter {
       dest: { index: dest }
     })
   }
-    lone({ source, dest }: { source: string; dest: string }) {
+  
+  clone({ source, dest }: { source: string; dest: string }) {
         return this.request(`${cleanIndexName(source)}/_clone/${cleanIndexName(dest)}`, 'POST')
     }
 
