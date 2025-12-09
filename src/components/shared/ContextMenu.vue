@@ -27,7 +27,6 @@
           </q-item-section>
           <q-item-section>
             {{ t('search.context_menu.download_selected_rows_json', { count: selectedRows.length }) }}
-            Download as JSON
           </q-item-section>
         </q-item>
 
@@ -39,7 +38,19 @@
             {{ t('search.context_menu.delete_selected_rows', { count: selectedRows.length }) }}
           </q-item-section>
         </q-item>
+        <q-separator />
+        
+        <q-item clickable v-close-popup @click="deleteFilteredDocuments" v-if="!props.isMultiIndicesMode">
+          <q-item-section avatar>
+            <q-icon name="delete_sweep" />
+          </q-item-section>
+          <q-item-section>
+            {{ t('search.context_menu.delete_filtered_documents', { count: documentsCount }) }}
+          </q-item-section>
+        </q-item>
+
       </template>
+      
 
       <!-- Mode sélection simple -->
       <template v-else-if="rowData">        
@@ -110,6 +121,15 @@
             {{ t('search.context_menu.delete_row_json') }}
           </q-item-section>
         </q-item>
+
+        <q-item clickable v-close-popup @click="deleteFilteredDocuments" v-if="!props.isMultiIndicesMode">
+          <q-item-section avatar>
+            <q-icon name="delete_sweep" />
+          </q-item-section>
+          <q-item-section>
+            {{ t('search.context_menu.delete_filtered_documents', { count: documentsCount }) }}
+          </q-item-section>
+        </q-item>
       </template>
     </q-list>
   </q-menu>
@@ -129,6 +149,8 @@
     cellField?: string
     selectedRows?: any[]
     isMultipleSelection?: boolean
+    documentsCount?: number
+    isMultiIndicesMode?: boolean
   }>()
 
   const emit = defineEmits<{
@@ -137,6 +159,7 @@
     'edit-document': [rowData: any]
     'filter-by-field': [{ field: string, value: any }],
     'delete-rows': [rows: any[]]
+    'delete-filtered-documents': []
   }>()
 
   const t = useTranslation()
@@ -240,5 +263,9 @@
     if (selection=== undefined || selection.length === 0) return
     
     emit('delete-rows', selection)
+  }
+
+  const deleteFilteredDocuments = () => {
+    emit('delete-filtered-documents')
   }
 </script>

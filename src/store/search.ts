@@ -18,7 +18,7 @@ export type SearchState = {
   name: string
   q: string
   filter: string
-  indices: string
+  indices: string | string[]
   searchQuery: string
   searchQueryCollapsed: boolean
   columns: string[]

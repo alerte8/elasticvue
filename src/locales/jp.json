@@ -564,16 +564,21 @@
       "error_fields_loading": "フィールドの読み込み中にエラーが発生しました"
     },
     "search_result": {
-      "delete": {
-        "text": "# | ドキュメントを削除 | ドキュメントを削除",
-        "confirm": "# | このドキュメントを削除しますか？ | {count} 個のドキュメントを削除しますか？",
-        "growl": "# | ドキュメントは正常に削除されました。 | ドキュメントは正常に削除されました。"
-      }
-    },
-    "results_table": {
-      "settings": {
-        "columns": "列"
-      },
+            "delete": {
+              "text": "# | ドキュメントを削除 | ドキュメントを削除",
+              "confirm": "# | このドキュメントを削除してもよろしいですか？ | {count}件のドキュメントを削除してもよろしいですか？",
+              "growl": "# | ドキュメントは正常に削除されました。 | ドキュメントは正常に削除されました。"
+            },
+            "delete_by_query": {
+              "confirm": "Are you sure you want to delete all documents in {indices} matching the current query? This will remove ALL data in your index!",
+              "growl": "Documents in {indices} were successfully deleted."
+            }
+          },
+          "results_table": {
+            "settings": {
+              "columns": "列"
+            }
+      ,
       "add_document": "ドキュメントを追加"
     },
     "context_menu": {
@@ -589,11 +594,12 @@
       "filter_by_field": "このフィールドでフィルター",
       "download_row_json": "この行を JSON でダウンロード",
       "delete_row_json": "この行を削除",
-      "download_selected_rows_json": "選択された {count} 行を JSON でダウンロード",
-      "delete_selected_rows": "選択された {count} 行を削除"
+      "download_selected_rows_json": "選択した{count}行をJSONとしてダウンロード",
+      "delete_selected_rows": "選択した{count}行を削除",
+      "delete_filtered_documents": "Delete {count} documents (matching filter)"
     },
     "edit_document": {
-      "new_document": "新しいドキュメント",
+      "new_document": "新規ドキュメント",
       "id": {
         "label": "ID (任意)"
       },

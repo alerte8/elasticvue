@@ -568,6 +568,10 @@
         "text": "# | Удалить документ | Удалить документы",
         "confirm": "# | Вы уверены, что хотите удалить этот документ? | Вы уверены, что хотите удалить {count} документов?",
         "growl": "# | Документ успешно удален. | Документы успешно удалены."
+      },
+      "delete_by_query": {
+        "confirm": "Are you sure you want to delete all documents in {indices} matching the current query? This will remove ALL data in your index!",
+        "growl": "Documents in {indices} were successfully deleted."
       }
     },
     "results_table": {
@@ -590,7 +594,8 @@
       "download_row_json": "Скачать строку в формате JSON",
       "delete_row_json": "Удалить строку",
       "download_selected_rows_json": "Скачать {count} выбранных строк в формате JSON",
-      "delete_selected_rows": "Удалить {count} выбранных строк"
+      "delete_selected_rows": "Удалить {count} выбранных строк",
+      "delete_filtered_documents": "Delete {count} documents (matching filter)"
     },
     "edit_document": {
       "new_document": "Новый документ",

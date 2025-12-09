@@ -278,10 +278,12 @@
       "select_file": "Sélectionner le fichier de dump (.json ou .zip)",
       "mode": {
         "new_index": "Créer un nouvel index",
-        "existing_index": "Importer dans un index existant"
+        "existing_index": "Importer dans un index existant",
+        "raw_import": "Import brut depuis un fichier"
       },
       "new_index_name": "Nom du nouvel index",
       "select_existing_index": "Sélectionner un index existant",
+      "select_raw_file": "Sélectionner un fichier de dump brut (ndjson)",
       "advanced_options": "Options avancées",
       "overwrite_existing": "Écraser les documents existants",
       "overwrite_warning": "Cela remplacera tous les documents existants dans l'index cible",
@@ -300,6 +302,7 @@
         "importing": "Import vers '{targetIndex}'",
         "preparing": "Préparation de l'import...",
         "creating_index": "Création de l'index...",
+        "sending_bulk": "Envoi des données en vrac...",
         "completed": "Import terminé avec succès !",
         "completed_with_errors": "Import terminé avec {errors} erreurs"
       },
@@ -309,6 +312,7 @@
         "parse_failed": "Échec de l'analyse du fichier",
         "index_exists": "L'index '{index}' existe déjà",
         "import_failed": "Échec de l'import",
+        "import_failed_with_errors": "L'import a échoué avec des erreurs, voir la console pour les détails.",
         "unknown": "Une erreur inconnue s'est produite lors de l'import"
       }
     },
@@ -568,6 +572,10 @@
         "text": "# | Supprimer le document | Supprimer les documents",
         "confirm": "# | Voulez-vous vraiment supprimer ce document ? | Voulez-vous vraiment supprimer {count} documents?",
         "growl": "# | Le document a été supprimé avec succès. | Les documents ont été supprimés avec succès."
+      },
+      "delete_by_query": {
+        "confirm": "Voulez-vous vraiment supprimer tous les documents dans {indices} correspondant à la requête actuelle ? Cela supprimera TOUTES les données de votre index !",
+        "growl": "Les documents dans {indices} ont été supprimés avec succès."
       }
     },
     "results_table": {
@@ -590,7 +598,8 @@
       "download_row_json":" Télécharger la ligne en JSON",
       "delete_row_json": "Supprimer la ligne",
       "download_selected_rows_json": "Télécharger {count} lignes sélectionnées en JSON",
-      "delete_selected_rows": "Supprimer les  {count} lignes sélectionnées"
+      "delete_selected_rows": "Supprimer les  {count} lignes sélectionnées",
+      "delete_filtered_documents": "Supprimer {count} documents (correspondant au filtre)"
     },
     "edit_document": {
       "new_document": "Nouveau document",

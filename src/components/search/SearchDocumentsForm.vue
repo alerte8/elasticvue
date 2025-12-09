@@ -88,7 +88,8 @@
       <search-results-table :results="searchResults" :tab="ownTab" @request="onRequest" @reload="search" 
         @edit-document="handleEditDocument"
         @add-document="handleAddDocument"
-        @delete-document="handleDeleteDocument" />
+        @delete-document="handleDeleteDocument"
+        @delete-by-query="handleDeleteByQuery" />
       <template #error>
         <div class="text-center">
           <q-btn :label="t('search.form.customize_query.reset')"
@@ -227,6 +228,32 @@
       if (success) {
         search()
       }
+    }
+  }
+
+  const handleDeleteByQuery = async () => {
+    const { run: deleteByQuery } = defineElasticsearchRequest({ method: 'deleteByQuery' })
+
+    let query
+    try {
+      query = JSON.parse(ownTab.searchQuery)
+    } catch (e) {
+      console.error(e)
+      return
+    }
+
+    const success = await deleteByQuery({
+      params: {
+        index: ownTab.indices,
+        body: {
+          query: query.query
+        }
+      },
+      confirmMsg: t('search.search_result.delete_by_query.confirm', { indices: ownTab.indices }),
+      snackbarOptions: { body: t('search.search_result.delete_by_query.growl', { indices: ownTab.indices}) }
+    })
+    if (success) {
+      search()
     }
   }
 

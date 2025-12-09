@@ -181,7 +181,7 @@
     </q-card-section>    
 
   </q-card>
-
+  {{ contextMenuIsMultiIndicesMode }}
   <context-menu
         v-model="contextMenuVisible"
         :target="contextMenuTarget"
@@ -190,10 +190,14 @@
         :cell-field="contextMenuCellField"
         :selected-rows="contextMenuSelectedRows"
         :is-multiple-selection="contextMenuIsMultipleSelection"
+        :is-multi-indices-mode="contextMenuIsMultiIndicesMode"
+        :documents-count="totalHits"
         @edit-document="handleEditDocument"
         @add-document="handleAddDocument"
         @filter-by-field="handleFilterByField"
         @delete-rows="handleDeleteRows"
+        @delete-filtered-documents="handleDeleteFilteredDocuments"
+        
       />
   
 </template>
@@ -214,7 +218,7 @@
   import { stringifyJson } from '../../helpers/json/stringify.ts'
 
   const props = defineProps<SearchResultsTableProps>()
-  const emit = defineEmits(['request', 'reload', 'edit-document','add-document','delete-document'])
+  const emit = defineEmits(['request', 'reload', 'edit-document','add-document','delete-document', 'delete-by-query'])
 
   const t = useTranslation()
   
@@ -230,6 +234,7 @@
     slicedTableColumns,
 
     hits,
+    totalHits,
     filteredHits,
     rowsPerPage,
     onRequest,
@@ -256,6 +261,7 @@
   const contextMenuCellField = ref<string>('')
   const contextMenuSelectedRows = ref<any[]>([])
   const contextMenuIsMultipleSelection = ref(false)
+  const contextMenuIsMultiIndicesMode = ref(false)
 
   onUnmounted(() => {
     contextMenuVisible.value = false
@@ -317,6 +323,8 @@
     
     const hasMultipleSelections = selectedItems.value.length > 1
     
+    contextMenuIsMultiIndicesMode.value = IscontextMenuIsMultiIndicesMode()
+    
     if (hasMultipleSelections) {
       contextMenuSelectedRows.value = hits.value.filter(hit => 
         selectedItems.value.includes(genDocStr(hit))
@@ -341,12 +349,18 @@
       return
     }
     
+    contextMenuIsMultiIndicesMode.value = IscontextMenuIsMultiIndicesMode()
+
     contextMenuRowData.value = rowData
     contextMenuCellContent.value = cellContent
     contextMenuCellField.value = field
     contextMenuIsMultipleSelection.value = false
     contextMenuTarget.value = event.currentTarget as HTMLElement
     contextMenuVisible.value = true
+  }
+
+  const IscontextMenuIsMultiIndicesMode = () :boolean => {
+    return Array.isArray(ownTab.value.indices) && ownTab.value.indices.length > 1
   }
 
   const handleEditDocument = (rowData: any) => {
@@ -378,6 +392,10 @@
     if (rowDatas) {
       emit('delete-document', rowDatas)
     }
+  }
+
+  const handleDeleteFilteredDocuments = () => {
+    emit('delete-by-query')
   }
 </script>
 

@@ -564,16 +564,21 @@
       "error_fields_loading": "加载字段时出错"
     },
     "search_result": {
-      "delete": {
-        "text": "# | 删除文档 | 批量删除文档",
-        "confirm": "# | 是否删除这个文档? | 是否批量删除 {count} 个文档?",
-        "growl": "# | 删除文档成功. | 批量删除文档成功."
-      }
-    },
-    "results_table": {
-      "settings": {
-        "columns": "列"
-      },
+            "delete": {
+              "text": "# | 删除文档 | 批量删除文档",
+              "confirm": "# | 是否删除这个文档? | 是否批量删除 {count} 个文档?",
+              "growl": "# | 删除文档成功. | 批量删除文档成功."
+            },
+            "delete_by_query": {
+              "confirm": "Are you sure you want to delete all documents in {indices} matching the current query? This will remove ALL data in your index!",
+              "growl": "Documents in {indices} were successfully deleted."
+            }
+          },
+          "results_table": {
+            "settings": {
+              "columns": "列"
+            }
+      ,
       "add_document": "添加文档"
     },
     "context_menu": {
@@ -589,11 +594,12 @@
       "filter_by_field": "按此字段筛选",
       "download_row_json": "下载该行的 JSON",
       "delete_row_json": "删除该行",
-      "download_selected_rows_json": "下载所选的 {count} 行 JSON",
-      "delete_selected_rows": "删除所选的 {count} 行"
+      "download_selected_rows_json": "下载 {count}行 (JSON)",
+      "delete_selected_rows": "删除 {count}行",
+      "delete_filtered_documents": "Delete {count} documents (matching filter)"
     },
     "edit_document": {
-      "new_document": "新文件",
+      "new_document": "新文档",
       "id": {
         "label": "ID (可选)"
       },

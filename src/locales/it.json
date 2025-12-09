@@ -565,9 +565,13 @@
     },
     "search_result": {
       "delete": {
-        "text": "# | Elimina documento | Elimina documenti",
-        "confirm": "# | Sei sicuro di voler eliminare questo documento? | Sei sicuro di voler eliminare {count} documenti?",
-        "growl": "# | Documento eliminato con successo. | Documenti eliminati con successo."
+        "text": "# | Rimuovi documento | Rimuovi documenti",
+        "confirm": "# | Sei sicuro di voler rimuovere questo documento? | Sei sicuro di voler rimuovere {count} documenti?",
+        "growl": "# | Documento rimosso con successo. | Documenti rimossi con successo."
+      },
+      "delete_by_query": {
+        "confirm": "Are you sure you want to delete all documents in {indices} matching the current query? This will remove ALL data in your index!",
+        "growl": "Documents in {indices} were successfully deleted."
       }
     },
     "results_table": {
@@ -589,8 +593,9 @@
       "filter_by_field": "Filtra per questo campo",
       "download_row_json": "Scarica la riga in JSON",
       "delete_row_json": "Elimina la riga",
-      "download_selected_rows_json": "Scarica le {count} righe selezionate in JSON",
-      "delete_selected_rows": "Elimina le {count} righe selezionate"
+      "download_selected_rows_json": "Scarica {count} righe selezionate come JSON",
+      "delete_selected_rows": "Rimuovi {count} righe selezionate",
+      "delete_filtered_documents": "Delete {count} documents (matching filter)"
     },
     "edit_document": {
       "new_document": "Nuovo documento",

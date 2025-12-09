@@ -278,10 +278,12 @@
       "select_file": "Select dump file (.json or .zip)",
       "mode": {
         "new_index": "Create new index",
-        "existing_index": "Import to existing index"
+        "existing_index": "Import to existing index",
+        "raw_import": "Raw import from file"
       },
       "new_index_name": "New index name",
       "select_existing_index": "Select existing index",
+      "select_raw_file": "Select raw dump file (ndjson)",
       "advanced_options": "Advanced options",
       "overwrite_existing": "Overwrite existing documents",
       "overwrite_warning": "This will replace all existing documents in the target index",
@@ -300,6 +302,7 @@
         "importing": "Importing to '{targetIndex}'",
         "preparing": "Preparing import...",
         "creating_index": "Creating index...",
+        "sending_bulk": "Sending bulk data...",
         "completed": "Import completed successfully!",
         "completed_with_errors": "Import completed with {errors} errors"
       },
@@ -309,6 +312,7 @@
         "parse_failed": "Failed to parse file",
         "index_exists": "Index '{index}' already exists",
         "import_failed": "Import failed",
+        "import_failed_with_errors": "Import failed with errors, see console for details.",
         "unknown": "An unknown error occurred during import"
       }
     },
@@ -568,6 +572,10 @@
         "text": "# | Delete document | Delete documents",
         "confirm": "# | Are you sure you want to delete this document? | Are you sure you want to delete {count} documents?",
         "growl": "# | Document successfully deleted. | Documents successfully deleted."
+      },
+      "delete_by_query": {
+        "confirm": "Are you sure you want to delete all documents in {indices} matching the current query? This will remove ALL data in your index!",
+        "growl": "Documents in {indices} were successfully deleted."
       }
     },
     "results_table": {
@@ -590,7 +598,8 @@
       "download_row_json": "Download row as JSON",
       "delete_row_json": "Delete row",
       "download_selected_rows_json": "Download {count} selected rows as JSON",
-      "delete_selected_rows": "Delete {count} selected rows"
+      "delete_selected_rows": "Delete {count} selected rows",
+      "delete_filtered_documents": "Delete {count} documents (matching filter)"
     },
     "edit_document": {
       "new_document": "New document",

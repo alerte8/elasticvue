@@ -26,6 +26,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
   const ownTab: Ref<SearchState> = ref(props.tab)
   
   const hits: Ref<any[]> = ref([])
+  const totalHits: Ref<number> = ref(0)
   const tableColumns: Ref<any[]> = ref([])
 
   const { callElasticsearch } = useElasticsearchAdapter()
@@ -59,6 +60,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
    
 
     const results = new SearchResults(newValue?.hits?.hits)
+    totalHits.value = newValue?.hits?.total?.value || 0
     const indices = await callElasticsearch('indexGet', { index: props.tab.indices })
     const allProperties: Record<string, any> = {}
 
@@ -251,6 +253,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
     slicedTableColumns,
     resizeStore,
     hits,
+    totalHits,
     filteredHits,
     rowsPerPage,
     onRequest,
