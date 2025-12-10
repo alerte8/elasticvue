@@ -9,6 +9,19 @@
     @before-show="onBeforeShow"
   >
       <q-list dense style="min-width: 200px">
+      <!-- Option coller depuis le presse-papier (documents compatibles) -->
+      <template v-if="clipboardDocuments.length > 0 && !isMultipleSelection">
+        <q-separator />
+        <q-item clickable v-close-popup @click="pasteDocuments">
+          <q-item-section avatar>
+            <q-icon name="content_paste" />
+          </q-item-section>
+          <q-item-section>
+            {{ t('search.context_menu.paste_documents', { count: clipboardDocuments.length }) }}
+          </q-item-section>
+        </q-item>
+      </template>
+
       <!-- Mode sélection multiple -->
       <template v-if="isMultipleSelection && selectedRows && selectedRows.length > 1">
         <q-item clickable v-close-popup @click="copySelectedRowsJson">
@@ -151,6 +164,7 @@
     isMultipleSelection?: boolean
     documentsCount?: number
     isMultiIndicesMode?: boolean
+    indexMapping?: any // Mapping de l'index courant
   }>()
 
   const emit = defineEmits<{
@@ -160,12 +174,14 @@
     'filter-by-field': [{ field: string, value: any }],
     'delete-rows': [rows: any[]]
     'delete-filtered-documents': []
+    'paste-documents': [documents: any[]] // Nouvel événement
   }>()
 
   const t = useTranslation()
   const snackbarStore = useSnackbarStore()
 
   const show = ref(false)
+  const clipboardDocuments = ref<any[]>([])
 
   watch(() => props.modelValue, (newValue) => {
     show.value = newValue
@@ -175,8 +191,40 @@
     emit('update:modelValue', newValue)
   })
 
-  const onBeforeShow = () => {
-    // Préparer les données si nécessaire
+  const onBeforeShow = async () => { 
+    clipboardDocuments.value = []
+    
+    // Vérifier le presse-papier
+    try {
+      const clipboardText = await navigator.clipboard.readText()
+      if (!clipboardText) return
+
+      const parsed = JSON.parse(clipboardText)
+      const documents = Array.isArray(parsed) ? parsed : [parsed]
+
+      // Valider la compatibilité avec le mapping de l'index
+      if (props.indexMapping) {
+        const compatible = documents.filter(doc => isDocumentCompatible(doc, props.indexMapping))
+        clipboardDocuments.value = compatible
+      } else {
+        // Si pas de mapping fourni, accepter tous les documents JSON valides
+        clipboardDocuments.value = documents
+      }
+    } catch  {
+      // Pas de JSON valide dans le presse-papier
+      clipboardDocuments.value = []
+    }
+  }
+
+  const isDocumentCompatible = (doc: any, mapping: any): boolean => {
+    if (!doc || typeof doc !== 'object') return false
+    
+    // Vérifier que les champs du document correspondent au mapping
+    const mappingFields = mapping?.properties ? Object.keys(mapping.properties) : []
+    const docFields = Object.keys(doc).filter(key => !key.startsWith('_'))
+    
+    // Au moins un champ doit correspondre
+    return docFields.some(field => mappingFields.includes(field))
   }
 
   const copyToClipboard = async (text: string, successMessage: string) => {
@@ -267,5 +315,11 @@
 
   const deleteFilteredDocuments = () => {
     emit('delete-filtered-documents')
+  }
+
+  const pasteDocuments = () => {
+    if (clipboardDocuments.value.length > 0) {
+      emit('paste-documents', clipboardDocuments.value)
+    }
   }
 </script>
