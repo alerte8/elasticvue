@@ -2,7 +2,20 @@
   <q-card>
     <q-card-section>
       <div class="row q-mb-md items-center justify-between">
-        <div />
+        <div class="col-6">
+          <q-input
+            v-model="filterText"
+            dense
+            outlined
+            clearable
+            :placeholder="t('defaults.filter.label')"
+            class="q-mr-md"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
         <div>
           <q-btn color="negative" flat icon="delete" class="q-mr-sm" :label="t('defaults.delete')" :disable="selectedRoles.length === 0" @click="deleteSelectedRoles" />
           <q-btn color="primary" flat icon="add" class="q-mr-sm" @click="dialog = true" :label="t('security.add_role')" />
@@ -12,7 +25,7 @@
       <q-table
         v-model:pagination="rolesStore.pagination"
         v-model:selected="selectedRoles"
-        :rows="roles"
+        :rows="filteredRoles"
         :columns="columns"
         :rows-per-page-options="DEFAULT_ROWS_PER_PAGE"
         row-key="name"
@@ -43,7 +56,7 @@
         <template #bottom="scope">
           <table-bottom v-model="rolesStore.pagination.rowsPerPage"
                         :scope="scope"
-                        :total="roles.length"
+                        :total="filteredRoles.length"
                         :rows-per-page="rowsPerPage"
                         @rows-per-page-accepted="acceptRowsPerPage" />
         </template>
@@ -57,7 +70,7 @@
   import TableBottom from '../shared/TableBottom.vue'
   import { DEFAULT_ROWS_PER_PAGE } from '../../consts.ts'
   import AddRoleDialog from './AddRoleDialog.vue'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useTranslation } from '../../composables/i18n'
   import { askConfirm } from '../../helpers/dialogs'
   import { Loading } from 'quasar'
@@ -81,6 +94,22 @@
   const selectedRoles = ref([])
   const dialog = ref(false)
   const { showSnackbar } = useSnackbar()
+  const filterText = ref('')
+
+  const filteredRoles = computed(() => {
+    if (!filterText.value) return roles.value
+
+    const search = filterText.value.toLowerCase()
+    return roles.value.filter((role : any) => {
+      return (
+        role.name?.toLowerCase().includes(search) ||
+        role.username?.toLowerCase().includes(search) ||
+        role.id?.toLowerCase().includes(search) ||
+        JSON.stringify(role.metadata || {}).toLowerCase().includes(search) ||
+        JSON.stringify(role.role_descriptors || {}).toLowerCase().includes(search)
+      )
+    })
+  })
 
   const deleteSelectedRoles = async () => {
     const confirmed = await askConfirm(t('security.roles_result.delete.confirm_multiple', { count: selectedRoles.value.length }))

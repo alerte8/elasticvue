@@ -107,6 +107,8 @@ export default class ElasticsearchAdapter {
   }
 
   deleteByQuery ({ index ,body}: { index: string , body: any}) {    
+    if (body == null)
+      body = { query: { match_all: {} } }
     return this.request(`${cleanIndexName(index)}/_delete_by_query?refresh=true`, 'POST', body)
   }
 

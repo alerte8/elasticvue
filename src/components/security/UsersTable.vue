@@ -2,7 +2,20 @@
   <q-card>
     <q-card-section>
         <div class="row q-mb-md items-center justify-between">
-          <div />
+          <div class="col-6">
+          <q-input
+            v-model="filterText"
+            dense
+            outlined
+            clearable
+            :placeholder="t('defaults.filter.label')"
+            class="q-mr-md"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
           <div>
             <q-btn color="negative" flat icon="delete" class="q-mr-sm" :label="t('defaults.delete')" :disable="selectedUsers.length === 0" @click="deleteSelectedUsers" />
             <q-btn color="primary" flat icon="person_add" class="q-mr-sm" @click="dialog = true" :label="t('security.add_user')" />
@@ -13,7 +26,7 @@
       <q-table
         v-model:pagination="usersStore.pagination"
         v-model:selected="selectedUsers"
-        :rows="users"
+        :rows="filteredUsers"
         :columns="columns"
         :rows-per-page-options="DEFAULT_ROWS_PER_PAGE"
         row-key="username"
@@ -48,7 +61,7 @@
         <template #bottom="scope">
           <table-bottom v-model="usersStore.pagination.rowsPerPage"
                         :scope="scope"
-                        :total="users.length"
+                        :total="filteredUsers.length"
                         :rows-per-page="rowsPerPage"
                         @rows-per-page-accepted="acceptRowsPerPage" />
         </template>
@@ -62,7 +75,7 @@
   import TableBottom from '../shared/TableBottom.vue'
   import { DEFAULT_ROWS_PER_PAGE } from '../../consts.ts'
   import AddUserDialog from './AddUserDialog.vue'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useTranslation } from '../../composables/i18n'
   import { askConfirm } from '../../helpers/dialogs'
   import { Loading } from 'quasar'
@@ -89,6 +102,22 @@
   const t = useTranslation()
   const selectedUsers = ref([])
   const { showSnackbar } = useSnackbar()
+  const filterText = ref('')
+
+  const filteredUsers = computed(() => {
+    if (!filterText.value) return users.value
+
+    const search = filterText.value.toLowerCase()
+    return users.value.filter((user: any) => {
+      return (
+        user.name?.toLowerCase().includes(search) ||
+        user.username?.toLowerCase().includes(search) ||
+        user.id?.toLowerCase().includes(search) ||
+        JSON.stringify(user.metadata || {}).toLowerCase().includes(search) ||
+        JSON.stringify(user.role_descriptors || {}).toLowerCase().includes(search)
+      )
+    })
+  })
 
   const deleteSelectedUsers = async () => {
     const confirmed = await askConfirm(t('security.users_result.delete.confirm_multiple', { count: selectedUsers.value.length }))

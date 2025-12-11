@@ -183,7 +183,7 @@
     </q-card-section>    
 
   </q-card>
-  {{ contextMenuIsMultiIndicesMode }}
+  
   <context-menu
         v-model="contextMenuVisible"
         :target="contextMenuTarget"
