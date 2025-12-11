@@ -578,7 +578,8 @@
       "settings": {
         "columns": "Колонки"
       },
-      "add_document": "Добавить документ"
+      "add_document": "Добавить документ",
+      "no_documents_found": "Документы не найдены"
     },
     "context_menu": {
       "copy_row_json": "Копировать строку как JSON",
@@ -595,7 +596,8 @@
       "delete_row_json": "Удалить строку",
       "download_selected_rows_json": "Скачать {count} выбранных строк в формате JSON",
       "delete_selected_rows": "Удалить {count} выбранных строк",
-      "delete_filtered_documents": "Delete {count} documents (matching filter)"
+      "delete_filtered_documents": "Delete {count} documents (matching filter)",
+      "paste_documents": "Вставить документы"
     },
     "edit_document": {
       "new_document": "Новый документ",

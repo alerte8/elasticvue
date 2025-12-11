@@ -177,7 +177,9 @@
                           @rows-per-page-accepted="acceptRowsPerPage" />
           </template>
         </q-table>
-        <div v-else class="q-ma-md text-center">No Documents found</div>
+        <div v-else class="q-ma-md text-center" @contextmenu="handleRowContextMenu">
+          {{ t('search.results_table.no_documents_found') }}
+        </div>
     </q-card-section>    
 
   </q-card>
@@ -197,7 +199,7 @@
         @filter-by-field="handleFilterByField"
         @delete-rows="handleDeleteRows"
         @delete-filtered-documents="handleDeleteFilteredDocuments"
-        
+        @paste-documents="handlePasteDocuments"
       />
   
 </template>
@@ -218,7 +220,7 @@
   import { stringifyJson } from '../../helpers/json/stringify.ts'
 
   const props = defineProps<SearchResultsTableProps>()
-  const emit = defineEmits(['request', 'reload', 'edit-document','add-document','delete-document', 'delete-by-query'])
+  const emit = defineEmits(['request', 'reload', 'edit-document','add-document','delete-document', 'delete-by-query', 'paste-documents'])
 
   const t = useTranslation()
   
@@ -317,7 +319,7 @@
     onRequest({ pagination: ownTab.value.pagination })
   }
 
-  const handleRowContextMenu = (event: MouseEvent, rowData: any) => {
+  const handleRowContextMenu = (event: MouseEvent, rowData?: any) => {
     event.preventDefault()
     event.stopPropagation()
     
@@ -397,6 +399,15 @@
   const handleDeleteFilteredDocuments = () => {
     emit('delete-by-query')
   }
+
+  const handlePasteDocuments = async (rowDatas: any[]) => {
+
+    if (rowDatas) {
+      emit('paste-documents', rowDatas)
+    }
+  }
+
+  
 </script>
 
 <style lang="scss">

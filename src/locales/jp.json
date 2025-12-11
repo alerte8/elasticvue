@@ -579,7 +579,8 @@
               "columns": "列"
             }
       ,
-      "add_document": "ドキュメントを追加"
+      "add_document": "ドキュメントを追加",
+      "no_documents_found": "ドキュメントが見つかりません"
     },
     "context_menu": {
       "copy_row_json": "行をJSONとしてコピー",
@@ -596,7 +597,8 @@
       "delete_row_json": "この行を削除",
       "download_selected_rows_json": "選択した{count}行をJSONとしてダウンロード",
       "delete_selected_rows": "選択した{count}行を削除",
-      "delete_filtered_documents": "Delete {count} documents (matching filter)"
+      "delete_filtered_documents": "Delete {count} documents (matching filter)",
+      "paste_documents": "ドキュメントを貼り付け"
     },
     "edit_document": {
       "new_document": "新規ドキュメント",

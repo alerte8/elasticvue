@@ -121,7 +121,7 @@ export const useSearchDocumentsForm = (props:SearchDocumentormProps) => {
   const resetSearchQuery = () => {
     ownTab.q = '*'
     ownTab.searchQuery = DEFAULT_SEARCH_QUERY
-    ownTab.pagination = Object.assign({}, DEFAULT_PAGINATION)
+    ownTab.pagination = JSON.parse(JSON.stringify(DEFAULT_PAGINATION))
   }
 
   const addToHistory = (query: string) => {

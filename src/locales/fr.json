@@ -582,7 +582,8 @@
       "settings": {
         "columns": "Colomnes"
       },
-      "add_document": "Ajouter un document"
+      "add_document": "Ajouter un document",
+      "no_documents_found": "Aucun document trouvé"
     },
     "context_menu": {
       "copy_row_json": "Copier la ligne en JSON",
@@ -599,7 +600,8 @@
       "delete_row_json": "Supprimer la ligne",
       "download_selected_rows_json": "Télécharger {count} lignes sélectionnées en JSON",
       "delete_selected_rows": "Supprimer les  {count} lignes sélectionnées",
-      "delete_filtered_documents": "Supprimer {count} documents (correspondant au filtre)"
+      "delete_filtered_documents": "Supprimer {count} documents (correspondant au filtre)",
+      "paste_documents": "Coller des documents"
     },
     "edit_document": {
       "new_document": "Nouveau document",

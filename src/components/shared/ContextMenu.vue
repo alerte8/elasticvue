@@ -1,4 +1,5 @@
 <template>
+  
   <q-menu
     v-model="show"
     :target="target || undefined"
@@ -8,6 +9,7 @@
     transition-hide="scale"
     @before-show="onBeforeShow"
   >
+  
       <q-list dense style="min-width: 200px">
       <!-- Option coller depuis le presse-papier (documents compatibles) -->
       <template v-if="clipboardDocuments.length > 0 && !isMultipleSelection">

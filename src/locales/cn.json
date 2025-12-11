@@ -579,7 +579,8 @@
               "columns": "列"
             }
       ,
-      "add_document": "添加文档"
+      "add_document": "添加文档",
+      "no_documents_found": "未找到任何文件"
     },
     "context_menu": {
       "copy_row_json": "复制行为 JSON",
@@ -596,7 +597,8 @@
       "delete_row_json": "删除该行",
       "download_selected_rows_json": "下载 {count}行 (JSON)",
       "delete_selected_rows": "删除 {count}行",
-      "delete_filtered_documents": "Delete {count} documents (matching filter)"
+      "delete_filtered_documents": "Delete {count} documents (matching filter)",
+      "paste_documents": "粘贴文档"
     },
     "edit_document": {
       "new_document": "新文档",

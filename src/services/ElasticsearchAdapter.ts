@@ -106,8 +106,7 @@ export default class ElasticsearchAdapter {
     return this.request(`_tasks/${taskId}`, 'GET')
   }
 
-  deleteByQuery ({ index }: { index: string }) {
-    const body = { query: { match_all: {} } }
+  deleteByQuery ({ index ,body}: { index: string , body: any}) {    
     return this.request(`${cleanIndexName(index)}/_delete_by_query?refresh=true`, 'POST', body)
   }
 
@@ -499,6 +498,16 @@ export default class ElasticsearchAdapter {
     const body = documents.map(str => {
       const matches = str.split(/####(.*)####(.*)/)
       return JSON.stringify({ delete: { _index: matches[0], _id: matches[2] } })
+    }).join('\r\n') + '\r\n'
+    return this.request('_bulk?refresh=true', 'POST', body)
+  }
+
+  docsBulkCreate ({ index, type, documents }: { index: string, type: string, documents: any[] }) {
+    const body = documents.map(doc => {
+      if (type !== '')
+        return JSON.stringify({ index: { _index: index || 'unknown', _type: type } }) + '\r\n' + JSON.stringify(doc._source || doc)
+      else
+        return JSON.stringify({ index: { _index: index || 'unknown' } }) + '\r\n' + JSON.stringify(doc._source || doc)
     }).join('\r\n') + '\r\n'
     return this.request('_bulk?refresh=true', 'POST', body)
   }

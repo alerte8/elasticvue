@@ -102,7 +102,7 @@ export const useIndexRow = (props: IndexRowProps, emit: any) => {
       visibleColumns: [],
       columnOrder: [],
       stickyTableHeader: false,
-      pagination: Object.assign({}, DEFAULT_PAGINATION),
+      pagination: JSON.parse(JSON.stringify(DEFAULT_PAGINATION)),
       rowsPerPageAccepted: false,
       searchHistory: [],
       searchResults: null,

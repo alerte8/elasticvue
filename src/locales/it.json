@@ -578,7 +578,8 @@
       "settings": {
         "columns": "Colonne"
       },
-      "add_document": "Aggiungi documento"
+      "add_document": "Aggiungi documento",
+      "no_documents_found": "Nessun documento trovato"
     },
     "context_menu": {
       "copy_row_json": "Copia riga come JSON",
@@ -595,7 +596,8 @@
       "delete_row_json": "Elimina la riga",
       "download_selected_rows_json": "Scarica {count} righe selezionate come JSON",
       "delete_selected_rows": "Rimuovi {count} righe selezionate",
-      "delete_filtered_documents": "Delete {count} documents (matching filter)"
+      "delete_filtered_documents": "Delete {count} documents (matching filter)",
+      "paste_documents": "Incolla documenti"
     },
     "edit_document": {
       "new_document": "Nuovo documento",

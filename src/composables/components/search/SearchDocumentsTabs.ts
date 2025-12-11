@@ -26,7 +26,7 @@ export const usesearchDocumentsFormTabs = () => {
       visibleColumns: [],
       columnOrder: [],
       stickyTableHeader: false,
-      pagination: Object.assign({}, DEFAULT_PAGINATION),
+      pagination: JSON.parse(JSON.stringify(DEFAULT_PAGINATION)),
       rowsPerPageAccepted: false,
       searchHistory: [],
       searchResults: null

@@ -85,11 +85,12 @@
       </q-banner>
     </q-card>
     <loader-status v-else :request-state="requestState" class="column fit no-wrap overflow-hidden">
-      <search-results-table :results="searchResults" :tab="ownTab" @request="onRequest" @reload="search" 
+      <search-results-table :results="searchResults" :tab="ownTab" @request="onRequest" @reload="search"
         @edit-document="handleEditDocument"
         @add-document="handleAddDocument"
         @delete-document="handleDeleteDocument"
-        @delete-by-query="handleDeleteByQuery" />
+        @delete-by-query="handleDeleteByQuery"
+        @paste-documents="handlePasteDocuments" />
       <template #error>
         <div class="text-center">
           <q-btn :label="t('search.form.customize_query.reset')"
@@ -128,6 +129,8 @@
   import { SearchState } from '../../store/search.ts'
   import { defineElasticsearchRequest } from '../../composables/CallElasticsearch.ts'
   import { clusterVersionGte } from '../../helpers/minClusterVersion.ts'
+  import { useSnackbar } from '../../composables/Snackbar.ts'
+  import { askConfirm } from '../../helpers/dialogs.ts'
   
   const CodeEditor = defineAsyncComponent(() => import('../shared/CodeEditor.vue'))
   const props = defineProps<{ tab: SearchState }>()
@@ -172,15 +175,129 @@
     editDocumentVisible.value = true
   }
 
-  const handleAddDocument = () => {
+  const handleAddDocument = (rowData: any) => {
     const index = Array.isArray(ownTab.indices) && ownTab.indices.length > 0 ? ownTab.indices[0] : ''
     editingDocument.value = {
       _id: undefined,
       _index: index,
+      _source: rowData,
       _type: getDocType()
-    }  
+    }
     
     editDocumentVisible.value = true
+  }
+
+  const handlePasteDocuments = async (documents :any[]) => {
+    const snackbar = useSnackbar()
+
+    try {
+      /*const text = await navigator.clipboard.readText()
+      if (!text) {
+        snackbar.showErrorSnackbar({ body: 'Clipboard is empty.' })
+        return
+      }
+
+      let documents:any[] = []
+      try {
+        // try to parse as a single JSON object or an array of objects
+        const parsed = JSON.parse(text)
+        documents = Array.isArray(parsed) ? parsed : [parsed]
+      } catch {
+        // if parsing fails, assume ND-JSON
+        const lines = text.trim().split('\n')
+        documents = [] // reset
+        for (const line of lines) {
+          try {
+            if (line.trim() === '') continue
+            documents.push(JSON.parse(line))
+          } catch  {
+            snackbar.showErrorSnackbar({ body: 'Could not parse clipboard content. Invalid JSON or ND-JSON.' })
+            return
+          }
+        }
+      }
+*/
+      if (documents.length === 0) {
+        snackbar.showErrorSnackbar({ body: 'No documents found in clipboard content.' })
+        return
+      }
+
+      const cleanedDocs = documents.map(doc => {
+        let newDoc = { ...doc }
+        // If _source exists, we use it as the base, but keep other top-level fields
+        // that are not elasticsearch internals.
+        if (doc._source) {
+          newDoc = { ...doc, ...doc._source }
+        }
+        delete newDoc._id
+        delete newDoc._index
+        delete newDoc._type // _type is deprecated but might be present
+        delete newDoc._score
+        delete newDoc._source
+        return newDoc
+      })
+
+      const type = clusterVersionGte(7) ? '' : getDocType()
+
+      if (cleanedDocs.length === 1) {
+        // determine single index like for bulk case
+        const indices = ownTab.indices
+        let singleIndex: string | null = null
+
+        if (Array.isArray(indices)) {
+          if (indices.length === 1) {
+            singleIndex = indices[0]
+          }
+        } else if (typeof indices === 'string' && !indices.includes(',') && !indices.includes('*')) {
+          singleIndex = indices
+        }
+
+        if (!singleIndex) {
+          snackbar.showErrorSnackbar({ body: 'Can only paste documents into a single, specific index.' })
+          return
+        }
+
+        const { run: indexRun } = defineElasticsearchRequest({ method: 'index' })        
+        const success = await indexRun({
+          params: { index: singleIndex, type: type, body: cleanedDocs[0] },
+          snackbarOptions: { body: `Document created in ${singleIndex}` }
+        })
+        if (success) {
+          search()
+        }
+       } else {
+        const confirm = await askConfirm(`Are you sure you want to create ${cleanedDocs.length} documents?`)
+        if (!confirm) return
+
+        const indices = ownTab.indices
+        let singleIndex: string | null = null
+
+        if (Array.isArray(indices)) {
+          if (indices.length === 1) {
+            singleIndex = indices[0]
+          }
+        } else if (typeof indices === 'string' && !indices.includes(',') && !indices.includes('*')) {
+          singleIndex = indices
+        }
+
+        if (!singleIndex) {
+          snackbar.showErrorSnackbar({ body: 'Can only paste documents into a single, specific index.' })
+          return
+        }
+
+        const { run: bulkCreate } = defineElasticsearchRequest({ method: 'docsBulkCreate' })
+        const success = await bulkCreate({
+          params: { index: singleIndex, type: type, documents: cleanedDocs },
+          snackbarOptions: { body: `Created ${cleanedDocs.length} documents in ${singleIndex}` }
+        })
+        if (success) {
+          search()
+        }
+       }
+    } catch (e) {
+      console.error(e)
+      snackbar.showErrorSnackbar({ body: 'Could not read from clipboard. Make sure you are using HTTPS and have granted the permission.' })
+    }
   }
 
   const getDocType = (): string => {
@@ -233,6 +350,8 @@
 
   const handleDeleteByQuery = async () => {
     const { run: deleteByQuery } = defineElasticsearchRequest({ method: 'deleteByQuery' })
+    const index = Array.isArray(ownTab.indices) && ownTab.indices.length > 0 ? ownTab.indices[0] : ownTab.indices
+    if (index === '') return
 
     let query
     try {
@@ -244,7 +363,7 @@
 
     const success = await deleteByQuery({
       params: {
-        index: ownTab.indices,
+        index: index,
         body: {
           query: query.query
         }

@@ -39,6 +39,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
       selectedItems.value = []
     }
   }
+
   const reload = () => {
     checkAll(false)
     setIndeterminate()
@@ -56,11 +57,16 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
 
   const connectionStore = useConnectionStore()
   
+  function isEsSearchResultsHitsValues(obj: any): obj is EsSearchResultsHitsValues {
+  return obj != null && typeof obj === 'number'
+}
   watch(() => props.results, async (newValue: EsSearchResult) => {
    
+    checkAll(false)
+    setIndeterminate()
 
     const results = new SearchResults(newValue?.hits?.hits)
-    totalHits.value = newValue?.hits?.total?.value || 0
+    totalHits.value = isEsSearchResultsHitsValues(newValue?.hits?.total) ? newValue?.hits?.total : newValue?.hits?.total.value || 0
     const indices = await callElasticsearch('indexGet', { index: props.tab.indices })
     const allProperties: Record<string, any> = {}
 

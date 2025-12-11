@@ -56,7 +56,7 @@ export const useSearchStore = () => {
             visibleColumns: [],
             columnOrder: [],
             stickyTableHeader: false,
-            pagination: Object.assign({}, DEFAULT_PAGINATION),
+            pagination: JSON.parse(JSON.stringify(DEFAULT_PAGINATION)),
             rowsPerPageAccepted: false,
             searchHistory: [],
             searchResults: null,
@@ -72,7 +72,7 @@ export const useSearchStore = () => {
 
         state.q = '*'
         state.searchQuery = DEFAULT_SEARCH_QUERY
-        state.pagination = Object.assign({}, DEFAULT_PAGINATION)
+        state.pagination = JSON.parse(JSON.stringify(DEFAULT_PAGINATION))
       },
       toggleColumnSort (name: string, column: string) {
         const state = this.tabs.find(tab => tab.name === name)
