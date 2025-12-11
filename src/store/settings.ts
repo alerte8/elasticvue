@@ -6,7 +6,7 @@ type SettingsState = {
 
 export const useSettingsStore = defineStore('settings', {
   state: (): SettingsState => ({
-    checkForUpdates: true
+    checkForUpdates: false
   }),
   persist: true
 })

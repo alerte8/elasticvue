@@ -88,13 +88,13 @@
               <q-checkbox v-model="codeEditorStore.vimMode" :label="t('settings.editor_vim_mode.label')" />
             </div>
           </div>
-
+<!-- 
           <div class="row q-mb-lg">
             <div class="col-md-6 col-sm-12">
               <q-checkbox v-model="settingsStore.checkForUpdates" :label="t('settings.check_for_updates.label')" />
               <div class="text-caption text-grey q-ml-lg">{{ t('settings.check_for_updates.message') }}</div>
             </div>
-          </div>
+          </div> -->
         </q-card-section>
       </q-card>
 

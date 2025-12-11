@@ -18,17 +18,21 @@ export const useUpdateCheck = () => {
   let update: Update | null = null
 
   const checkUpdate = async () => {
-    if (!settingsStore.checkForUpdates) return
 
-    const headers = uuidHeader()
-    update = await check({ headers })
+    // Never check for updates
+    return
 
-    if (update) {
-      updateInfo.value = { version: update.version }
-      dialog.value = true
-    } else {
-      updateInfo.value = null
-    }
+    // if (!settingsStore.checkForUpdates) return
+
+    // const headers = uuidHeader()
+    // update = await check({ headers })
+
+    // if (update) {
+    //   updateInfo.value = { version: update.version }
+    //   dialog.value = true
+    // } else {
+    //   updateInfo.value = null
+    // }
   }
 
   const downloadUpdate = async () => {
