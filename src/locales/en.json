@@ -974,6 +974,7 @@
     }
   },
   "security": {
+    "heading": "Security",
     "roles": "Roles",
     "add_role": "Add role",
     "roles_table": {

@@ -971,6 +971,7 @@
     }
   },
   "security": {
+    "heading": "セキュリティ",
     "roles": "ロール",
     "add_role": "ロールを追加",
     "roles_table": {

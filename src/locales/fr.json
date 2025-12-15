@@ -977,6 +977,7 @@
     "heading": "Sécurité",
     "roles": "Rôles",
     "add_role": "Ajouter un rôle",
+    "users": "Utilisateurs",
     "roles_table": {
       "new": {
         "name": "Nom",

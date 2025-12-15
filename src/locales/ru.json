@@ -972,9 +972,17 @@
   "security": {
     "heading": "Безопасность",
     "roles": "Роли",
+    "add_role": "Добавить роль",
     "users": "Пользователи",
     "apikeys": "API-ключи",
     "add_apikey": "Добавить API-ключ",
+    "roles_table": {
+      "new": {
+        "name": "Имя",
+        "cluster": "Привилегии кластера (например, all)",
+        "indices": "Привилегии индекса (например, *)"
+      }
+    },
     "api_keys_table": {
       "new": {
         "name": "Имя",
