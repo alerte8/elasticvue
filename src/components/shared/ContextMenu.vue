@@ -167,6 +167,7 @@
     documentsCount?: number
     isMultiIndicesMode?: boolean
     indexMapping?: any // Mapping de l'index courant
+    selectedColumns?: string[]
   }>()
 
   const emit = defineEmits<{
@@ -247,9 +248,36 @@
     }
   }
 
+  const shouldFilterColumns = (shiftKey : boolean) => shiftKey
+
+  const filterRowBySelectedColumns = (row: any, useSelectedColumns: boolean) => {
+    if (!useSelectedColumns || !props.selectedColumns?.length || !row || typeof row !== 'object') {
+      return row
+    }
+    const filtered: Record<string, any> = {}
+    props.selectedColumns.forEach((column) => {
+      const columnTrimmed = column.trim().split('.')[0] // Support pour les champs imbriqués
+      if (columnTrimmed in row) {
+        filtered[columnTrimmed] = row[columnTrimmed]
+      }
+    })
+   /* if (row._id !== undefined && filtered._id === undefined) {
+      filtered._id = row._id
+    }*/
+    return filtered
+  }
+
+  const buildClipboardPayload = (rows: any[], useSelectedColumns: boolean) => {
+    const sanitized = rows
+      .map((row) => filterRowBySelectedColumns(row, useSelectedColumns))
+      .filter((row) => row !== undefined && row !== null)
+    return `[\n${sanitized.map((row) => stringifyJson(row)).join(',\n')}\n]`
+  }
+
   const copyRowJson = async () => {
     if (props.rowData) {
-      const jsonString = stringifyJson(props.rowData)
+      const jsonString = buildClipboardPayload([props.rowData], shouldFilterColumns(isShiftKeyPress()))
+      if (!jsonString) return
       await copyToClipboard(jsonString, t('search.context_menu.row_copied'))
     }
   }
@@ -272,9 +300,15 @@
     }
   }
 
+  const isShiftKeyPress = (): boolean => {
+    return window.event ? (window.event as MouseEvent).shiftKey : false
+  }
+
   const copySelectedRowsJson = async () => {
+    
     if (props.selectedRows && props.selectedRows.length > 0) {
-      const jsonString = stringifyJson(props.selectedRows)
+      const jsonString = buildClipboardPayload(props.selectedRows, shouldFilterColumns(isShiftKeyPress()))
+      if (!jsonString) return
       await copyToClipboard(jsonString, t('search.context_menu.selected_rows_copied', { count: props.selectedRows.length }))
     }
   }

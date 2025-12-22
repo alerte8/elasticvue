@@ -194,6 +194,7 @@
         :is-multiple-selection="contextMenuIsMultipleSelection"
         :is-multi-indices-mode="contextMenuIsMultiIndicesMode"
         :documents-count="totalHits"
+        :selected-columns="ownTab.visibleColumns"
         @edit-document="handleEditDocument"
         @add-document="handleAddDocument"
         @filter-by-field="handleFilterByField"
