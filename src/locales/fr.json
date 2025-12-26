@@ -247,6 +247,7 @@
           "segments": "Segments",
           "docs": "Documents",
           "storage": "Stockage",
+          "roles": "Rôles",
           "created": "Créé"
         }
       }
@@ -316,7 +317,7 @@
         "unknown": "Une erreur inconnue s'est produite lors de l'import"
       }
     },
-    "import_index":{
+    "import_index": {
       "heading": "import Index"
     },
     "new_index": {
@@ -550,8 +551,7 @@
         "reset": "Réinitialiser la requête"
       }
     },
-    "query_editor": {
-    },
+    "query_editor": {},
     "autocomplete": {
       "search_all": "Rechercher tout",
       "and_operator": "Opérateur logique ET",
@@ -596,7 +596,7 @@
       "selected_rows_copied": "{count} lignes copiées dans le presse-papier",
       "edit_row_json": "Modifier la ligne en JSON",
       "filter_by_field": "Filtrer par ce champ",
-      "download_row_json":" Télécharger la ligne en JSON",
+      "download_row_json": " Télécharger la ligne en JSON",
       "delete_row_json": "Supprimer la ligne",
       "download_selected_rows_json": "Télécharger {count} lignes sélectionnées en JSON",
       "delete_selected_rows": "Supprimer les  {count} lignes sélectionnées",
@@ -618,17 +618,17 @@
         "growl": "Le document a été modifié avec succès.",
         "confirm": "Confirmez vous la modification du document ?"
       },
-      "loseupdate":{
+      "loseupdate": {
         "confirm": "Vous perdrez toutes les modifications non enregistrées. Êtes-vous sûr ?"
-      } 
+      }
     }
   },
   "settings": {
     "heading": "Réglages",
-      "check_for_updates": {
-        "label": "Vérifier automatiquement les mises à jour",
-        "message": "Vérifie périodiquement si une nouvelle version d'Elasticvue est disponible"
-      },
+    "check_for_updates": {
+      "label": "Vérifier automatiquement les mises à jour",
+      "message": "Vérifie périodiquement si une nouvelle version d'Elasticvue est disponible"
+    },
     "hide_indices_regex": {
       "label": "Masquer les index avec regex",
       "message": "Les index correspondant à cette expression régulière seront masqués par défaut dans tous les endroits où les index sont répertoriés.",
@@ -903,8 +903,7 @@
           "label": "Planification*",
           "hint": "Expression cron (ex: '0 30 1 * * ?' pour tous les jours à 1h30)"
         },
-        "repository": {
-        },
+        "repository": {},
         "indices": {
           "label": "Indices",
           "hint": "Liste d'indices à inclure séparés par des virgules (par défaut: '*')"
@@ -984,7 +983,6 @@
         "indices": "Privilèges d'index (ex: *)"
       }
     },
-
     "apikeys": "Clés API",
     "add_apikey": "Ajouter une clé API",
     "api_keys_table": {
@@ -993,7 +991,7 @@
         "expiration": "Expiration (ex: 1j, 7j, 30j)",
         "roles": "Rôles"
       }
-    },  
+    },
     "table": {
       "roles": "Rôles",
       "name": "Nom",

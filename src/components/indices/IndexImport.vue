@@ -128,7 +128,7 @@
             rounded
           />
           <div class="text-caption text-center q-mt-sm">
-            {{ progressProcessed }} / {{ progressTotal }} ({{ progressPercentage }}%)
+            {{ progressText }} ({{ progressPercentage }}%)
           </div>
         </div>
 
@@ -181,9 +181,24 @@
   const emit = defineEmits(['done'])
 
   const t = useTranslation()
+  const { callElasticsearch } = useElasticsearchAdapter()
+
+  const loadExistingIndices = async () => {
+      try {
+          const indices = await callElasticsearch('catIndices', { h: 'index' }) as any
+          if (Array.isArray(indices)) {
+              existingIndices.value = indices.map((i: any) => i.index).sort()
+          }
+      } catch (e) {
+          console.error(e)
+      }
+  }
 
   // État des dialogs
   const importDialogVisible = ref(false)
+  const openImportDialog = () => {
+    importDialogVisible.value = true
+  }
   const progressDialogVisible = ref(false)
 
   // Sélection de fichier
@@ -204,12 +219,27 @@
   const importCompleted = ref(false)
   const importError = ref('')
   const importErrors = ref<any[]>([])
+  const isNdjson = ref(false)
+  const ndjsonFile = ref<File | null>(null)
+
   const progressStatus = ref('')
   const progressProcessed = ref(0)
   const progressTotal = ref(0)
   const progressPercentage = computed(() => {
     if (progressTotal.value === 0) return 0
-    return Math.round((progressProcessed.value / progressTotal.value) * 100)
+    return Math.min(Math.round((progressProcessed.value / progressTotal.value) * 100), 100)
+  })
+  
+  const progressText = computed(() => {
+    if (progressTotal.value === 0) return ''
+    // Si Total = 100, c'est probablement un % arbitraire ou une taille en %
+    // On essaie de dtecter si on est en mode "Streaming Bytes"
+    if (isNdjson.value && progressTotal.value > 1000000) { // Si > 1MB, c'est des bytes
+        const processedMb = (progressProcessed.value / 1024 / 1024).toFixed(2)
+        const totalMb = (progressTotal.value / 1024 / 1024).toFixed(2)
+        return `${processedMb} MB / ${totalMb} MB`
+    }
+    return `${progressProcessed.value} / ${progressTotal.value}`
   })
 
   const targetIndexName = computed(() => {
@@ -218,76 +248,92 @@
 
   const canStartImport = computed(() => {
     if (!selectedFile.value || !filePreview.value) return false
-    if (importMode.value === 'new') return !!newIndexName.value
-    if (importMode.value === 'existing') return !!selectedExistingIndex.value
-    return false
+    return !!targetIndexName.value
   })
 
-  // Adapter Elasticsearch
-  const { callElasticsearch } = useElasticsearchAdapter()
-
-  const openImportDialog = async () => {
-    importDialogVisible.value = true
-    importError.value = ''
-    importCompleted.value = false
-    importErrors.value = []
-    
-    // Charger la liste des indices existants
-    await loadExistingIndices()
-  }
-
-  const loadExistingIndices = async () => {
-    try {
-      const result = await callElasticsearch('catIndices', { h: 'index', index: '*' })
-      existingIndices.value = Array.isArray(result) ? result.map((row: any) => row.index) : []
-    } catch (error) {
-      console.error('Error loading indices:', error)
-      existingIndices.value = []
-    }
+  // Fonction pour lire les premiers octets et dtecter le format
+  const peekFileHeader = async (file: File): Promise<string> => {
+    // Lire les 64 premiers KB
+    const chunk = file.slice(0, 64 * 1024)
+    return await chunk.text()
   }
 
   const onFileSelected = async (file: File | null) => {
+    selectedFile.value = file
     if (!file) {
       filePreview.value = null
+      isNdjson.value = false
+      ndjsonFile.value = null
       return
     }
 
     try {
-      let content: string
-
       if (file.name.endsWith('.zip')) {
-        // Décompresser le fichier ZIP
+        // Mode ZIP : On doit lire pour extraire le JSON (limite mmoire applique ici par JSZip)
+        // Pas de streaming facile pour le ZIP pour l'instant
         const zip = new JSZip()
         const zipContent = await zip.loadAsync(file)
         const jsonFile = Object.keys(zipContent.files).find(name => name.endsWith('.json'))
         
-        if (!jsonFile) {
-          throw new Error(t('indices.import.error.no_json_in_zip'))
-        }
+        if (!jsonFile) throw new Error(t('indices.import.error.no_json_in_zip'))
         
-        content = await zipContent.file(jsonFile)!.async('string')
-      } else {
-        // Fichier JSON direct
-        content = await file.text()
+        const content = await zipContent.file(jsonFile)!.async('string')
+        parseFullJsonContent(content) // On rutilise la logique JSON classique
+        return
       }
 
-      const dumpData = JSON.parse(content)
+      // Lecture partielle pour dtection
+      const headerContent = await peekFileHeader(file)
       
-      // Valider la structure du fichier
-      if (!dumpData.index || !dumpData.documents || !Array.isArray(dumpData.documents)) {
-        throw new Error(t('indices.import.error.invalid_file_format'))
+      // 1. Essai JSON standard (dbut fichier)
+      // Un JSON standard commence par { ou [
+      const trimmed = headerContent.trim()
+      if (trimmed.startsWith('{') && !trimmed.includes('\n')) {
+          // Si pas de saut de ligne dans les 64KB, c'est soit un trs long NDJSON, soit un JSON minifi
+          // Difficile  dire.
       }
 
-      filePreview.value = {
-        index: dumpData.index,
-        total: dumpData.total || dumpData.documents.length,
-        hasMapping: !!dumpData.mapping,
-        timestamp: dumpData.timestamp
+      // On tente de voir si c'est du NDJSON avec header Elasticdump
+      try {
+        const firstLineEnd = headerContent.indexOf('\n')
+        if (firstLineEnd > 0) {
+            const firstLine = headerContent.slice(0, firstLineEnd)
+            const header = JSON.parse(firstLine)
+            
+            if (header.mappings || header.settings) {
+                // C'est du NDJSON Elasticdump
+                isNdjson.value = true
+                ndjsonFile.value = file
+                
+                // Estimation impossible sans tout lire, on basera la progression sur la taille fichier
+                filePreview.value = {
+                    index: 'dump_external', 
+                    total: '?', // Inconnu
+                    hasMapping: !!header.mappings,
+                    timestamp: new Date().toISOString()
+                }
+                
+                if (importMode.value === 'new') {
+                    newIndexName.value = `import_${new Date().toISOString().split('T')[0]}`
+                }
+                return
+            }
+        }
+      } catch (e) {
+        // Pas du JSON valide sur la 1ere ligne
       }
 
-      // Suggérer un nom pour le nouvel index
-      if (importMode.value === 'new') {
-        newIndexName.value = `${dumpData.index}_imported_${new Date().toISOString().split('T')[0]}`
+      // Si on est l, ce n'est pas un NDJSON identifi.
+      // On tente de lire tout le fichier comme un JSON classique (fallback)
+      // Attention : Risque de crash si gros fichier, mais c'est le comportement par dfaut pour JSON
+      const fullContent = await file.text()
+      try {
+          parseFullJsonContent(fullContent)
+      } catch (e) {
+          // Si a choue aussi, c'est peut-tre du NDJSON sans header spcial ?
+          // On pourrait supposer NDJSON par dfaut pour les .json/.dump qui chouent au JSON.parse...
+          // Pour la scurite, on erreur.
+           throw new Error(t('indices.import.error.invalid_file_format'))
       }
 
     } catch (error) {
@@ -295,6 +341,24 @@
       importError.value = error instanceof Error ? error.message : t('indices.import.error.parse_failed')
       filePreview.value = null
     }
+  }
+
+  const parseFullJsonContent = (content: string) => {
+      const dumpData = JSON.parse(content)
+      if (dumpData.index && dumpData.documents && Array.isArray(dumpData.documents)) {
+        isNdjson.value = false
+        filePreview.value = {
+            index: dumpData.index,
+            total: dumpData.total || dumpData.documents.length,
+            hasMapping: !!dumpData.mapping,
+            timestamp: dumpData.timestamp
+        }
+        if (importMode.value === 'new') {
+            newIndexName.value = `${dumpData.index}_imported_${new Date().toISOString().split('T')[0]}`
+        }
+      } else {
+          throw new Error(t('indices.import.error.invalid_file_format'))
+      }
   }
 
   const startImport = async () => {
@@ -310,45 +374,61 @@
     try {
       progressStatus.value = t('indices.import.progress.preparing')
       progressProcessed.value = 0
-      progressTotal.value = 100
+      progressTotal.value = 100 // Valeur dummy initiale
 
-      // Lire le contenu du fichier
-      let content: string
-      if (selectedFile.value.name.endsWith('.zip')) {
-        const zip = new JSZip()
-        const zipContent = await zip.loadAsync(selectedFile.value)
-        const jsonFile = Object.keys(zipContent.files).find(name => name.endsWith('.json'))!
-        content = await zipContent.file(jsonFile)!.async('string')
-      } else {
-        content = await selectedFile.value.text()
-      }
-
-      const dumpData = JSON.parse(content)
       const targetIndex = targetIndexName.value
 
-      // Collision si création d'un nouvel index portant un nom existant
       if (importMode.value === 'new') {
         await loadExistingIndices()
         if (existingIndices.value.includes(targetIndex)) {
-          throw new Error(t('indices.import.error.index_exists', { index: targetIndex }))
+            if (!overwriteExisting.value) { // Petite amlioration UI
+                 throw new Error(t('indices.import.error.index_exists', { index: targetIndex }))
+            }
         }
       }
 
-      progressStatus.value = t('indices.import.progress.creating_index')
+      let result
       
-      // Restaurer l'index
-      const result = await callElasticsearch('indexRestore', {
-        index: targetIndex,
-        data: {
-          mapping: dumpData.mapping,
-          data: dumpData.documents
-        },
-        onProgress: (progress: { processed: number, total: number, percentage: number, status: string }) => {
-          progressProcessed.value = progress.processed
-          progressTotal.value = progress.total
-          progressStatus.value = progress.status
+      if (isNdjson.value && ndjsonFile.value) {
+        // Mode Streaming
+        result = await callElasticsearch('indexRestoreNdjson', {
+            index: targetIndex,
+            file: ndjsonFile.value, // On passe le File object
+            onProgress: (progress: any) => {
+                progressProcessed.value = progress.processed
+                progressTotal.value = progress.total
+                progressStatus.value = progress.status
+            }
+        })
+      } else {
+        // Mode Classique (JSON en mmoire)
+        let content: string
+        if (selectedFile.value.name.endsWith('.zip')) {
+            const zip = new JSZip()
+            const zipContent = await zip.loadAsync(selectedFile.value)
+            const jsonFile = Object.keys(zipContent.files).find(name => name.endsWith('.json'))!
+            content = await zipContent.file(jsonFile)!.async('string')
+        } else {
+            content = await selectedFile.value.text()
         }
-      })
+        
+        const dumpData = JSON.parse(content)
+        
+        progressStatus.value = t('indices.import.progress.creating_index')
+      
+        result = await callElasticsearch('indexRestore', {
+            index: targetIndex,
+            data: {
+                mapping: dumpData.mapping,
+                data: dumpData.documents
+            },
+            onProgress: (progress: any) => {
+                progressProcessed.value = progress.processed
+                progressTotal.value = progress.total
+                progressStatus.value = progress.status
+            }
+        })
+      }
 
       if (!result.success) {
         throw new Error(result.error || t('indices.import.error.import_failed'))
@@ -357,6 +437,8 @@
       importErrors.value = result.errors || []
       progressStatus.value = t('indices.import.progress.completed')
       importCompleted.value = true
+      // Force 100% visuel  la fin
+      progressPercentage.value // refresh computed
       progressProcessed.value = progressTotal.value
 
     } catch (error) {
