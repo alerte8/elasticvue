@@ -42,7 +42,17 @@ export const useEditDocument = (props: EditDocumentProps, emit: any) => {
   const availableIndices = ref<string[]>([])
   const selectedIndex = ref(props._index)
 
-  const isDirty = computed(() => document.value !== originalDocument.value)
+  
+  const isDirty = computed(() => {
+    try {
+      const currentDocument = JSON.parse(document.value || '{}')
+      const original = JSON.parse(originalDocument.value || '{}')
+      return !isEqual(currentDocument, original) // Comparaison profonde des objets JSON
+    } catch (e) {
+      console.error('Invalid JSON in document comparison:', e)
+      return true // Considérer comme "dirty" si JSON invalide
+    }
+  })
 
   const { requestState, callElasticsearch } = useElasticsearchAdapter()
   const data: Ref<any> = ref(null)
@@ -216,6 +226,26 @@ export const useEditDocument = (props: EditDocumentProps, emit: any) => {
     }
     return true
   })
+    
+  const isEqual = (a: any, b: any): boolean => {
+    if (a === b) return true
+    
+    if (a == null || b == null) return false
+    
+    if (typeof a !== 'object' || typeof b !== 'object') return false
+    
+    const keysA = Object.keys(a)
+    const keysB = Object.keys(b)
+    
+    if (keysA.length !== keysB.length) return false
+    
+    for (const key of keysA) {
+      if (!keysB.includes(key)) return false
+      if (!isEqual(a[key], b[key])) return false
+    }
+    
+    return true
+  }
 
   return {
     document,
@@ -233,3 +263,4 @@ export const useEditDocument = (props: EditDocumentProps, emit: any) => {
     isDirty
   }
 }
+
