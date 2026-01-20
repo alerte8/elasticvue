@@ -1,0 +1,76 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "fixedRuntime",
+        "path": "webview2runtime"
+      }
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [
+      "webview2runtime"
+    ],
+    "externalBin": [],
+    "copyright": "",
+    "category": "DeveloperTool",
+    "shortDescription": "",
+    "longDescription": "",
+    "macOS": {
+      "frameworks": [],
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "providerShortName": null,
+      "entitlements": null
+    },
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    },
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "build": {
+    "beforeBuildCommand": "npx cross-env VITE_APP_BUILD_MODE=tauri npm run build",
+    "frontendDist": "../dist",
+    "beforeDevCommand": "npx cross-env VITE_APP_BUILD_MODE=tauri npm run dev -- --port=5174",
+    "devUrl": "http://localhost:5174"
+  },
+  "productName": "elasticvue",
+  "mainBinaryName": "elasticvue",
+  "version": "1.11.0",
+  "identifier": "com.elasticvue.app",
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxN0MxODlDODY4QzBFMkQKUldRdERveUduQmg4WVpVK0VVUGNKVnRBaGNYdW1lNVpFV3dKZFNZNkdRM1JvSlB0VmhHTlFFNmUK",
+      "endpoints": [
+        "https://update.elasticvue.com/api/update/{{current_version}}/tauri/{{target}}/{{arch}}",
+        "https://update.elasticvue.com/api/update_check/{{target}}/{{arch}}/{{current_version}}"
+      ]
+    }
+  },
+  "app": {
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "elasticvue",
+        "width": 1300,
+        "height": 700,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
+}

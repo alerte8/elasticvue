@@ -44,26 +44,14 @@
                   @click="deleteApiKey(props.row.id)"
                 />
               </template>
-              <template v-else-if="col.name === 'creation'">
-                <div v-html="new Date(col.value).toLocaleString()" />
-              </template>
-              <template v-else-if="col.name === 'expiration'">
-                <div v-html="col.value ? new Date(col.value).toLocaleString() : 'Never'" />
-              </template>
-              <template v-else-if="col.name === 'invalidated'">
-                <q-chip 
-                  :color="col.value ? 'negative' : 'positive'" 
-                  :label="col.value ? 'Invalidated' : 'Active'"
-                  size="sm"
-                />
-              </template>
+<!--              
               <template v-else>
                 {{ col.value }}
-              </template>
+              </template> -->
             </q-td>
-            
             <q-menu 
-              v-if="props.row.metadata && Object.keys(props.row.metadata).length > 0"
+              v-if="props.row.metadata && 
+                   (Object.keys(props.row.metadata).length > 0 || Object.keys(props.row.role_descriptors).length > 0)"
               anchor="center middle"
               self="center middle"
               :offset="[0, 10]"
