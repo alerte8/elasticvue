@@ -175,44 +175,63 @@
 
       progressStatus.value = t('indices.export.progress.creating_file')
       
-      // Créer le fichier de dump
-      const dumpData = {
-        index: props.index,
-        timestamp: new Date().toISOString(),
-        version: '1.0',
-        mapping: includeMapping.value ? result.mapping : null,
-        documents: result.data,
-        total: result.total
+      // Construire le JSON manuellement par chunks pour éviter RangeError sur JSON.stringify
+      const chunks: string[] = []
+      
+      // 1. Header et Metadata
+      chunks.push('{\n')
+      chunks.push(`  "index": "${props.index}",\n`)
+      chunks.push(`  "timestamp": "${new Date().toISOString()}",\n`)
+      chunks.push(`  "version": "1.0",\n`)
+      
+      if (includeMapping.value) {
+          chunks.push(`  "mapping": ${JSON.stringify(result.mapping)},\n`)
+      } else {
+          chunks.push(`  "mapping": null,\n`)
       }
+      
+      chunks.push(`  "total": ${result.total},\n`)
+      
+      // 2. Documents Array
+      chunks.push('  "documents": [\n')
+      
+      const docs = result.data
+      const totalDocs = docs.length
+      
+      for (let i = 0; i < totalDocs; i++) {
+        chunks.push(JSON.stringify(docs[i]))
+        if (i < totalDocs - 1) {
+          chunks.push(',\n')
+        }
+      }
+      
+      chunks.push('\n  ]\n')
+      chunks.push('}')
 
-      let fileContent: string | Blob
+      // 3. Création du Blob
+      const blob = new Blob(chunks, { type: 'application/json' })
+
       let fileName: string
-      let mimeType: string
+      let fileContent: Blob
 
       if (compressFile.value) {
-        // Créer un fichier ZIP
+        // Créer un fichier ZIP contenant le Blob JSON
         const zip = new JSZip()
-        zip.file('index_dump.json', JSON.stringify(dumpData, null, 2))
+        zip.file('index_dump.json', blob)
         
         const zipBlob = await zip.generateAsync({ type: 'blob' })
         fileContent = zipBlob
         fileName = `${props.index}_dump_${new Date().toISOString().split('T')[0]}.zip`
-        mimeType = 'application/zip'
       } else {
-        // Fichier JSON simple
-        fileContent = JSON.stringify(dumpData, null, 2)
+        // Fichier JSON direct
+        fileContent = blob
         fileName = `${props.index}_dump_${new Date().toISOString().split('T')[0]}.json`
-        mimeType = 'application/json'
       }
 
       progressStatus.value = t('indices.export.progress.downloading')
       
       // Télécharger le fichier
-      const blob = typeof fileContent === 'string' 
-        ? new Blob([fileContent], { type: mimeType })
-        : fileContent
-      
-      const url = URL.createObjectURL(blob)
+      const url = URL.createObjectURL(fileContent)
       const link = document.createElement('a')
       link.href = url
       link.download = fileName

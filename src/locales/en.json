@@ -247,6 +247,7 @@
           "segments": "Segments",
           "docs": "Docs",
           "storage": "Storage",
+          "roles": "Roles",
           "created": "Created"
         }
       }
@@ -316,7 +317,7 @@
         "unknown": "An unknown error occurred during import"
       }
     },
-    "import_index":{
+    "import_index": {
       "heading": "import Index"
     },
     "new_index": {
@@ -550,8 +551,7 @@
         "reset": "Reset query"
       }
     },
-    "query_editor": {
-    },
+    "query_editor": {},
     "autocomplete": {
       "search_all": "Search all",
       "and_operator": "AND logical operator",
@@ -618,17 +618,17 @@
         "growl": "Document updated successfully.",
         "confirm": "Are you sure you want to update this document?"
       },
-      "loseupdate":{
-        "confirm": "You will lose all unsaved changes. Are you sure?" 
+      "loseupdate": {
+        "confirm": "You will lose all unsaved changes. Are you sure?"
       }
     }
   },
   "settings": {
     "heading": "Settings",
-      "check_for_updates": {
-        "label": "Check for updates automatically", 
-        "message": "Periodically check if a new version of Elasticvue is available"
-      },
+    "check_for_updates": {
+      "label": "Check for updates automatically",
+      "message": "Periodically check if a new version of Elasticvue is available"
+    },
     "hide_indices_regex": {
       "label": "Hide indices regex",
       "message": "Indices matching this regex will be hidden by default on all places where indices are listed",
@@ -903,8 +903,7 @@
           "label": "Schedule*",
           "hint": "Cron expression (e.g., '0 30 1 * * ?' for daily at 1:30 AM)"
         },
-        "repository": {
-        },
+        "repository": {},
         "indices": {
           "label": "Indices",
           "hint": "Comma-separated list of indices to include (default: '*')"
@@ -993,7 +992,7 @@
         "expiration": "Expiration (e.g. 1d, 7d, 30d)",
         "roles": "Roles"
       }
-    }, 
+    },
     "table": {
       "roles": "Roles",
       "name": "Name",
