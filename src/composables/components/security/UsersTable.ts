@@ -133,22 +133,37 @@ export const useUsersTable = ( emit: any) => {
   }
 
   const deleteUsers = async (usernames: string[]) => {
-    const results: { username: string, success: boolean }[] = []
-    for (const username of usernames) {
-      try {
-        const { run } = defineElasticsearchRequest({ emit, method: 'deleteUser' })
-        const result = await run({
-          params: {
-            username: username
-          },
-          snackbarOptions: { body: t('security.users_result.delete.growl',  { name: username }) }
-        })
-        results.push({ username, success: result === true })
-      } catch (e) {
-        handleError(e,true)
-        results.push({ username, success: false })
+    let allApiKeys: any[] = []
+    try {
+      const apiKeysResponse = await callElasticsearch('getApiKeys')
+      if (apiKeysResponse && apiKeysResponse.api_keys) {
+        allApiKeys = apiKeysResponse.api_keys
       }
+    } catch (e) {
+      console.warn('Failed to fetch API keys for cleanup', e)
     }
+
+    const promises = usernames.map(async (username) => {
+      try {
+        await callElasticsearch('deleteUser', { username })
+
+        const userApiKeys = allApiKeys.filter((key: any) => key.username === username)
+        for (const key of userApiKeys) {
+          try {
+            await callElasticsearch('deleteApiKey', { id: key.id })
+          } catch (e) {
+            console.error(`Failed to delete API key ${key.id} for user ${username}`, e)
+          }
+        }
+
+        return { username, success: true }
+      } catch (e) {
+        console.error(`Failed to delete user ${username}`, e)
+        return { username, success: false }
+      }
+    })
+
+    const results = await Promise.all(promises)
     loadUsers()
     emit('deleted')
     return results
