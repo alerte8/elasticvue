@@ -260,6 +260,13 @@
     "export": {
       "title": "Exporter l'index '{index}'",
       "subtitle": "Exporter tous les documents et le mapping de cet index",
+      "format": {
+        "label": "Format d'export",
+        "ndjson": "Dump NDJSON (flux)",
+        "json": "JSON (fichier unique)",
+        "ndjson_hint": "Recommandé pour les gros index : les documents sont écrits lot par lot dans un fichier NDJSON prêt pour le bulk, directement réimportable.",
+        "json_hint": "Format hérité : tout l'index est construit en mémoire, peut échouer sur les gros index."
+      },
       "include_mapping": "Inclure le mapping",
       "compress_file": "Compresser le fichier (ZIP)",
       "warning": "Les gros index peuvent prendre beaucoup de temps à exporter",
@@ -282,9 +289,13 @@
       "title": "Importer un index",
       "subtitle": "Importer des documents et un mapping depuis un fichier de dump",
       "select_file": "Sélectionner le fichier de dump (.json ou .zip)",
+      "select_files": "Sélectionner les fichiers de dump (.json, .ndjson ou .zip)",
       "mode": {
         "new_index": "Créer un nouvel index",
         "existing_index": "Importer dans un index existant"
+      },
+      "status": {
+        "error": "Erreur"
       },
       "new_index_name": "Nom du nouvel index",
       "select_existing_index": "Sélectionner un index existant",
@@ -304,6 +315,7 @@
       },
       "progress": {
         "title": "Import de l'index",
+        "file_of": "Fichier {current}/{total} : {name}",
         "importing": "Import vers '{targetIndex}'",
         "preparing": "Préparation de l'import...",
         "creating_index": "Création de l'index...",

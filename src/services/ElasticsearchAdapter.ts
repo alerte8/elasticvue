@@ -138,6 +138,86 @@ export default class ElasticsearchAdapter {
     return mapping
   }
 
+  async indexDumpNdjson({
+    index,
+    includeMapping = true,
+    onBatch,
+    onProgress
+  }: {
+    index: string,
+    includeMapping?: boolean,
+    onBatch: (ndjson: string) => void | Promise<void>,
+    onProgress?: (progress: { processed: number, total: number, percentage: number }) => void
+  }) {
+    let scrollId: string | null = null
+    try {
+      // Header elasticdump : settings + mappings sur la premi�re ligne
+      if (includeMapping) {
+        const infoResponse = await this.request(`${cleanIndexName(index)}`, 'GET') as any
+        const info = await infoResponse.json()
+        const indexInfo = info[index] || Object.values(info)[0] || {}
+        await onBatch(JSON.stringify({ settings: indexInfo.settings || {}, mappings: indexInfo.mappings || {} }) + '\n')
+      }
+
+      const scrollSize = 1000
+      let processed = 0
+      let totalHits = 0
+
+      const emitBatch = async (hits: any[]) => {
+        if (hits.length === 0) return
+        const lines: string[] = []
+        for (const hit of hits) {
+          lines.push(JSON.stringify({ index: { _index: hit._index, _id: hit._id } }))
+          lines.push(JSON.stringify(hit._source))
+        }
+        await onBatch(lines.join('\n') + '\n')
+        processed += hits.length
+        if (onProgress) {
+          onProgress({
+            processed,
+            total: totalHits,
+            percentage: totalHits > 0 ? Math.round((processed / totalHits) * 100) : 100
+          })
+        }
+      }
+
+      const firstSearchResponse = await this.request(`${cleanIndexName(index)}/_search?scroll=5m`, 'POST', {
+        query: { match_all: {} },
+        size: scrollSize,
+        sort: ['_doc']
+      }) as any
+      let scrollResponse: any = await firstSearchResponse.json()
+      scrollId = scrollResponse._scroll_id || null
+      totalHits = (scrollResponse.hits?.total?.value ?? scrollResponse.hits?.total) || 0
+
+      await emitBatch(scrollResponse.hits?.hits || [])
+
+      while ((scrollResponse.hits?.hits || []).length > 0) {
+        const nextResponse = await this.request('_search/scroll', 'POST', {
+          scroll: '5m',
+          scroll_id: scrollResponse._scroll_id
+        }) as any
+        scrollResponse = await nextResponse.json()
+        scrollId = scrollResponse._scroll_id || scrollId
+        await emitBatch(scrollResponse.hits?.hits || [])
+      }
+
+      return { success: true, total: processed }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+        total: 0
+      }
+    } finally {
+      if (scrollId) {
+        try {
+          await this.request('_search/scroll', 'DELETE', { scroll_id: scrollId })
+        } catch (_e) { }
+      }
+    }
+  }
+
   async indexDump({ index, onProgress }: { index: string, onProgress?: (progress: { processed: number, total: number, percentage: number }) => void }) {
     try {
       // R�cup�rer le mapping

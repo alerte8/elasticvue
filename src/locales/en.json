@@ -260,6 +260,13 @@
     "export": {
       "title": "Export index '{index}'",
       "subtitle": "Export all documents and mapping from this index",
+      "format": {
+        "label": "Export format",
+        "ndjson": "NDJSON dump (streaming)",
+        "json": "JSON (single file)",
+        "ndjson_hint": "Recommended for large indices: documents are written batch by batch in a bulk-ready NDJSON file, directly re-importable.",
+        "json_hint": "Legacy format: the whole index is built in memory, may fail on large indices."
+      },
       "include_mapping": "Include mapping",
       "compress_file": "Compress file (ZIP)",
       "warning": "Large indices may take a long time to export",
@@ -282,9 +289,13 @@
       "title": "Import Index",
       "subtitle": "Import documents and mapping from a dump file",
       "select_file": "Select dump file (.json or .zip)",
+      "select_files": "Select dump files (.json, .ndjson or .zip)",
       "mode": {
         "new_index": "Create new index",
         "existing_index": "Import to existing index"
+      },
+      "status": {
+        "error": "Error"
       },
       "new_index_name": "New index name",
       "select_existing_index": "Select existing index",
@@ -304,6 +315,7 @@
       },
       "progress": {
         "title": "Importing Index",
+        "file_of": "File {current}/{total}: {name}",
         "importing": "Importing to '{targetIndex}'",
         "preparing": "Preparing import...",
         "creating_index": "Creating index...",

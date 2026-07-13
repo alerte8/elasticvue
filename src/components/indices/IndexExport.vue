@@ -19,16 +19,33 @@
       <q-card-section>
         <q-form @submit="startExport">
           <div class="q-mb-md">
-            <q-checkbox 
-              v-model="includeMapping" 
-              :label="t('indices.export.include_mapping')" 
+            <div class="text-subtitle2 q-mb-xs">{{ t('indices.export.format.label') }}</div>
+            <q-radio
+              v-model="exportFormat"
+              val="ndjson"
+              :label="t('indices.export.format.ndjson')"
+            />
+            <q-radio
+              v-model="exportFormat"
+              val="json"
+              :label="t('indices.export.format.json')"
+            />
+            <div class="text-caption text-grey-6">
+              {{ exportFormat === 'ndjson' ? t('indices.export.format.ndjson_hint') : t('indices.export.format.json_hint') }}
+            </div>
+          </div>
+
+          <div class="q-mb-md">
+            <q-checkbox
+              v-model="includeMapping"
+              :label="t('indices.export.include_mapping')"
             />
           </div>
-          
-          <div class="q-mb-md">
-            <q-checkbox 
-              v-model="compressFile" 
-              :label="t('indices.export.compress_file')" 
+
+          <div v-if="exportFormat === 'json'" class="q-mb-md">
+            <q-checkbox
+              v-model="compressFile"
+              :label="t('indices.export.compress_file')"
             />
           </div>
 
@@ -120,6 +137,7 @@
   const progressDialogVisible = ref(false)
 
   // Options d'export
+  const exportFormat = ref<'ndjson' | 'json'>('ndjson')
   const includeMapping = ref(true)
   const compressFile = ref(true)
 
@@ -155,6 +173,11 @@
       progressStatus.value = t('indices.export.progress.preparing')
       progressProcessed.value = 0
       progressTotal.value = 100
+
+      if (exportFormat.value === 'ndjson') {
+        await startNdjsonExport()
+        return
+      }
 
       // Récupérer les données de l'index
       const result = await callElasticsearch('indexDump', {
@@ -229,16 +252,7 @@
       }
 
       progressStatus.value = t('indices.export.progress.downloading')
-      
-      // Télécharger le fichier
-      const url = URL.createObjectURL(fileContent)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = fileName
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      downloadBlob(fileContent, fileName)
 
       progressStatus.value = t('indices.export.progress.completed')
       exportCompleted.value = true
@@ -250,6 +264,51 @@
     } finally {
       exporting.value = false
     }
+  }
+
+  // Export dump NDJSON en flux : les documents sont ajoutés au fichier par lots,
+  // sans jamais matérialiser l'index complet en une seule chaîne en mémoire.
+  const startNdjsonExport = async () => {
+    const parts: Blob[] = []
+
+    const result = await callElasticsearch('indexDumpNdjson', {
+      index: props.index,
+      includeMapping: includeMapping.value,
+      onBatch: (ndjson: string) => {
+        parts.push(new Blob([ndjson]))
+      },
+      onProgress: (progress: { processed: number, total: number, percentage: number }) => {
+        progressProcessed.value = progress.processed
+        progressTotal.value = progress.total
+        progressStatus.value = t('indices.export.progress.exporting_documents', {
+          processed: progress.processed,
+          total: progress.total
+        })
+      }
+    })
+
+    if (!result.success) {
+      throw new Error(result.error || t('indices.export.error.export_failed'))
+    }
+
+    progressStatus.value = t('indices.export.progress.downloading')
+    const fileName = `${props.index}_dump_${new Date().toISOString().split('T')[0]}.ndjson`
+    downloadBlob(new Blob(parts, { type: 'application/x-ndjson' }), fileName)
+
+    progressStatus.value = t('indices.export.progress.completed')
+    exportCompleted.value = true
+    progressProcessed.value = progressTotal.value
+  }
+
+  const downloadBlob = (fileContent: Blob, fileName: string) => {
+    const url = URL.createObjectURL(fileContent)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
   }
 
   const cancelExport = () => {
