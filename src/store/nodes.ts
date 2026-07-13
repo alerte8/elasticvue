@@ -22,12 +22,13 @@ export const useNodesStore = () => {
   return defineStore(`nodes-${clusterUuid}`, {
     state: (): NodesState => ({
       filter: '',
+      nodeRoles: [],
       hideAttributesRegex: DEFAULT_HIDE_NODE_ATTRIBUTES_REGEX,
       reloadInterval: null,
       pagination: paginationStoreDefaultProps('name')
     }),
     persist: {
-      pick: ['filter', 'hideAttributesRegex', ...persistReloadIntervalProps(), ...persistPaginationProps()],
+      pick: ['filter', 'nodeRoles', 'hideAttributesRegex', ...persistReloadIntervalProps(), ...persistPaginationProps()],
       key: `nodes-${clusterUuid}`
     }
   })()

@@ -8,6 +8,8 @@ declare module '*.svg' {
   export default value
 }
 
+declare module 'quasar-ui-q-draggable-table'
+
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
   const component: DefineComponent<object, object, never>

@@ -13,6 +13,7 @@ type SearchDocumentormProps = {
 export type EsSearchResult = {
   took: number | null
   hits: EsSearchResultHits
+  aggregations?: Record<string, any>
 }
 
 type EsSearchResultHits = {

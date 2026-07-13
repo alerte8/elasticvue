@@ -102,6 +102,22 @@ import { useNodesStore } from '../../store/nodes.ts'
 const t = useTranslation()
 const nodesStore = useNodesStore()
 
+const nodeRoleOptions = computed(() => [
+  { value: 'm', label: t('cluster_nodes.node_icons.master_eligible.title') },
+  { value: 'd', label: t('cluster_nodes.node_icons.data.title') },
+  { value: 'i', label: t('cluster_nodes.node_icons.ingest.title') },
+  { value: '-', label: t('cluster_nodes.node_icons.coordinating_only.title') },
+  { value: 'c', label: t('cluster_nodes.node_icons.cold.title') },
+  { value: 'f', label: t('cluster_nodes.node_icons.frozen.title') },
+  { value: 'h', label: t('cluster_nodes.node_icons.hot.title') },
+  { value: 'l', label: t('cluster_nodes.node_icons.ml.title') },
+  { value: 'r', label: t('cluster_nodes.node_icons.remote_cluster_client.title') },
+  { value: 's', label: t('cluster_nodes.node_icons.content.title') },
+  { value: 't', label: t('cluster_nodes.node_icons.transform.title') },
+  { value: 'v', label: t('cluster_nodes.node_icons.voting_only.title') },
+  { value: 'w', label: t('cluster_nodes.node_icons.warm.title') }
+])
+
 const CAT_METHOD_PARAMS = {
   h: [
     'ip',

@@ -371,7 +371,7 @@ export default class ElasticsearchAdapter {
       const version = info.version?.number || '7.0.0'
       const majorVersion = parseInt(version.split('.')[0])
       const isSevenOrNewer = majorVersion >= 7
-      const tthis = this;
+      const tthis = this
 
       // 2. Prparer la lecture Streaming
       const stream = file.stream()
@@ -459,7 +459,7 @@ export default class ElasticsearchAdapter {
               // Cration de l'index si ncessaire
               const exists = await tthis.indexExists({ index }) as unknown as boolean
               if (!exists) {
-                let settings = header?.settings || {}
+                const settings = header?.settings || {}
                 let mappings = header?.mappings || {}
                 if (settings.index) {
                   const { uuid, version, creation_date, provided_name, ...restIndex } = settings.index
@@ -530,7 +530,7 @@ export default class ElasticsearchAdapter {
           }
 
         } catch (e) {
-          console.warn("Skipping bad line", e)
+          console.warn('Skipping bad line', e)
         }
       }
 
@@ -752,6 +752,10 @@ export default class ElasticsearchAdapter {
         return JSON.stringify({ index: { _index: index || 'unknown' } }) + '\r\n' + JSON.stringify(doc._source || doc)
     }).join('\r\n') + '\r\n'
     return this.request('_bulk?refresh=true', 'POST', body)
+  }
+
+  bulk({ body }: { body: string }) {
+    return this.request('_bulk?refresh=wait_for', 'POST', body)
   }
 
   /** routes only available in default elasticsearch, but not in serverless **/

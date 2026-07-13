@@ -171,7 +171,6 @@
   const t = useTranslation()
 
   const {
-    menu,
     emitAndCloseMenu,
     progressDialogVisible,
     progressStatus,

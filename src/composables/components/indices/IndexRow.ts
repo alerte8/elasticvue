@@ -1,5 +1,6 @@
-import { useTemplateRef } from 'vue'
+import { onMounted, Ref, ref, useTemplateRef, watch } from 'vue'
 import { useModal } from '../../Modal'
+import { useElasticsearchAdapter } from '../../CallElasticsearch'
 import { QMenu } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useSearchStore } from '../../../store/search'
@@ -11,18 +12,20 @@ export type IndexRowProps = {
   index: ElasticsearchIndex
 }
 
-export const useIndexRow = (_props: IndexRowProps, emit: any) => {
+export const useIndexRow = (props: IndexRowProps, emit: any) => {
   const menu = useTemplateRef<QMenu>('menu')
 
   const { openModalWith } = useModal()
   const roles: Ref<string[]> = ref([])
+
+  const { loading, callElasticsearch } = useElasticsearchAdapter()
 
   const loadRoles = async (index: string) => {
     try {
       const response = await callElasticsearch('getRoles')
       const allRoles = Object.keys(response).map(name => ({ name, ...response[name] }))
       roles.value = allRoles.filter(role => {
-        return role.indices.some(i => {
+        return role.indices.some((i: any) => {
           // This is a simplified check. A more robust implementation would handle wildcards and other patterns.
           return i.names.includes(index)
         })
@@ -33,42 +36,12 @@ export const useIndexRow = (_props: IndexRowProps, emit: any) => {
     }
   }
 
-  const loadAliases = async (index: string) => {
-    try {
-      await load(index)
-      if (!data.value) return
-
-      if (!data.value[props.index.index] || !data.value[props.index.index].aliases) {
-        aliases.value = []
-      } else {
-        aliases.value = Object.keys(data.value[props.index.index].aliases).sort()
-      }
-    } catch (e) {
-      handleError(e)
-      aliases.value = []
-    }
-  }
-
-  const { loading, callElasticsearch } = useElasticsearchAdapter()
-  const data: Ref<IndexAliases | null> = ref(null)
-
-  const load = async (index: string) => {
-    try {
-      data.value = await callElasticsearch('indexGetAlias', { index })
-    } catch (e) {
-      handleError(e)
-      data.value = null
-    }
-  }
-
   onMounted(() => {
-    loadAliases(props.index.index)
     loadRoles(props.index.index)
   })
   watch(
     () => props.index,
-    (newValue) => {
-      loadAliases(newValue.index)
+    (newValue: ElasticsearchIndex) => {
       loadRoles(newValue.index)
     }
   )
@@ -108,7 +81,7 @@ export const useIndexRow = (_props: IndexRowProps, emit: any) => {
   return {
     menu,
     roles,
-    aliases,
+    loading,
     openModalWith,
     emitReloadAndCloseMenu,
     showDocuments

@@ -27,12 +27,7 @@
 <script setup lang="ts">
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
-import { useTranslation } from '../../composables/i18n.ts'
 import { VERSION_NAME } from '../../consts.ts'
-import UpdateCheck from './UpdateCheck.vue'
-import { buildConfig } from '../../buildConfig.ts'
-
-const t = useTranslation()
 
 const version = __APP_VERSION__
 </script>

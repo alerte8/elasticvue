@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "Homepage"
     },
     "app_header": {
       "navigation": {
@@ -285,8 +284,7 @@
       "select_file": "Select dump file (.json or .zip)",
       "mode": {
         "new_index": "Create new index",
-        "existing_index": "Import to existing index",
-        "raw_import": "Raw import from file"
+        "existing_index": "Import to existing index"
       },
       "new_index_name": "New index name",
       "select_existing_index": "Select existing index",
@@ -660,8 +658,6 @@
   "settings": {
     "heading": "Settings",
     "check_for_updates": {
-      "label": "Check for updates automatically",
-      "message": "Periodically check if a new version of Elasticvue is available"
     },
     "hide_indices_regex": {
       "label": "Hide indices regex",
@@ -1056,7 +1052,6 @@
         "growl_multiple_fail": "{count} API keys failed to delete."
       },
       "error": {
-        "add_failed": "Failed to create API key '{name}'.",
         "delete_failed": "Failed to delete API key '{name}'."
       }
     },

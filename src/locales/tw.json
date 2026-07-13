@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "首頁"
     },
     "app_header": {
       "navigation": {
@@ -449,7 +448,6 @@
       },
       "search": "搜尋",
       "customize_query": {
-        "button": "自訂搜尋",
         "reset": "重設查詢"
       }
     },
@@ -464,10 +462,7 @@
       "settings": {
         "columns": "欄位"
       },
-      "download_as_json": "下載為 JSON",
       "tabs": {
-        "hits": "命中",
-        "aggregations": "聚合"
       }
     },
     "edit_document": {

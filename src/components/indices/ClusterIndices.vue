@@ -20,27 +20,8 @@ import IndicesTable from './IndicesTable.vue'
 import LoaderStatus from '../shared/LoaderStatus.vue'
 import ReloadButton from '../shared/ReloadButton.vue'
 import { useTranslation } from '../../composables/i18n.ts'
-import { EsIndex } from '../../composables/components/indices/IndicesTable.ts'
-import { clusterVersionGte } from '../../helpers/minClusterVersion.ts'
-import { useIndicesStore } from '../../store/indices.ts'
+import { useClusterIndices } from '../../composables/components/indices/ClusterIndices.ts'
 
 const t = useTranslation()
-
-const indicesStore = useIndicesStore()
-
-type CatIndicesParams = {
-  h: string
-  bytes: string
-  expand_wildcards?: string
-}
-
-const CAT_INDICES_PARAMS: CatIndicesParams = {
-  h: 'index,health,status,uuid,pri,rep,docs.count,store.size,sc,cd',
-  bytes: 'b'
-}
-
-if (clusterVersionGte(8)) CAT_INDICES_PARAMS.expand_wildcards = 'all'
-
-const { requestState, data, load } = useElasticsearchRequest<EsIndex[]>('catIndices', CAT_INDICES_PARAMS)
-onMounted(load)
+const { indicesStore, requestState, data, load } = useClusterIndices()
 </script>

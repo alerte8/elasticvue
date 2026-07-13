@@ -1,8 +1,6 @@
 import { Ref, ref } from 'vue'
-import { check, Update } from '@tauri-apps/plugin-updater'
+import { DownloadEvent, Update } from '@tauri-apps/plugin-updater'
 import { relaunch } from '@tauri-apps/plugin-process'
-import { useSettingsStore } from '../store/settings'
-import { uuidHeader } from '../helpers/uuidHeader.ts'
 
 type UpdateInfo = {
   version: string
@@ -14,14 +12,14 @@ export const useUpdateCheck = () => {
   const downloadProgress = ref(0)
   const installing = ref(false)
   const updateInfo: Ref<UpdateInfo | null> = ref(null)
-  const settingsStore = useSettingsStore()
-  let update: Update | null = null
+  const update: Update | null = null
 
   const checkUpdate = async () => {
 
     // Never check for updates
     return
 
+    // const settingsStore = useSettingsStore()
     // if (!settingsStore.checkForUpdates) return
 
     // const headers = uuidHeader()
@@ -43,7 +41,7 @@ export const useUpdateCheck = () => {
 
     downloading.value = true
 
-    await update.downloadAndInstall((event) => {
+    await (update as Update).downloadAndInstall((event: DownloadEvent) => {
       switch (event.event) {
         case 'Started':
           contentLength = event.data.contentLength || -1

@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "Homepage"
     },
     "app_header": {
       "navigation": {
@@ -638,8 +637,6 @@
   "settings": {
     "heading": "Impostazioni",
       "check_for_updates": {
-        "label": "Controlla automaticamente gli aggiornamenti",
-        "message": "Controlla periodicamente se è disponibile una nuova versione di Elasticvue"
       },
     "hide_indices_regex": {
       "label": "Nascondi regex indici",
@@ -1033,7 +1030,6 @@
         "growl_multiple_fail": "{count} chiavi API non sono state eliminate."
       },
       "error": {
-        "add_failed": "Impossibile creare la chiave API '{name}'.",
         "delete_failed": "Impossibile eliminare la chiave API '{name}'."
       }
     },

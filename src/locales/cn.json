@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "主页"
     },
     "app_header": {
       "navigation": {
@@ -639,8 +638,6 @@
   "settings": {
     "heading": "设置",
       "check_for_updates": {
-        "label": "自动检查更新",
-        "message": "定期检查是否有新版本的 Elasticvue 可用"
       },
     "hide_indices_regex": {
       "label": "正则表达式: 隐藏索引",
@@ -1034,7 +1031,6 @@
         "growl_multiple_fail": "{count} 个 API 密钥删除失败。"
       },
       "error": {
-        "add_failed": "创建 API 密钥 '{name}' 失败。",
         "delete_failed": "删除 API 密钥 '{name}' 失败。"
       }
     },

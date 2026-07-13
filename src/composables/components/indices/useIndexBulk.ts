@@ -1,4 +1,4 @@
-import { computed, ref, Ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { QMenu, useQuasar } from 'quasar'
 import { useTranslation } from '../../i18n'
 import { useElasticsearchAdapter } from '../../CallElasticsearch'
@@ -9,7 +9,7 @@ export const useIndexBulk = (props: { selectedIndices: string[] }, emit: (event:
   const t = useTranslation()
   const $q = useQuasar()
   const { callElasticsearch } = useElasticsearchAdapter()
-  const menu: Ref<QMenu | null> = ref(null)
+  const menu = useTemplateRef<QMenu>('menu')
 
   const emitAndCloseMenu = (event: 'reload' | 'indicesDeleted') => {
     emit(event)
@@ -136,7 +136,6 @@ export const useIndexBulk = (props: { selectedIndices: string[] }, emit: (event:
   }
 
   return {
-    menu,
     emitAndCloseMenu,
     progressDialogVisible,
     progressStatus,

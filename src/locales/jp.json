@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "ホームページ"
     },
     "app_header": {
       "navigation": {
@@ -639,8 +638,6 @@
   "settings": {
     "heading": "設定",
       "check_for_updates": {
-        "label": "自動的に更新を確認する",
-        "message": "定期的に新しいバージョンの Elasticvue が利用可能かどうかを確認します"
       },
     "hide_indices_regex": {
       "label": "隠しインデックスの正規表現",
@@ -1034,7 +1031,6 @@
         "growl_multiple_fail": "{count} 個のAPIキーの削除に失敗しました。"
       },
       "error": {
-        "add_failed": "APIキー '{name}' の作成に失敗しました。",
         "delete_failed": "APIキー '{name}' の削除に失敗しました。"
       }
     },

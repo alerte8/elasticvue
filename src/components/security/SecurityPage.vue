@@ -66,14 +66,10 @@
   import RolesTable from './RolesTable.vue'
   import ApiKeysTable from './ApiKeysTable.vue'
   import UsersTable from './UsersTable.vue'
-  import { Ref, ref } from 'vue'
+  import { ref } from 'vue'
   import { useTranslation } from '../../composables/i18n'
 
   const t = useTranslation()
-  
-  const tab = ref('roles')
 
-  const roles: Ref<typeof RolesTable | null> = ref(null)
-  const apikeys: Ref<typeof ApiKeysTable | null> = ref(null)
-  const users: Ref<typeof UsersTable | null> = ref(null)
+  const tab = ref('roles')
 </script>

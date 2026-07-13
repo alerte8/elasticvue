@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "홈페이지"
     },
     "app_header": {
       "navigation": {
@@ -449,7 +448,6 @@
       },
       "search": "검색",
       "customize_query": {
-        "button": "사용자 정의 검색",
         "reset": "쿼리 초기화"
       }
     },
@@ -464,10 +462,7 @@
       "settings": {
         "columns": "열"
       },
-      "download_as_json": "JSON으로 다운로드",
       "tabs": {
-        "hits": "히트",
-        "aggregations": "집계"
       }
     },
     "edit_document": {

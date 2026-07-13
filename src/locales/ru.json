@@ -1,7 +1,6 @@
 {
   "base": {
     "app_footer": {
-      "homepage": "Главная страница"
     },
     "app_header": {
       "navigation": {
@@ -638,8 +637,6 @@
   "settings": {
     "heading": "Настройки",
       "check_for_updates": {
-        "label": "Автоматически проверять обновления",
-        "message": "Периодически проверять, доступна ли новая версия Elasticvue"
       },
     "hide_indices_regex": {
       "label": "Скрыть индексы по регулярному выражению",
@@ -1033,7 +1030,6 @@
         "growl_multiple_fail": "Не удалось удалить {count} API-ключей."
       },
       "error": {
-        "add_failed": "Не удалось создать API-ключ '{name}'.",
         "delete_failed": "Не удалось удалить API-ключ '{name}'."
       }
     },

@@ -182,12 +182,12 @@
       chunks.push('{\n')
       chunks.push(`  "index": "${props.index}",\n`)
       chunks.push(`  "timestamp": "${new Date().toISOString()}",\n`)
-      chunks.push(`  "version": "1.0",\n`)
+      chunks.push('  "version": "1.0",\n')
       
       if (includeMapping.value) {
           chunks.push(`  "mapping": ${JSON.stringify(result.mapping)},\n`)
       } else {
-          chunks.push(`  "mapping": null,\n`)
+          chunks.push('  "mapping": null,\n')
       }
       
       chunks.push(`  "total": ${result.total},\n`)

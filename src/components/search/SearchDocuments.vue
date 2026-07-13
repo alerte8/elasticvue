@@ -6,10 +6,6 @@
 
 <script setup lang="ts">
   import SearchDocumentsFormTabs from './SearchDocumentsFormTabs.vue'
-  import { Ref, ref } from 'vue'
-  
-  const tabs: Ref<typeof SearchDocumentsFormTabs | null> = ref(null)
-
 </script>
 
 <style lang="scss">

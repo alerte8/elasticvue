@@ -1,12 +1,17 @@
-import { describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 
 import { sortableField } from '../../../src/helpers/search'
-import { DEFAULT_SORTABLE_COLUMNS } from '../../../src/consts'
+import { DEFAULT_SORTABLE_COLUMNS_NEW } from '../../../src/consts'
+
+beforeEach(() => {
+  setActivePinia(createPinia())
+})
 
 describe.concurrent('helpers/search.ts', () => {
   describe.concurrent('search.ts sortableField', () => {
     it('should return column name for all default sortable columns', () => {
-      for (const column of DEFAULT_SORTABLE_COLUMNS) {
+      for (const column of DEFAULT_SORTABLE_COLUMNS_NEW) {
         expect(sortableField(column, null)).toBe(column)
       }
     })
