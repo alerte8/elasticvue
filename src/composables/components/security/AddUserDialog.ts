@@ -41,7 +41,7 @@ export const useAddUserDialog = (props: any, emit: any) => {
       emit('created')
       dialog.value = false
     } catch (e) {
-      handleError(e)
+      handleError(e, true)
     }
   }
 

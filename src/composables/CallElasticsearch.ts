@@ -104,7 +104,7 @@ export function useElasticsearchAdapter() {
           }
 
           console.error('Elasticsearch API error', errorJson)
-          return Promise.reject(new Error('API error'))
+          return Promise.reject(new Error(elasticsearchError(errorJson)))
         } else {
           requestState.value = {
             loading: false,
@@ -142,7 +142,7 @@ const elasticsearchError = (error: any) => {
     case 'index_not_found_exception':
       return 'Index not found'
     default:
-      return JSON.stringify(error)
+      return error.error?.reason || JSON.stringify(error)
   }
 }
 
