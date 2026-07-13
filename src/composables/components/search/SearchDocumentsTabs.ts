@@ -51,12 +51,20 @@ export const usesearchDocumentsFormTabs = () => {
     tabs.value.splice(index, 1)
   }
 
+  function refreshActiveTab () {
+    const tab = tabs.value.find(t => t.name === activeTabName.value)
+    if (!tab) return
+    tab.reloadTrigger = (tab.reloadTrigger || 0) + 1
+  }
+
   return {
     tabs,
     activeTabIndex,
     activeTabName,
     addTab,
     updateTab,
-    removeTab
+    removeTab,
+    refreshActiveTab,
+    searchStore
   }
 }

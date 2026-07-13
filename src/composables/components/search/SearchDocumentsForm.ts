@@ -138,6 +138,8 @@ export const useSearchDocumentsForm = (props:SearchDocumentormProps) => {
     searchHistory.value = searchHistory.value.slice(0, 20)
   }
 
+  watch(() => ownTab.reloadTrigger, () => search())
+
   if (ownTab.executeOnMount) {
     ownTab.executeOnMount = false
     search()

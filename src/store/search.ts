@@ -29,7 +29,8 @@ export type SearchState = {
   rowsPerPageAccepted: boolean,
   searchHistory: string[],
   searchResults: any,
-  executeOnMount?: boolean
+  executeOnMount?: boolean,
+  reloadTrigger?: number
 }
 
 export const useSearchStore = () => {
@@ -42,6 +43,7 @@ export const useSearchStore = () => {
       return {
         localizeTimestamp: true,
         documentFieldMaxLength: DEFAULT_DOCUMENT_FIELD_MAX_LENGTH,
+        reloadInterval: null as number | null,
         activeTab: firstTabName,
         tabs: [
           {

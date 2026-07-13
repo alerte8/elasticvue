@@ -8,13 +8,16 @@
         {{ t('search.heading') }}
       </h1>
 
+      <reload-button :action="refreshActiveTab" v-model="searchStore.reloadInterval" class="q-mr-md" />
+
       <!-- Onglets -->
       <q-tabs
         v-model="activeTabName" align="left"
         outside-arrows class="col-shrink"
         shrink content-class="overflow-hidden">
-        <template v-for="(tab, index) in tabs" :key="tab.name"> 
-          <q-tab :name="tab.name" style="white-space: nowrap; flex-shrink: 0"> 
+        <template v-for="(tab, index) in tabs" :key="tab.name">
+          <q-tab :name="tab.name" style="white-space: nowrap; flex-shrink: 0"
+                 @mousedown.middle.prevent.stop="removeTab(index as number)">
             <div class="flex"> {{ tab.label }} 
               <q-btn icon="edit" flat dense size="sm"> 
                 <q-popup-edit v-slot="scope" v-model="tab.label" auto-save anchor="top left" @save="(v) => {updateTab(v, tab)}"> 
@@ -64,9 +67,10 @@
   import SearchDocumentsForm from './SearchDocumentsForm.vue'
   import { usesearchDocumentsFormTabs } from '../../composables/components/search/SearchDocumentsTabs.ts'
   import CustomInput from '../shared/CustomInput.vue'
+  import ReloadButton from '../shared/ReloadButton.vue'
   import { useTranslation } from '../../composables/i18n'
 
   const t = useTranslation()
-  const { tabs, activeTabName, addTab, updateTab, removeTab } = usesearchDocumentsFormTabs()
+  const { tabs, activeTabName, addTab, updateTab, removeTab, refreshActiveTab, searchStore } = usesearchDocumentsFormTabs()
   defineExpose({ addTab })
 </script>
