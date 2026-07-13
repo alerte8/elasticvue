@@ -1,5 +1,69 @@
 # Changelog
 
+## 1.15.0-custom (2026-07-14)
+
+Custom fork ([alerte8/elasticvue](https://github.com/alerte8/elasticvue)) rebased on upstream `v1.15.0`.
+
+### Fork features
+
+* Security page: manage roles, API keys (with creation date) and users, with filtering, bulk delete,
+  and API key cleanup when deleting a user
+* Tabbed search: multiple search tabs with rename, close (button or middle-click), and a reload
+  button with auto-refresh interval like the indices screen
+* Index export: new streamed NDJSON dump format (bulk-ready, header line with settings + mappings),
+  recommended for large indices — documents are written batch by batch without holding the whole
+  index in memory. Legacy single-file JSON (+ ZIP) export is still available
+* Index import: select multiple dump files at once (.json, .ndjson, .zip) and configure each one
+  individually (new or existing target index); files are imported sequentially with per-file status.
+  NDJSON files are streamed and sent in batches of 1000 documents
+* Search results table: custom column management (order, visibility, drag & drop), manual
+  multi-column sorting, copy selected columns only with Shift pressed
+* Paste multiple documents from clipboard, delete all filtered documents
+* Global zoom (Ctrl + mouse wheel), persisted and restored on reload
+* Update checks and telemetry are fully disabled in this build
+
+### Sync & fixes (2026-07)
+
+* merge upstream `v1.15.0` (see upstream entries below)
+* align Tauri npm packages with Rust crate versions and repair the merged `Cargo.lock`
+* fix zoom not being re-applied after a page reload
+* surface Elasticsearch errors (with the real reason) when creating roles, users or API keys
+* guard the zoom shortcuts so the web build no longer errors on startup
+* add the missing `bulk` adapter method used by raw imports
+
+## 1.15.0 (upstream)
+
+* fix copy-to-clipboard on windows, fixes [#344](https://github.com/cars10/elasticvue/issues/344)
+* fix ESC closing modal when search is open in editor, fixes [#346](https://github.com/cars10/elasticvue/issues/346)
+* fix table sorting, fixes [#347](https://github.com/cars10/elasticvue/issues/347)
+* add button to enable/disable shard allocation, fixes [#348](https://github.com/cars10/elasticvue/issues/348)
+* fix setup for clusters with too many shards, fixes [#354](https://github.com/cars10/elasticvue/issues/354)
+* update to nodejs 24
+
+## 1.14.0 (upstream)
+
+* Do not store snapshot pagination, fixes [#339](https://github.com/cars10/elasticvue/issues/339)
+* Support manual multi-level sorting and retain when paginating, fixes [#317](https://github.com/cars10/elasticvue/issues/317)
+* dependency updates
+
+## 1.13.0 (upstream)
+
+* show search aggregations, fixes [#247](https://github.com/cars10/elasticvue/issues/247)
+* can filter indices by alias, fixes [#337](https://github.com/cars10/elasticvue/issues/337)
+* can filter node roles, fixes [#336](https://github.com/cars10/elasticvue/issues/336)
+* i18n: adds traditional chinese, thanks @PeterDaveHello
+* i18n: adds korean, thanks @webee0317
+
+## 1.12.0 (upstream)
+
+* save window state in desktop app, fixes [#333](https://github.com/cars10/elasticvue/issues/333)
+* fix index bulk actions, fixes [#334](https://github.com/cars10/elasticvue/issues/334)
+
+## 1.11.1 (upstream)
+
+* fix cloning indices, fixes [#331](https://github.com/cars10/elasticvue/issues/331)
+* reverts #294
+
 ## 1.11.0
 
 * fix another encoding issue, fixes again [#327](https://github.com/cars10/elasticvue/issues/327)

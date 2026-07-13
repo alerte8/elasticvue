@@ -1,26 +1,44 @@
-# elasticvue
+# elasticvue — custom fork
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=65GDZCZTUBVRL)
-[![Chrome web store](https://img.shields.io/chrome-web-store/v/hkedbapjpblbodpgbajblpnlpenaebaa?label=chrome%20extension)](https://chrome.google.com/webstore/detail/elasticvue/hkedbapjpblbodpgbajblpnlpenaebaa)
-[![Edge extension](https://img.shields.io/badge/dynamic/json?label=microsoft%20edge%20add-on&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fgeifniocjfnfilcbeloeidajlfmhdlgo)](https://microsoftedge.microsoft.com/addons/detail/geifniocjfnfilcbeloeidajlfmhdlgo)
-[![Firefox addon](https://img.shields.io/amo/v/elasticvue?label=firefox%20add-on)](https://addons.mozilla.org/en-US/firefox/addon/elasticvue/)
-[![Docker build](https://img.shields.io/docker/image-size/cars10/elasticvue)](https://hub.docker.com/r/cars10/elasticvue)
+> This repository is a custom fork of [cars10/elasticvue](https://github.com/cars10/elasticvue),
+> currently based on upstream `v1.15.0`. See [About this fork](#about-this-fork) for the differences.
 
 Elasticsearch gui for your browser [https://elasticvue.com](https://elasticvue.com)
 
 > Elasticsearch is a trademark of Elasticsearch BV, registered in the U.S. and in other countries.
 
-[![Demo](http://static.cars10k.de/demo.gif)](http://static.cars10k.de/demo.gif?v=2)
-
 Contents
 
-1. [About](#about)
-2. [Usage](#usage)
-3. [Browser support](#browser-support)
-4. [Troubleshooting](#troubleshooting)
-5. [Comparing with other frontends](#comparing-with-other-frontends)
+1. [About this fork](#about-this-fork)
+2. [About](#about)
+3. [Usage](#usage)
+4. [Browser support](#browser-support)
+5. [Troubleshooting](#troubleshooting)
+6. [Comparing with other frontends](#comparing-with-other-frontends)
 7. [i18n](#i18n)
 8. [Contributing](#contributing)
+
+## About this fork
+
+This fork adds the following on top of upstream elasticvue:
+
+* **Security page** — manage roles, API keys (with creation date) and users: create, filter,
+  bulk delete; deleting a user also cleans up its API keys
+* **Tabbed search** — multiple search tabs with rename, close (button or middle-click) and a
+  reload button with auto-refresh interval
+* **Large-volume index export** — streamed NDJSON dump format (bulk-ready, header line with
+  settings + mappings), written batch by batch so large indices don't exhaust memory; the legacy
+  single-file JSON (+ ZIP) export is still available
+* **Multi-file index import** — select several dump files (.json, .ndjson, .zip) at once and
+  configure each one individually (new or existing target index); NDJSON files are streamed and
+  bulk-inserted in batches of 1000 documents
+* **Search results table** — custom column management (order, visibility, drag & drop), manual
+  multi-column sorting, copy selected columns only with Shift pressed
+* **Clipboard tools** — paste multiple documents from the clipboard; delete all filtered documents
+* **Global zoom** — Ctrl + mouse wheel, persisted and restored on reload
+* **No phone-home** — update checks and telemetry are fully disabled in this build
+
+See [CHANGELOG.md](CHANGELOG.md) for details.
 
 ## About
 
@@ -44,15 +62,24 @@ the [FAQ](https://github.com/cars10/elasticvue/wiki/FAQ) for more details.
 
 You can use elasticvue in several ways, use whatever works best for you.
 
+> **Note (fork):** automatic updates are disabled in this fork — the desktop app is built and
+> distributed manually (`npm run tauri:build`). The download links below point to the upstream
+> builds, which do **not** contain the fork features.
+
 | Type | Auto Update | Cluster config | Support for self signed ssl |
 |------|-------------|----------------|-----------------------------|
-| Desktop app | Yes | not needed | yes |
+| Desktop app (this fork) | No | not needed | yes |
+| Desktop app (upstream) | Yes | not needed | yes |
 | Browser extension | Yes | not needed | partially |
 | Web | Yes | required | partially |
 | Self hosted | No | required | partially |
 | Docker | No | required | partially |
 
 ### Desktop App - *recommended*
+
+Fork: build locally with `npm install && npm run tauri:build`.
+
+Upstream builds:
 
 * [Windows .msi](https://update.elasticvue.com/download/windows/x86_64)
 * [Homebrew](https://formulae.brew.sh/cask/elasticvue) / [Mac x68 .dmg](https://update.elasticvue.com/download/darwin/x86_64) / [Mac aarch64 .dmg](https://update.elasticvue.com/download/darwin/aarch64)
@@ -216,11 +243,12 @@ See the Wiki. [Comparing to other frontends](https://github.com/cars10/elasticvu
 Elasticvue is available in the following languages:
 
 * english
-* chinese
+* chinese (simplified & traditional)
 * french
 * russian
 * japanese
 * italian
+* korean
 
 ## Contributing
 
