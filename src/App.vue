@@ -46,7 +46,7 @@
   const zoom = ref(parseFloat(localStorage.getItem('zoom') || '1'))
 
   function updateZoom (newZoom: number) {
-    zoom.value = newZoom
+    zoom.value = Math.round(newZoom * 10) / 10
     localStorage.setItem('zoom', zoom.value.toString())
   }
 
@@ -63,14 +63,16 @@
 
   useZoomShortcuts(resetZoom)
 
-  watch(zoom, (newZoomValue) => {
+  const applyZoom = (newZoomValue: number) => {
     const el = layoutRef.value?.$el
     if (el) {
       el.style.transform = `scale(${newZoomValue})`
       el.style.width = `${100 / newZoomValue}%`
       el.style.height = `${100 / newZoomValue}%`
     }
-  }, { immediate: true })
+  }
+
+  watch(zoom, applyZoom)
 
   // Gestion de la molette
   function handleWheel(event: WheelEvent) {
@@ -96,6 +98,7 @@
     if (el) {
       el.style.transformOrigin = 'top left'
     }
+    applyZoom(zoom.value)
 
     setAppThemeCss(themeStore.appTheme)
     setupThemeListener()
