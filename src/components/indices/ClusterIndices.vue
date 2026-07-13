@@ -16,11 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import IndicesTable from './IndicesTable.vue'
 import LoaderStatus from '../shared/LoaderStatus.vue'
 import ReloadButton from '../shared/ReloadButton.vue'
-import { useElasticsearchRequest } from '../../composables/CallElasticsearch'
 import { useTranslation } from '../../composables/i18n.ts'
 import { EsIndex } from '../../composables/components/indices/IndicesTable.ts'
 import { clusterVersionGte } from '../../helpers/minClusterVersion.ts'

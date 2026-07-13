@@ -44,28 +44,27 @@ const routes = [
       { path: 'snapshot_repositories', name: 'snapshot_repositories', component: SnapshotRepositories },
       { path: 'snapshot_repositories/:repositoryName', name: 'snapshots', component: RepositorySnapshots }
     ],
-    beforeEnter: (to: RouteLocation, _from: RouteLocation, next: any) => {
+    beforeEnter: (to: RouteLocation) => {
       const connectionStore = useConnectionStore()
       const numInstances = connectionStore.clusters.length
-      if (numInstances === 0) return next('welcome')
+      if (numInstances === 0) return { name: 'welcome' }
 
       const clusterIndexParam = Array.isArray(to.params.clusterIndex) ? to.params.clusterIndex[0] : to.params.clusterIndex
       const indexValid = connectionStore.validateAndSetClusterIndex(clusterIndexParam)
 
-      if (indexValid) return next()
-      next({ name: 'home', params: { clusterIndex: 0 } })
+      if (indexValid) return
+      return { name: 'home', params: { clusterIndex: 0 } }
     }
   },
   {
     path: '/welcome',
     name: 'welcome',
     component: WelcomePage,
-    beforeEnter: (_to: RouteLocation, _from: RouteLocation, next: any) => {
+    beforeEnter: (_to: RouteLocation) => {
       const connectionStore = useConnectionStore()
       const cluster = connectionStore.checkAndSetActiveCluster()
 
-      if (cluster) return next({ name: 'home', params: { clusterIndex: connectionStore.activeClusterIndex } })
-      next()
+      if (cluster) return { name: 'home', params: { clusterIndex: connectionStore.activeClusterIndex } }
     }
   },
   {

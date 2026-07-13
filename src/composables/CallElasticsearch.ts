@@ -5,6 +5,19 @@ import { askConfirm } from '../helpers/dialogs'
 import { SnackbarOptions, useSnackbar } from './Snackbar'
 import { parseJson } from '../helpers/json/parse.ts'
 
+// Helper type to extract all parameters from a method
+type MethodParameters<T> = T extends (...args: infer P) => any ? P : never
+
+// Extract parameter types for each method
+type ElasticsearchMethodParams = {
+  [K in ElasticsearchMethod]: MethodParameters<ElasticsearchAdapter[K]>
+}
+
+// Type-safe callElasticsearch overload
+type CallElasticsearchOverload = {
+  <M extends ElasticsearchMethod>(method: M, ...args: ElasticsearchMethodParams[M]): Promise<any>
+}
+
 let elasticsearchAdapter: ElasticsearchAdapter
 
 export interface RequestState {
@@ -26,7 +39,7 @@ export function useElasticsearchAdapter() {
     status: -1
   })
 
-  const callElasticsearch = async (method: ElasticsearchMethod, ...args: any[]) => {
+  const callElasticsearch: CallElasticsearchOverload = async (method: ElasticsearchMethod, ...args: any[]) => {
     requestState.value = {
       loading: true,
       networkError: false,
@@ -146,9 +159,15 @@ export function useElasticsearchRequest<T>(method: ElasticsearchMethod, params?:
   const data: Ref<T | null> = ref(null)
 
   const load = () => {
-    return callElasticsearch(method, params)
-      .then((body) => (data.value = body))
-      .catch(() => (data.value = null))
+    if (params !== undefined) {
+      return callElasticsearch(method, params as any)
+        .then((body) => (data.value = body))
+        .catch(() => (data.value = null))
+    } else {
+      return callElasticsearch(method as any)
+        .then((body) => (data.value = body))
+        .catch(() => (data.value = null))
+    }
   }
 
   return {
@@ -192,7 +211,7 @@ export const defineElasticsearchRequest = ({ emit, method }: { emit?: (event: st
     }
 
     try {
-      const body = await callElasticsearch(method, params)
+      const body = params !== undefined ? await callElasticsearch(method, params as any) : await callElasticsearch(method as any)
       if (emit) emit('reload')
       if (snackbarOptions) {
         if (typeof snackbarOptions === 'function') {

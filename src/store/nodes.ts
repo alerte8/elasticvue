@@ -11,6 +11,7 @@ import {
 
 type NodesState = {
   filter: string
+  nodeRoles: string[]
   hideAttributesRegex: string
 } & PaginationStorePartial &
   ReloadIntervalStorePartial

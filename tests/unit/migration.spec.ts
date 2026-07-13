@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 import { migrateAuthType, OldElasticsearchCluster } from '../../src/services/migrations'
-import { AuthType, BuildFlavor } from "../../src/store/connection";
+import { AuthType, BuildFlavor } from '../../src/store/connection'
 
 
 const oldData: OldElasticsearchCluster[] = [

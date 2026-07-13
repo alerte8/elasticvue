@@ -10,12 +10,16 @@ export const SUPPORTED_COUNTRY_LOCALES: Record<string, ValidLocale> = {
   en: 'en',
   cn: 'cn',
   zh: 'cn',
+  'zh-TW': 'tw',
+  tw: 'tw',
   fr: 'fr',
   it: 'it',
   ru: 'ru',
-  jp: 'jp'
+  jp: 'jp',
+  ko: 'ko',
+  kr: 'ko'
 }
-export type ValidLocale = 'en' | 'cn' | 'fr' | 'it' | 'ru' | 'jp'
+export type ValidLocale = 'en' | 'cn' | 'fr' | 'it' | 'ru' | 'jp' | 'tw' | 'ko'
 export const DEFAULT_LOCALE: ValidLocale = 'en'
 
 export const DEFAULT_DOCUMENT_FIELD_MAX_LENGTH = 200

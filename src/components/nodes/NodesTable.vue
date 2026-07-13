@@ -5,7 +5,11 @@
       :results-count="filterStateProps.resultsCount"
       :filtered-results-count="filterStateProps.filteredResultsCount"
     />
-    <filter-input v-model="nodesStore.filter" class="q-ml-auto" :columns="['name', 'ip', 'id', 'version']" />
+
+    <div class="flex items-center q-ml-auto">
+      <slot />
+      <filter-input v-model="nodesStore.filter" class="q-ml-md" :columns="['name', 'ip', 'id', 'version']" />
+    </div>
   </div>
 
   <q-table

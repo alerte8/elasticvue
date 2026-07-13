@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icon-css-ko"
+     viewBox="0 0 640 480">
+    <defs>
+        <g id="a" transform="rotate(180 320 240)">
+            <path id="b" d="M0-1v1h.5" transform="rotate(18 0 -1)"/>
+            <use transform="scale(-1 1)" xlink:href="#b"/>
+        </g>
+        <g id="c">
+            <path id="d" d="M0-1v1h.5" transform="rotate(18 0 -1)"/>
+            <use transform="scale(-1 1)" xlink:href="#d"/>
+        </g>
+    </defs>
+    <path fill="#fff" d="M0 0h640v480H0z"/>
+    <g transform="translate(320 240)">
+        <circle fill="#c60c30" r="77"/>
+        <path fill="#fff" d="M0 38a65 65 0 0 0 0-76 51 51 0 0 1 0 76z"/>
+        <path fill="#c60c30" d="M0-38a65 65 0 0 1 0 76 51 51 0 0 0 0-76z"/>
+        <circle fill="#003478" r="77" transform="rotate(180)"/>
+        <path fill="#fff" d="M0 38a65 65 0 0 1 0-76 51 51 0 0 0 0 76z" transform="rotate(180)"/>
+        <path fill="#003478" d="M0-38a65 65 0 0 0 0 76 51 51 0 0 1 0-76z" transform="rotate(180)"/>
+    </g>
+    <g transform="translate(133.3 109.4) scale(.66667)">
+        <g id="e">
+            <path fill="#000" d="M0-21h6v42h-6z"/>
+            <path fill="#000" d="M0-21h6v14h-6zm0 14h20v6H0z"/>
+        </g>
+        <use xlink:href="#e" transform="rotate(90)"/>
+        <use xlink:href="#e" transform="rotate(180)"/>
+        <use xlink:href="#e" transform="rotate(270)"/>
+    </g>
+    <g transform="translate(133.3 370.6) scale(.66667)">
+        <use xlink:href="#e"/>
+        <use xlink:href="#e" transform="rotate(90)"/>
+        <use xlink:href="#e" transform="rotate(180)"/>
+        <path fill="#000" d="M0-21h6v42h-6z"/>
+    </g>
+    <g transform="translate(506.7 109.4) scale(.66667)">
+        <use xlink:href="#e"/>
+        <path fill="#000" d="M0-21h6v42h-6z"/>
+        <use xlink:href="#e" transform="rotate(90)"/>
+        <use xlink:href="#e" transform="rotate(270)"/>
+    </g>
+    <g transform="translate(506.7 370.6) scale(.66667)">
+        <use xlink:href="#e" transform="rotate(180)"/>
+        <use xlink:href="#e" transform="rotate(270)"/>
+        <path fill="#000" d="M0-21h20v6H0z"/>
+        <path fill="#000" d="M0 15h20v6H0z"/>
+    </g>
+</svg>

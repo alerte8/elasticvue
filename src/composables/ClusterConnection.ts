@@ -30,7 +30,7 @@ export const useClusterConnection = (
   const connectionStore = useConnectionStore()
   const { showSuccessSnackbar } = useSnackbar()
 
-  const form: Ref<QForm | null> = useTemplateRef('form')
+  const form = useTemplateRef<QForm>('form')
 
   const testState = ref<TestConnectState>({} as TestConnectState)
   const connectState = ref<TestConnectState>({} as TestConnectState)

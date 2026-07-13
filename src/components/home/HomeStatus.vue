@@ -59,7 +59,7 @@
       </q-card-section>
       <q-card-section class="text-muted">
         <p class="q-mb-sm">{{ data.indices.docs.count }} docs</p>
-        <p class="q-mb-none">{{ prettyBytes(data.indices.store.size_in_bytes) }} on disk</p>
+        <p class="q-mb-none">{{ formatBytes(data.indices.store.size_in_bytes) }} on disk</p>
       </q-card-section>
     </q-card>
   </div>
@@ -73,6 +73,10 @@ import UnhealthyReason from './UnhealthyReason.vue'
 import { useConnectionStore } from '../../store/connection.ts'
 
 const connectionStore = useConnectionStore()
+
+const formatBytes = (bytes: number) => {
+  return prettyBytes(bytes)
+}
 
 type ClusterStats = {
   cluster_name: string

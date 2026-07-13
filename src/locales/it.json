@@ -22,7 +22,7 @@
           "title": "Inglese"
         },
         "cn": {
-          "title": "Cinese"
+          "title": "Cinese semplificato"
         },
         "fr": {
           "title": "Francese"
@@ -35,6 +35,12 @@
         },
         "jp": {
           "title": "Giapponese"
+        },
+        "tw": {
+          "title": "Cinese tradizionale"
+        },
+        "ko": {
+          "title": "Coreano"
         }
       }
     },
@@ -378,6 +384,7 @@
   },
   "cluster_nodes": {
     "heading": "Nodi",
+    "node_role": "Ruolo del nodo",
     "node_icons": {
       "master": {
         "title": "Nodo master"
@@ -393,7 +400,16 @@
       },
       "coordinating_only": {
         "title": "Nodo solo di coordinamento"
-      }
+      },
+      "cold": { "title": "Nodo cold" },
+      "frozen": { "title": "Nodo frozen" },
+      "hot": { "title": "Nodo hot" },
+      "ml": { "title": "Nodo machine learning" },
+      "remote_cluster_client": { "title": "Nodo client cluster remoto" },
+      "content": { "title": "Nodo content" },
+      "transform": { "title": "Nodo transform" },
+      "voting_only": { "title": "Nodo solo voto" },
+      "warm": { "title": "Nodo warm" }
     },
     "node_properties": {
       "ip": "ip",
@@ -722,6 +738,13 @@
       "cancel_relocation": "Annulla reindirizzamento",
       "reroute": {
         "confirm": "Reindirizzare il frammento '{shard}' dal nodo '{fromNode}' a '{toNode}'?"
+      },
+      "allocation": {
+        "label": "Allocazione frammenti",
+        "enable_confirm": "Abilitare l'allocazione dei frammenti?",
+        "enable_growl": "Allocazione frammenti abilitata",
+        "disable_confirm": "Disabilitare l'allocazione dei frammenti?",
+        "disable_growl": "Allocazione frammenti disabilitata"
       }
     }
   },
@@ -898,8 +921,6 @@
         "schedule": {
           "label": "Programmazione*",
           "hint": "Espressione cron (es: '0 30 1 * * ?' per ogni giorno alle 1:30)"
-        },
-        "repository": {
         },
         "indices": {
           "label": "Indici",

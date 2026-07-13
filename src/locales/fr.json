@@ -22,7 +22,7 @@
           "title": "Anglais"
         },
         "cn": {
-          "title": "Chinois"
+          "title": "Chinois simplifié"
         },
         "fr": {
           "title": "Français"
@@ -35,6 +35,12 @@
         },
         "jp": {
           "title": "Japonais"
+        },
+        "tw": {
+          "title": "Chinois traditionnel"
+        },
+        "ko": {
+          "title": "Coréen"
         }
       }
     },
@@ -383,6 +389,7 @@
   },
   "cluster_nodes": {
     "heading": "Noeuds",
+    "node_role": "Rôle du nœud",
     "node_icons": {
       "master": {
         "title": "Noeud maître"
@@ -398,7 +405,16 @@
       },
       "coordinating_only": {
         "title": "Noeud de coordination uniquement"
-      }
+      },
+      "cold": { "title": "Nœud froid" },
+      "frozen": { "title": "Nœud gelé" },
+      "hot": { "title": "Nœud chaud" },
+      "ml": { "title": "Nœud machine learning" },
+      "remote_cluster_client": { "title": "Nœud client cluster distant" },
+      "content": { "title": "Nœud contenu" },
+      "transform": { "title": "Nœud transform" },
+      "voting_only": { "title": "Nœud vote uniquement" },
+      "warm": { "title": "Nœud tiède" }
     },
     "node_properties": {
       "ip": "Ip",
@@ -726,6 +742,13 @@
       "cancel_relocation": "Annuler le reroutage",
       "reroute": {
         "confirm": "Rerouter la partition '{shard}' du noeud '{fromNode}' vers '{toNode}' ?"
+      },
+      "allocation": {
+        "label": "Allocation des partitions",
+        "enable_confirm": "Activer l'allocation des partitions ?",
+        "enable_growl": "Allocation des partitions activée",
+        "disable_confirm": "Désactiver l'allocation des partitions ?",
+        "disable_growl": "Allocation des partitions désactivée"
       }
     }
   },

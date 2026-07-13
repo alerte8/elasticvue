@@ -42,19 +42,39 @@ the [FAQ](https://github.com/cars10/elasticvue/wiki/FAQ) for more details.
 
 ## Usage
 
-You can use elasticvue in several ways:
+You can use elasticvue in several ways, use whatever works best for you.
+
+| Type | Auto Update | Cluster config | Support for self signed ssl |
+|------|-------------|----------------|-----------------------------|
+| Desktop app | Yes | not needed | yes |
+| Browser extension | Yes | not needed | partially |
+| Web | Yes | required | partially |
+| Self hosted | No | required | partially |
+| Docker | No | required | partially |
 
 ### Desktop App - *recommended*
 
 * [Windows .msi](https://update.elasticvue.com/download/windows/x86_64)
-* [Mac x68 .dmg](https://update.elasticvue.com/download/darwin/x86_64) / [Mac aarch64 .dmg](https://update.elasticvue.com/download/darwin/aarch64)
-* [Linux .AppImage](https://update.elasticvue.com/download/linux/x86_64)
+* [Homebrew](https://formulae.brew.sh/cask/elasticvue) / [Mac x68 .dmg](https://update.elasticvue.com/download/darwin/x86_64) / [Mac aarch64 .dmg](https://update.elasticvue.com/download/darwin/aarch64)
+* [Linux .AppImage](https://update.elasticvue.com/download/linux/x86_64) / [Arch AUR](https://aur.archlinux.org/packages/elasticvue-bin)
 
 ### Browser extension
 
 * [Google chrome](https://chrome.google.com/webstore/detail/elasticvue/hkedbapjpblbodpgbajblpnlpenaebaa)
 * [Firefox](https://addons.mozilla.org/en-US/firefox/addon/elasticvue/)
 * [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/geifniocjfnfilcbeloeidajlfmhdlgo)
+
+### Web version
+
+> **You have to configure your elasticsearch cluster if you want to use elasticvue via docker**
+
+Visit [https://app.elasticvue.com](https://app.elasticvue.com).
+
+### Self-hosted
+
+> **You have to configure your elasticsearch cluster if you want to self host elasticvue**
+
+Please check the [wiki](https://github.com/cars10/elasticvue/wiki/Building-Elasticvue) for more information.
 
 ### Docker
 
@@ -63,11 +83,15 @@ You can use elasticvue in several ways:
 Use the [existing image](https://hub.docker.com/r/cars10/elasticvue):
 
 ```bash
+# docker hub:
 docker run -p 8080:8080 --name elasticvue -d cars10/elasticvue
+
+# ghcr.io:
+docker run -p 8080:8080 --name elasticvue -d ghcr.io/cars10/elasticvue
 ```
 
-When using docker you can provide some default cluster configuration for your users. You can either set an environment
-variable or provide a config file as a volume. In either case the content should be a json array of your
+When using docker you can provide default cluster configuration for your users. Clusters will automatically be imported every time you start elasticvue.
+You can either set an environment variable or provide a config file as a volume. In either case the content should be a json array of your
 clusters, looking like this:
 
 ```json
@@ -85,8 +109,21 @@ clusters, looking like this:
 ]
 ```
 
-The keys `name` and `uri` are required, `username` and `password` are optional. If you want to connect with an api key
-simply use that as the password and omit the username.
+#### Possible keys
+
+| Name | Value | Required | Example |
+|------|-------|----------|---------|
+| name | Name of the cluster | No | `"production"` |
+| uri  | Cluster uri | Yes | `"http://localhost:9200"` |
+| username | Username for basic authentication | No | `"elastic"` |
+| password | Password for basic authentication | No | `"foobar"` |
+| apiKey | API key for authentication | No | `"VuaCfGcBCdbkQm-e5aOx:ui2lp2axTNm5ShWDc11v6g"` |
+| S3accessKeyId | AWS access key ID for IAM authentication | No | `"AKIAIOSFODNN7EXAMPLE"` |
+| S3secretAccessKey | AWS secret access key for IAM authentication | No | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"` |
+| S3sessionToken | AWS session token for temporary credentials | No | `"FQoGZXIvYXdzE...example"` |
+| S3region | AWS region for IAM authentication | No | `"us-east-1"` |
+
+
 
 #### Docker with default clusters in environment variable
 
@@ -101,23 +138,9 @@ docker run -p 8080:8080 -e ELASTICVUE_CLUSTERS='[{"name": "prod cluster", "uri":
 Example using config file volume to `/usr/share/nginx/html/api/default_clusters.json`:
 
 ```bash
-echo '[{"name": "prod cluster", "uri": "http://localhost:9200", "username": "elastic", "password": "elastic"}]' > /config.json
-docker run -p 8080:8080 -v /config.json:/usr/share/nginx/html/api/default_clusters.json cars10/elasticvue
+echo '[{"name": "prod cluster", "uri": "http://localhost:9200", "username": "elastic", "password": "elastic"}]' > config.json
+docker run -p 8080:8080 -v config.json:/usr/share/nginx/html/api/default_clusters.json cars10/elasticvue
 ```
-
-Your users will be prompted to optionally import these clusters.
-
-### Web version
-
-> **You have to configure your elasticsearch cluster if you want to use elasticvue via docker**
-
-Visit [https://app.elasticvue.com](https://app.elasticvue.com).
-
-### Self-hosted
-
-> **You have to configure your elasticsearch cluster if you want to use elasticvue via docker**
-
-Please check the [wiki](https://github.com/cars10/elasticvue/wiki/Building-Elasticvue) for more information.
 
 ## Elasticsearch configuration
 
@@ -144,9 +167,26 @@ If you use docker to run your elasticsearch cluster you can pass the options via
 
 ```bash
 docker run -p 9200:9200 \
+           -e "discovery.type=single-node" \
            -e "http.cors.enabled=true" \
            -e "http.cors.allow-origin=/.*/" \
-           elasticsearch
+           -e "http.cors.allow-headers=X-Requested-With,Content-Type,Content-Length,Authorization" \
+           docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+```
+
+or `compose.yml`
+
+```yml
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+    ports:
+      - "9200:9200"
+    environment:
+      - http.cors.enabled=true
+      - http.cors.allow-origin="/.*/"
+      - http.cors.allow-headers=X-Requested-With,Content-Type,Content-Length,Authorization
+      - discovery.type=single-node
 ```
 
 After configuration restart your cluster and you should be able to connect.

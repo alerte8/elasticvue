@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test'
 import { mockElasticHome } from './home'
 import { mockElasticNodes } from './nodes'
+import { catAliases } from '../default/indices'
 import { catIndices } from './indices'
 
 export const mockElastic8 = async (page: Page, { health }: { health: string } = { health: 'green' }) => {
@@ -8,7 +9,8 @@ export const mockElastic8 = async (page: Page, { health }: { health: string } = 
   await mockElasticNodes(page)
 
   const defaultMocks = {
-    catIndices
+    catIndices,
+    catAliases
   }
 
   for (const method in defaultMocks) {

@@ -22,7 +22,7 @@
           "title": "英語"
         },
         "cn": {
-          "title": "中国語"
+          "title": "簡体字中国語"
         },
         "fr": {
           "title": "フランス語"
@@ -35,6 +35,12 @@
         },
         "jp": {
           "title": "日本語"
+        },
+        "tw": {
+          "title": "繁体字中国語"
+        },
+        "ko": {
+          "title": "韓国語"
         }
       }
     },
@@ -378,6 +384,7 @@
   },
   "cluster_nodes": {
     "heading": "ノード",
+    "node_role": "ノードロール",
     "node_icons": {
       "master": {
         "title": "マスターノード"
@@ -393,7 +400,16 @@
       },
       "coordinating_only": {
         "title": "コーディネーションノード"
-      }
+      },
+      "cold": { "title": "コールドノード" },
+      "frozen": { "title": "フローズンノード" },
+      "hot": { "title": "ホットノード" },
+      "ml": { "title": "機械学習ノード" },
+      "remote_cluster_client": { "title": "リモートクラスタークライアントノード" },
+      "content": { "title": "コンテンツノード" },
+      "transform": { "title": "トランスフォームノード" },
+      "voting_only": { "title": "投票専用ノード" },
+      "warm": { "title": "ウォームノード" }
     },
     "node_properties": {
       "ip": "IP",
@@ -723,6 +739,13 @@
       "cancel_relocation": "再ルーティングをキャンセル",
       "reroute": {
         "confirm": "シャード '{shard}' をノード '{fromNode}' から '{toNode}' に再ルーティングしますか？"
+      },
+      "allocation": {
+        "label": "シャード割り当て",
+        "enable_confirm": "シャード割り当てを有効にしますか？",
+        "enable_growl": "シャード割り当てが有効になりました",
+        "disable_confirm": "シャード割り当てを無効にしますか？",
+        "disable_growl": "シャード割り当てが無効になりました"
       }
     }
   },
@@ -899,8 +922,6 @@
         "schedule": {
           "label": "スケジュール*",
           "hint": "Cron 式（例：'0 30 1 * * ?' は毎日午前 1:30）"
-        },
-        "repository": {
         },
         "indices": {
           "label": "インデックス",

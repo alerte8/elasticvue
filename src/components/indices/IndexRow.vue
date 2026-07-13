@@ -17,9 +17,8 @@
     </td>
     <td>{{ index.status }}</td>
     <td>{{ index.uuid }}</td>
-    <td :title="aliases.join('\n')">
-      <q-circular-progress v-if="loading" indeterminate rounded color="primary" />
-      <template v-else>
+    <td :title="index.aliases ? index.aliases.join('\n') : ''">
+      <template v-if="index.aliases">
         [
         <span v-for="(alias, i) in aliases" :key="`${index}-alias-${alias}`">
           <a :key="alias"
@@ -115,6 +114,25 @@
                              :growl="t('indices.index_row.options.clear_cache.growl', {index: index.index})"
                              icon="clear_all"
                              @done="emitReloadAndCloseMenu" />
+
+            <row-menu-action
+              method="indexPutSettings"
+              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: true } } } }"
+              :text="t('indices.index_row.options.set_readonly.text')"
+              :growl="t('indices.index_row.options.set_readonly.growl', { index: index.index })"
+              :confirm="t('indices.index_row.options.set_readonly.confirm', { index: index.index })"
+              icon="lock"
+              @done="emitReloadAndCloseMenu"
+            />
+
+            <row-menu-action
+              method="indexPutSettings"
+              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: false } } } }"
+              :text="t('indices.index_row.options.set_writable.text')"
+              :growl="t('indices.index_row.options.set_writable.growl', { index: index.index })"
+              icon="lock_open"
+              @done="emitReloadAndCloseMenu"
+            />
 
             <row-menu-action
               method="indexPutSettings"

@@ -10,9 +10,11 @@ sed -e "s/\"version\":\s\".*\"/\"version\": \"$VERSION\"/" -i src-tauri/tauri.co
 sed -e "s/\"version\":\s\".*\"/\"version\": \"$VERSION\"/" -i browser_extension/chrome/manifest.json
 sed -e "s/\"version\":\s\".*\"/\"version\": \"$VERSION\"/" -i browser_extension/edge/manifest.json
 sed -e "s/\"version\":\s\".*\"/\"version\": \"$VERSION\"/" -i browser_extension/firefox/manifest.json
+npm install
 
 # commit new version
 git add package.json
+git add package-lock.json
 git add src-tauri/tauri.conf.json
 git add -f browser_extension/chrome/manifest.json
 git add -f browser_extension/edge/manifest.json

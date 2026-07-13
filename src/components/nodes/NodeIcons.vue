@@ -19,6 +19,15 @@
     :title="t('cluster_nodes.node_icons.coordinating_only.title')"
     name="route"
   />
+
+  <q-icon v-if="elasticsearchNode.mlNode" size="sm" :title="t('cluster_nodes.node_icons.ml.title')" name="psychology" />
+  <q-icon v-if="elasticsearchNode.contentNode" size="sm" :title="t('cluster_nodes.node_icons.content.title')" name="folder" />
+  <q-icon
+    v-if="elasticsearchNode.transformNode"
+    size="sm"
+    :title="t('cluster_nodes.node_icons.transform.title')"
+    name="transform"
+  />
 </template>
 
 <script setup lang="ts">

@@ -51,7 +51,7 @@ const t = useTranslation()
 const emit = defineEmits(['update:modelValue'])
 watch(cluster, (value) => emit('update:modelValue', value))
 
-const { testState, connectState, testConnection, connectAndRedirect, form, formValid } = useClusterConnection(
+const { testState, connectState, testConnection, connectAndRedirect, formValid } = useClusterConnection(
   cluster,
   props.connectCallback
 )

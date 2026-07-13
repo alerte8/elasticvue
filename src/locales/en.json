@@ -22,7 +22,7 @@
           "title": "English"
         },
         "cn": {
-          "title": "Chinese"
+          "title": "Simplified Chinese"
         },
         "fr": {
           "title": "French"
@@ -35,6 +35,12 @@
         },
         "jp": {
           "title": "Japanese"
+        },
+        "tw": {
+          "title": "Traditional Chinese"
+        },
+        "ko": {
+          "title": "Korean"
         }
       }
     },
@@ -383,6 +389,7 @@
   },
   "cluster_nodes": {
     "heading": "Nodes",
+    "node_role": "Node role",
     "node_icons": {
       "master": {
         "title": "Master node"
@@ -398,6 +405,33 @@
       },
       "coordinating_only": {
         "title": "Coordinating only node"
+      },
+      "cold": {
+        "title": "Cold node"
+      },
+      "frozen": {
+        "title": "Frozen node"
+      },
+      "hot": {
+        "title": "Hot node"
+      },
+      "ml": {
+        "title": "Machine learning node"
+      },
+      "remote_cluster_client": {
+        "title": "Remote cluster client node"
+      },
+      "content": {
+        "title": "Content node"
+      },
+      "transform": {
+        "title": "Transform node"
+      },
+      "voting_only": {
+        "title": "Voting-only node"
+      },
+      "warm": {
+        "title": "Warm node"
       }
     },
     "node_properties": {
@@ -726,6 +760,13 @@
       "cancel_relocation": "Cancel reroute",
       "reroute": {
         "confirm": "Reroute shard '{shard}' from node '{fromNode}' to '{toNode}'?"
+      },
+      "allocation": {
+        "label": "Shard allocation",
+        "enable_confirm": "Enable shard allocation?",
+        "enable_growl": "Shard allocation enabled",
+        "disable_confirm": "Disable shard allocation?",
+        "disable_growl": "Shard allocation disabled"
       }
     }
   },

@@ -14,7 +14,7 @@
     </div>
 
     <div class="flex">
-      <filter-input v-model="indicesStore.filter" :columns="['index', 'uuid']" />
+      <filter-input v-model="indicesStore.filter" :columns="['index', 'uuid', 'aliases']" />
 
       <q-btn icon="settings" round flat class="q-ml-sm">
         <q-menu style="white-space: nowrap" anchor="bottom right" self="top end">

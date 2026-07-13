@@ -20,6 +20,7 @@ export type EsIndex = {
   'docs.count': string
   'store.size': string
   cd: string
+  aliases?: string[]
 }
 
 export type EsTableProps = {
@@ -54,7 +55,7 @@ export const useIndicesTable = (props: EsTableProps, emit: any) => {
       indices = indices.filter((item: any) => !item.index.match(new RegExp(indicesStore.hideIndicesRegex)))
     }
 
-    indices = filterItems(indices, indicesStore.filter, ['index', 'uuid'])
+    indices = filterItems(indices, indicesStore.filter, ['index', 'uuid', 'aliases'])
     items.value = indices.map((index: any) => new ElasticsearchIndex(index))
   }
 

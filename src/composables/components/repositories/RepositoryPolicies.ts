@@ -1,9 +1,10 @@
-import { ref, watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { useTranslation } from '../../i18n'
 import { useElasticsearchAdapter } from '../../CallElasticsearch'
 import { genColumns } from '../../../helpers/tableColumns'
 import { defineElasticsearchRequest } from '../../CallElasticsearch'
 import { SnapshotPolicy, SnapshotPolicyRetention } from '../../../types/snapshotPolicies'
+import type EditRepositorySnapshotPolicy from '../../../components/repositories/EditRepositorySnapshotPolicy.vue'
 
 export type RepositoryPoliciesProps = {
   repository: string
@@ -31,7 +32,7 @@ export const useRepositoryPolicies = (props: RepositoryPoliciesProps, emit: any)
   const dialog = ref(false)
   const policies = ref<MappedSnapshotPolicy[]>([])
   const selectedPolicyId = ref('')
-  const editDialog = ref<any>(null)
+  const editDialog = useTemplateRef<typeof EditRepositorySnapshotPolicy>('editDialog')
 
   watch(dialog, (value) => {
     if (value) {

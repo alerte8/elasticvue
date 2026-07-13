@@ -24,6 +24,11 @@ export default class ElasticsearchNode {
   dataNode: boolean
   ingestNode: boolean
   coordinatingNode: boolean
+  mlNode: boolean
+  contentNode: boolean
+  transformNode: boolean
+  votingOnlyNode: boolean
+  warmNode: boolean
   attributes: Record<string, string>
   shards?: number | null
 
@@ -53,6 +58,11 @@ export default class ElasticsearchNode {
     this.dataNode = false
     this.ingestNode = false
     this.coordinatingNode = false
+    this.mlNode = false
+    this.contentNode = false
+    this.transformNode = false
+    this.votingOnlyNode = false
+    this.warmNode = false
 
     this.master = options.master === '*'
     this.setRoles(options['node.role'])
@@ -63,6 +73,11 @@ export default class ElasticsearchNode {
     this.dataNode = roles.includes('d')
     this.ingestNode = roles.includes('i')
     this.coordinatingNode = roles === '-'
+    this.mlNode = roles.includes('l')
+    this.contentNode = roles.includes('s')
+    this.transformNode = roles.includes('t')
+    this.votingOnlyNode = roles.includes('v')
+    this.warmNode = roles.includes('w')
   }
 }
 

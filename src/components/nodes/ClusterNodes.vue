@@ -11,7 +11,21 @@
       <q-separator />
 
       <loader-status :request-state="requestState">
-        <nodes-table :nodes="data || []" />
+        <nodes-table :nodes="data || []">
+          <q-select
+            v-model="nodesStore.nodeRoles"
+            :options="nodeRoleOptions"
+            option-value="value"
+            option-label="label"
+            emit-value
+            map-options
+            :label="t('cluster_nodes.node_role')"
+            multiple
+            dense
+            outlined
+            style="width: 200px"
+          />
+        </nodes-table>
       </loader-status>
     </q-card>
 
@@ -49,6 +63,24 @@
               </td>
               <td>{{ t('cluster_nodes.node_icons.coordinating_only.title') }}</td>
             </tr>
+            <tr>
+              <td>
+                <q-icon name="psychology" size="xs" />
+              </td>
+              <td>{{ t('cluster_nodes.node_icons.ml.title') }}</td>
+            </tr>
+            <tr>
+              <td>
+                <q-icon name="folder" size="xs" />
+              </td>
+              <td>{{ t('cluster_nodes.node_icons.content.title') }}</td>
+            </tr>
+            <tr>
+              <td>
+                <q-icon name="transform" size="xs" />
+              </td>
+              <td>{{ t('cluster_nodes.node_icons.transform.title') }}</td>
+            </tr>
           </tbody>
         </table>
       </q-card-section>
@@ -57,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue'
+import { computed, onMounted, Ref, ref } from 'vue'
 import ReloadButton from '../shared/ReloadButton.vue'
 import LoaderStatus from '../shared/LoaderStatus.vue'
 import NodesTable from './NodesTable.vue'

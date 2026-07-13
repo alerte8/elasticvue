@@ -88,6 +88,6 @@ const retentionFormat = (retention: SnapshotPolicyRetention | undefined) => {
     .join(', ')
 }
 
-const { dialog, policies, loadPolicies, executePolicy, editPolicy, deletePolicy, columns, selectedPolicyId, editDialog } =
+const { dialog, policies, loadPolicies, executePolicy, editPolicy, deletePolicy, columns, selectedPolicyId } =
   useRepositoryPolicies(props, emit)
 </script>

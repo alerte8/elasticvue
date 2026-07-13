@@ -15,6 +15,7 @@ export default class ElasticsearchIndex {
   humanStoreSize: string
   parsedSegmentsCount: number | string
   created: number | string
+  aliases?: string[]
 
   constructor(options: EsIndex) {
     this.index = options.index
@@ -30,6 +31,7 @@ export default class ElasticsearchIndex {
     this.parsedStoreSize = parseIntValue(options['store.size'])
     this.humanStoreSize = prettyPrintByteString(this.parsedStoreSize)
     this.created = parseIntValue(options.cd)
+    this.aliases = options.aliases
   }
 }
 

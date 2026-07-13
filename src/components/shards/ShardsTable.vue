@@ -22,6 +22,8 @@
     </div>
 
     <div class="flex">
+      <shard-allocation-button />
+
       <slot />
 
       <filter-input v-model="shardsStore.filter" :columns="['index']" />
@@ -62,7 +64,7 @@
           :key="`${col.name}_header_${i}`"
           class="text-left"
           :class="{ marked: markedColumnIndex === i }"
-          @mouseover="markColumn(i)"
+          @mouseover="markColumn(i as number)"
           @mouseleave="unmarkColumn"
         >
           <div>
@@ -86,7 +88,7 @@
           v-for="(col, i) in cols"
           :key="`${col.name}_unassigned_${i}`"
           :class="{ marked: markedColumnIndex === i }"
-          @mouseover="markColumn(i)"
+          @mouseover="markColumn(i as number)"
           @mouseleave="unmarkColumn"
         >
           <div class="flex">
@@ -106,7 +108,7 @@
           v-for="(col, i) in cols"
           :key="`${col.name}_shards_${i}`"
           :class="{ marked: markedColumnIndex === i }"
-          @mouseover="markColumn(i)"
+          @mouseover="markColumn(i as number)"
           @mouseleave="unmarkColumn"
         >
           <div class="flex items-center">
@@ -147,6 +149,7 @@ import FilterInput from '../shared/FilterInput.vue'
 import { useTranslation } from '../../composables/i18n'
 import { ShardsTableProps, useShardsTable } from '../../composables/components/shards/ShardsTable.ts'
 import FilterState from '../shared/FilterState.vue'
+import ShardAllocationButton from './ShardAllocationButton.vue'
 
 const t = useTranslation()
 const props = defineProps<ShardsTableProps>()

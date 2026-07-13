@@ -1,6 +1,5 @@
-import { onMounted, Ref, ref, watch } from 'vue'
+import { useTemplateRef } from 'vue'
 import { useModal } from '../../Modal'
-import { useElasticsearchAdapter } from '../../CallElasticsearch'
 import { QMenu } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useSearchStore } from '../../../store/search'
@@ -8,19 +7,12 @@ import { DEFAULT_PAGINATION, DEFAULT_SEARCH_QUERY } from '../../../consts'
 import ElasticsearchIndex from '../../../models/ElasticsearchIndex.ts'
 import { handleError } from '../../../helpers/error.ts'
 
-type Aliases = {
-  aliases: string[]
-}
-
-type IndexAliases = Record<string, Aliases>
-
 export type IndexRowProps = {
   index: ElasticsearchIndex
 }
 
-export const useIndexRow = (props: IndexRowProps, emit: any) => {
-  const menu: Ref<QMenu | null> = ref(null)
-  const aliases: Ref<string[]> = ref([])
+export const useIndexRow = (_props: IndexRowProps, emit: any) => {
+  const menu = useTemplateRef<QMenu>('menu')
 
   const { openModalWith } = useModal()
   const roles: Ref<string[]> = ref([])
@@ -118,7 +110,6 @@ export const useIndexRow = (props: IndexRowProps, emit: any) => {
     roles,
     aliases,
     openModalWith,
-    loading,
     emitReloadAndCloseMenu,
     showDocuments
   }

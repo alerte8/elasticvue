@@ -31,3 +31,8 @@ export const catIndices = {
     }
   ]
 }
+
+export const catAliases = {
+  url: 'http://localhost:9200/*/_alias',
+  json: {}
+}

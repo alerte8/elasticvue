@@ -22,7 +22,7 @@
           "title": "设置为英语"
         },
         "cn": {
-          "title": "设置为中文"
+          "title": "设置为简体中文"
         },
         "fr": {
           "title": "法语"
@@ -35,6 +35,12 @@
         },
         "jp": {
           "title": "日本人"
+        },
+        "tw": {
+          "title": "繁体中文"
+        },
+        "ko": {
+          "title": "韩语"
         }
       }
     },
@@ -378,6 +384,7 @@
   },
   "cluster_nodes": {
     "heading": "节点",
+    "node_role": "节点角色",
     "node_icons": {
       "master": {
         "title": "主节点"
@@ -393,7 +400,16 @@
       },
       "coordinating_only": {
         "title": "仅协调节点"
-      }
+      },
+      "cold": { "title": "冷节点" },
+      "frozen": { "title": "冻结节点" },
+      "hot": { "title": "热节点" },
+      "ml": { "title": "机器学习节点" },
+      "remote_cluster_client": { "title": "远程集群客户端节点" },
+      "content": { "title": "内容节点" },
+      "transform": { "title": "转换节点" },
+      "voting_only": { "title": "仅投票节点" },
+      "warm": { "title": "温节点" }
     },
     "node_properties": {
       "ip": "IP地址",
@@ -723,6 +739,13 @@
       "cancel_relocation": "取消迁移",
       "reroute": {
         "confirm": "将分片 '{shard}' 从节点 '{fromNode}' 迁移到节点 '{toNode}'？"
+      },
+      "allocation": {
+        "label": "分片分配",
+        "enable_confirm": "启用分片分配？",
+        "enable_growl": "分片分配已启用",
+        "disable_confirm": "禁用分片分配？",
+        "disable_growl": "分片分配已禁用"
       }
     }
   },
@@ -899,8 +922,6 @@
         "schedule": {
           "label": "计划*",
           "hint": "Cron 表达式（例如，'0 30 1 * * ?' 表示每天凌晨 1:30）"
-        },
-        "repository": {
         },
         "indices": {
           "label": "索引",

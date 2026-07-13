@@ -18,7 +18,7 @@
           :active="themeStore.preference === theme"
           :title="theme"
           :data-testid="`change-theme__${theme}`"
-          @click="changeTheme(theme)"
+          @click="changeTheme(theme as ThemePreferences)"
         >
           <q-item-section>
             <q-icon :name="icon" :alt="theme" />

@@ -28,6 +28,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
   const hits: Ref<any[]> = ref([])
   const totalHits: Ref<number> = ref(0)
   const tableColumns: Ref<any[]> = ref([])
+  const activeTab = ref('hits')
 
   const { callElasticsearch } = useElasticsearchAdapter()
 
@@ -246,6 +247,21 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
 
   const acceptRowsPerPage = (value: boolean) => (props.tab.rowsPerPageAccepted = value)
 
+  const hasAggregations = computed(() => {
+    return props.results?.aggregations && Object.keys(props.results.aggregations).length > 0
+  })
+
+  const aggregationsJson = computed(() => {
+    if (!hasAggregations.value || !props.results.aggregations) return ''
+    return stringifyJson(props.results.aggregations, null, 2)
+  })
+
+  watch(hasAggregations, (hasAggs) => {
+    if (!hasAggs && activeTab.value === 'aggregations') {
+      activeTab.value = 'hits'
+    }
+  })
+
   return {
     ownTab,
     acceptRowsPerPage,
@@ -263,6 +279,7 @@ export const useSearchResultsTable = (props: SearchResultsTableProps, emit: any)
     filteredHits,
     rowsPerPage,
     onRequest,
+    onRowsPerPageSelect,
     reload,
     selectedItems,
     genDocStr,
