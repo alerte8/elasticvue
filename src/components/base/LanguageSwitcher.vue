@@ -1,5 +1,5 @@
 <template>
-  <q-btn icon="translate" round color="dark-grey" :title="t('base.language_switcher.title')" data-testid="change-language-button">
+  <q-btn icon="translate" round dense size="sm" color="dark-grey" :title="t('base.language_switcher.title')" data-testid="change-language-button">
     <q-menu>
       <q-list>
         <q-item

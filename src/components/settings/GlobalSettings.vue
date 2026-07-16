@@ -3,6 +3,14 @@
     <div class="col-md-8 offset-md-2 col-sm-12">
       <q-card>
         <q-card-section class="q-mt-lg">
+          <div class="text-subtitle1">
+            Elasticvue <span id="version">{{ version }}-{{ VERSION_NAME }}</span>
+          </div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-section>
           <h1 class="text-h5 q-my-none">
             {{ t('settings.heading') }}
           </h1>
@@ -122,7 +130,12 @@
 
 <script setup lang="ts">
 import { useIndicesStore } from '../../store/indices'
-import { DEFAULT_HIDE_INDICES_REGEX, DEFAULT_HIDE_NODE_ATTRIBUTES_REGEX, DEFAULT_DOCUMENT_FIELD_MAX_LENGTH } from '../../consts'
+import {
+  DEFAULT_HIDE_INDICES_REGEX,
+  DEFAULT_HIDE_NODE_ATTRIBUTES_REGEX,
+  DEFAULT_DOCUMENT_FIELD_MAX_LENGTH,
+  VERSION_NAME
+} from '../../consts'
 import { askConfirm } from '../../helpers/dialogs'
 import { useTranslation } from '../../composables/i18n'
 import ImportExport from './ImportExport.vue'
@@ -136,6 +149,7 @@ const indicesStore = useIndicesStore()
 const nodesStore = useNodesStore()
 const searchStore = useSearchStore()
 const codeEditorStore = useCodeEditorStore()
+const version = __APP_VERSION__
 
 const resetHideIndicesRegex = () => (indicesStore.hideIndicesRegex = DEFAULT_HIDE_INDICES_REGEX)
 const resetHideNodesAttributesRegex = () => (nodesStore.hideAttributesRegex = DEFAULT_HIDE_NODE_ATTRIBUTES_REGEX)

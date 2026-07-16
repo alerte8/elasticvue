@@ -35,6 +35,20 @@ export const usesearchDocumentsFormTabs = () => {
     activeTabName.value = newTab.name
   }
 
+  function duplicateTab (index: number) {
+    if (index < 0 || index >= tabs.value.length) return
+
+    const sourceTab = tabs.value[index]
+    const newTab: SearchState = {
+      ...JSON.parse(JSON.stringify(sourceTab)),
+      name: `tab-doc-${Date.now()}`,
+      label: `${sourceTab.label} (copy)`
+    }
+
+    tabs.value.splice(index + 1, 0, newTab)
+    activeTabName.value = newTab.name
+  }
+
   function updateTab (name: string, tab: SearchState) {
     const existingTab = tabs.value.find(t => t.name === name)
     if (!existingTab) return
@@ -62,6 +76,7 @@ export const usesearchDocumentsFormTabs = () => {
     activeTabIndex,
     activeTabName,
     addTab,
+    duplicateTab,
     updateTab,
     removeTab,
     refreshActiveTab,

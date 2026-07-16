@@ -2,6 +2,8 @@
   <q-btn
     :icon="themeIcon"
     round
+    dense
+    size="sm"
     color="dark-grey"
     class="q-mr-md"
     :title="t('base.theme_switcher.title')"

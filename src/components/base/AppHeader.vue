@@ -41,6 +41,9 @@
         />
         <q-route-tab id="settings" icon="settings" :to="{ name: 'settings' }" :ripple="false" />
       </q-tabs>
+
+      <theme-switcher />
+      <language-switcher />
     </q-toolbar>
   </q-header>
 </template>
@@ -48,6 +51,8 @@
 <script setup lang="ts">
 import { useLogo } from '../../composables/Logo'
 import ClusterSelection from '../clusterselection/ClusterSelection.vue'
+import ThemeSwitcher from './ThemeSwitcher.vue'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 import { useTranslation } from '../../composables/i18n.ts'
 import { useConnectionStore } from '../../store/connection'
 import { clusterVersionGt } from '../../helpers/minClusterVersion.ts'

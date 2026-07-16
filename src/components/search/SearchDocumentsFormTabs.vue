@@ -17,7 +17,7 @@
         shrink content-class="overflow-hidden">
         <template v-for="(tab, index) in tabs" :key="tab.name">
           <q-tab :name="tab.name" style="white-space: nowrap; flex-shrink: 0"
-                 @mousedown.middle.prevent.stop="removeTab(index as number)">
+                 @mousedown.middle.prevent.stop="onTabMiddleClick($event, index as number)">
             <div class="flex"> {{ tab.label }} 
               <q-btn icon="edit" flat dense size="sm"> 
                 <q-popup-edit v-slot="scope" v-model="tab.label" auto-save anchor="top left" @save="(v) => {updateTab(v, tab)}"> 
@@ -71,6 +71,15 @@
   import { useTranslation } from '../../composables/i18n'
 
   const t = useTranslation()
-  const { tabs, activeTabName, addTab, updateTab, removeTab, refreshActiveTab, searchStore } = usesearchDocumentsFormTabs()
+  const { tabs, activeTabName, addTab, duplicateTab, updateTab, removeTab, refreshActiveTab, searchStore } = usesearchDocumentsFormTabs()
+
+  function onTabMiddleClick (event: MouseEvent, index: number) {
+    if (event.altKey) {
+      duplicateTab(index)
+    } else {
+      removeTab(index)
+    }
+  }
+
   defineExpose({ addTab })
 </script>

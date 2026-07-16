@@ -18,16 +18,12 @@
     <modal-loader />
     <alert-snackbar />
     <tauri-update-check v-if="buildConfig.tauri" />
-
-    <app-footer v-if="route.name !== 'search'" />
   </q-layout>
 </template>
 
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-  import { useRoute } from 'vue-router'
   import AppHeader from './components/base/AppHeader.vue'
-  import AppFooter from './components/base/AppFooter.vue'
   import ModalLoader from './components/shared/ModalLoader.vue'
   import AlertSnackbar from './components/shared/AlertSnackbar.vue'
   import NetworkError from './components/shared/NetworkError.vue'
@@ -40,7 +36,6 @@
 
   const themeStore = useThemeStore()
   const connectionStore = useConnectionStore()
-  const route = useRoute()
   const layoutRef = ref<any>(null)
 
   const zoom = ref(parseFloat(localStorage.getItem('zoom') || '1'))
