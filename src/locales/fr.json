@@ -2,6 +2,12 @@
   "base": {
     "app_footer": {
     },
+    "connection_password_prompt": {
+      "heading": "Mot de passe requis",
+      "message": "Veuillez saisir le mot de passe de '{name}' pour continuer.",
+      "submit": "Se connecter",
+      "go_to_settings": "Accéder aux paramètres"
+    },
     "app_header": {
       "navigation": {
         "home": "Accueil",
@@ -692,6 +698,11 @@
     },
     "editor_vim_mode": {
       "label": "Utiliser les raccourcis clavier de vim dans l'éditeur"
+    },
+    "remember_connection_passwords": {
+      "label": "Se souvenir des mots de passe de connexion",
+      "message": "Si désactivé, les mots de passe des connexions utilisant l'authentification basique ne sont jamais enregistrés. Vous devrez ressaisir le mot de passe à chaque lancement de l'application ou lors du changement de serveur.",
+      "confirm_disable": "Êtes-vous sûr ? Les mots de passe actuellement enregistrés pour vos connexions seront supprimés immédiatement. Vous devrez les ressaisir lors de la prochaine connexion."
     }
   },
   "setup": {

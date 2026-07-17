@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia'
+import type { StateTree } from 'pinia'
+import { pinia } from '../plugins/pinia.ts'
+import { useSettingsStore } from './settings.ts'
 
 export enum BuildFlavor {
   serverless = 'serverless',
@@ -68,6 +71,9 @@ export const useConnectionStore = defineStore('connection', {
     serverless(): boolean {
       if (typeof this.activeClusterIndex !== 'number') return false
       return this.clusters[this.activeClusterIndex].flavor === BuildFlavor.serverless
+    },
+    activeClusterNeedsPassword(): boolean {
+      return clusterNeedsPassword(this.activeCluster)
     }
   },
   actions: {
@@ -82,6 +88,9 @@ export const useConnectionStore = defineStore('connection', {
     },
     removeCluster(index: number) {
       this.clusters.splice(index, 1)
+    },
+    purgeStoredConnectionPasswords() {
+      this.clusters = stripBasicAuthPasswords(this.clusters)
     },
     checkAndSetActiveCluster() {
       if (this.activeClusterIndex === null || this.clusters.length === 0) return
@@ -106,8 +115,36 @@ export const useConnectionStore = defineStore('connection', {
       }
     }
   },
-  persist: true
+  persist: {
+    serializer: {
+      serialize: (data: StateTree) => {
+        const settingsStore = useSettingsStore(pinia)
+        if (settingsStore.rememberConnectionPasswords) return JSON.stringify(data)
+
+        return JSON.stringify({ ...data, clusters: stripBasicAuthPasswords(data.clusters as ElasticsearchCluster[]) })
+      },
+      deserialize: (data: string) => JSON.parse(data)
+    }
+  }
 })
+
+export const clusterNeedsPassword = (cluster: ElasticsearchCluster | null | undefined): boolean => {
+  return !!cluster && cluster.auth.authType === AuthType.basicAuth && !cluster.auth.authData.password
+}
+
+export const stripBasicAuthPasswords = (clusters: ElasticsearchCluster[]): ElasticsearchCluster[] => {
+  return clusters.map((cluster) => {
+    if (cluster.auth.authType !== AuthType.basicAuth) return cluster
+
+    return {
+      ...cluster,
+      auth: {
+        authType: AuthType.basicAuth,
+        authData: { ...cluster.auth.authData, password: '' }
+      }
+    }
+  })
+}
 
 const cleanupClusterAuth = (cluster: ElasticsearchCluster): ElasticsearchCluster => {
   switch (cluster.auth.authType) {

@@ -96,7 +96,18 @@
               <q-checkbox v-model="codeEditorStore.vimMode" :label="t('settings.editor_vim_mode.label')" />
             </div>
           </div>
-<!-- 
+
+          <div class="row q-mb-lg">
+            <div class="col-md-6 col-sm-12">
+              <q-checkbox
+                :model-value="settingsStore.rememberConnectionPasswords"
+                :label="t('settings.remember_connection_passwords.label')"
+                @update:model-value="onToggleRememberConnectionPasswords"
+              />
+              <div class="text-caption text-grey q-ml-lg">{{ t('settings.remember_connection_passwords.message') }}</div>
+            </div>
+          </div>
+<!--
           <div class="row q-mb-lg">
             <div class="col-md-6 col-sm-12">
               <q-checkbox v-model="settingsStore.checkForUpdates" :label="t('settings.check_for_updates.label')" />
@@ -142,6 +153,8 @@ import ImportExport from './ImportExport.vue'
 import { useSearchStore } from '../../store/search.ts'
 import { useNodesStore } from '../../store/nodes.ts'
 import { useCodeEditorStore } from '../../store/codeEditor.ts'
+import { useSettingsStore } from '../../store/settings.ts'
+import { useConnectionStore } from '../../store/connection.ts'
 import CustomInput from '../shared/CustomInput.vue'
 
 const t = useTranslation()
@@ -149,11 +162,26 @@ const indicesStore = useIndicesStore()
 const nodesStore = useNodesStore()
 const searchStore = useSearchStore()
 const codeEditorStore = useCodeEditorStore()
+const settingsStore = useSettingsStore()
+const connectionStore = useConnectionStore()
 const version = __APP_VERSION__
 
 const resetHideIndicesRegex = () => (indicesStore.hideIndicesRegex = DEFAULT_HIDE_INDICES_REGEX)
 const resetHideNodesAttributesRegex = () => (nodesStore.hideAttributesRegex = DEFAULT_HIDE_NODE_ATTRIBUTES_REGEX)
 const resetDocumentFieldMaxLength = () => (searchStore.documentFieldMaxLength = DEFAULT_DOCUMENT_FIELD_MAX_LENGTH)
+
+const onToggleRememberConnectionPasswords = async (value: boolean) => {
+  if (value) {
+    settingsStore.rememberConnectionPasswords = true
+    return
+  }
+
+  const confirmed = await askConfirm(t('settings.remember_connection_passwords.confirm_disable'))
+  if (!confirmed) return
+
+  settingsStore.rememberConnectionPasswords = false
+  connectionStore.purgeStoredConnectionPasswords()
+}
 
 const reset = async () => {
   const confirmed = await askConfirm(t('settings.disconnect_and_reset.confirm'))

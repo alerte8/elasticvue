@@ -2,6 +2,12 @@
   "base": {
     "app_footer": {
     },
+    "connection_password_prompt": {
+      "heading": "Password required",
+      "message": "Please enter the password for '{name}' to continue.",
+      "submit": "Connect",
+      "go_to_settings": "Go to settings"
+    },
     "app_header": {
       "navigation": {
         "home": "Home",
@@ -710,6 +716,11 @@
     },
     "editor_vim_mode": {
       "label": "Use vim keybindings in editor"
+    },
+    "remember_connection_passwords": {
+      "label": "Remember connection passwords",
+      "message": "When disabled, passwords for saved connections using basic auth are never stored. You will have to enter the password again on every app launch or when switching to that server.",
+      "confirm_disable": "Are you sure? The passwords currently saved for your connections will be deleted immediately. You will have to re-enter them the next time you connect."
     }
   },
   "setup": {

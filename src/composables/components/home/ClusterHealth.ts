@@ -1,5 +1,6 @@
 import {
   BuildFlavor,
+  clusterNeedsPassword,
   ElasticsearchCluster,
   ElasticsearchClusterConnection,
   useConnectionStore
@@ -12,15 +13,17 @@ export const useClusterHealth = () => {
   const connectionStore = useConnectionStore()
 
   const setupHealthLoading = () => {
-    if (!connectionStore.activeCluster) return
+    if (!connectionStore.activeCluster || clusterNeedsPassword(connectionStore.activeCluster)) return
     checkHealth(connectionStore.activeCluster)
     window.setInterval(() => {
-      if (connectionStore.activeCluster) checkHealth(connectionStore.activeCluster)
+      if (connectionStore.activeCluster && !clusterNeedsPassword(connectionStore.activeCluster)) {
+        checkHealth(connectionStore.activeCluster)
+      }
     }, 30000)
   }
   setupHealthLoading()
 
-  const checkAllClusters = () => connectionStore.clusters.forEach(checkHealth)
+  const checkAllClusters = () => connectionStore.clusters.filter((cluster) => !clusterNeedsPassword(cluster)).forEach(checkHealth)
 
   return {
     checkAllClusters

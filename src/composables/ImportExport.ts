@@ -1,7 +1,7 @@
 import { Ref, ref } from 'vue'
 import { askConfirm } from '../helpers/dialogs'
 import { useTranslation } from './i18n'
-import { useConnectionStore } from '../store/connection'
+import { stripBasicAuthPasswords, useConnectionStore } from '../store/connection'
 import { initDb } from '../db/Idb.ts'
 import { parseJson } from '../helpers/json/parse.ts'
 import { stringifyJson } from '../helpers/json/stringify.ts'
@@ -82,6 +82,11 @@ export const useImportExport = ({ confirmImport } = { confirmImport: false }) =>
         const connectionData = backup.store.connection
         if (connectionData.clusters?.length > 0 && !connectionData.clusters[0].auth) {
           backup.store.connection.clusters = migrateAuthType(connectionData.clusters)
+        }
+
+        const rememberPasswords = backup.store.settings?.rememberConnectionPasswords !== false
+        if (!rememberPasswords) {
+          backup.store.connection.clusters = stripBasicAuthPasswords(backup.store.connection.clusters)
         }
       }
 

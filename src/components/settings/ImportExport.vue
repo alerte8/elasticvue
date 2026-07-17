@@ -33,7 +33,10 @@
         <q-slide-transition>
           <div v-if="helpCollapsed">
             <ul>
-              <li>Saved clusters (including username and password <strong>in plain text</strong>)</li>
+              <li v-if="settingsStore.rememberConnectionPasswords">
+                Saved clusters (including username and password <strong>in plain text</strong>)
+              </li>
+              <li v-else>Saved clusters (including username, <strong>passwords are not included</strong>)</li>
               <li>Currently active cluster</li>
               <li>Code Editor settings</li>
               <li>Search settings</li>
@@ -68,8 +71,10 @@ import DownloadButton from '../shared/DownloadButton.vue'
 import { useImportExport } from '../../composables/ImportExport'
 import ImportBackupForm from './ImportBackupForm.vue'
 import { useTranslation } from '../../composables/i18n'
+import { useSettingsStore } from '../../store/settings.ts'
 
 const t = useTranslation()
+const settingsStore = useSettingsStore()
 const { downloadFileName, backupJsonString } = useImportExport()
 const helpCollapsed = ref(false)
 </script>

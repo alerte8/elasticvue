@@ -4,8 +4,10 @@
 
     <q-page-container class="app-content">
       <div class="app-page">
-        <router-view v-if="connectionStore.activeCluster?.status !== 'unknown'" />
-        <div v-else class="q-pa-lg">
+        <router-view
+          v-if="isSettingsRoute || (!connectionStore.activeClusterNeedsPassword && connectionStore.activeCluster?.status !== 'unknown')"
+        />
+        <div v-else-if="!isSettingsRoute && !connectionStore.activeClusterNeedsPassword" class="q-pa-lg">
           <div class="row">
             <div class="col-6 offset-3">
               <network-error />
@@ -15,6 +17,7 @@
       </div>
     </q-page-container>
 
+    <connection-password-prompt />
     <modal-loader />
     <alert-snackbar />
     <tauri-update-check v-if="buildConfig.tauri" />
@@ -22,8 +25,10 @@
 </template>
 
 <script setup lang="ts">
-  import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+  import { useRoute } from 'vue-router'
   import AppHeader from './components/base/AppHeader.vue'
+  import ConnectionPasswordPrompt from './components/base/ConnectionPasswordPrompt.vue'
   import ModalLoader from './components/shared/ModalLoader.vue'
   import AlertSnackbar from './components/shared/AlertSnackbar.vue'
   import NetworkError from './components/shared/NetworkError.vue'
@@ -36,6 +41,8 @@
 
   const themeStore = useThemeStore()
   const connectionStore = useConnectionStore()
+  const route = useRoute()
+  const isSettingsRoute = computed(() => route.name === 'settings')
   const layoutRef = ref<any>(null)
 
   const zoom = ref(parseFloat(localStorage.getItem('zoom') || '1'))
