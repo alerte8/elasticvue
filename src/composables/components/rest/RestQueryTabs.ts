@@ -7,10 +7,15 @@ import { useRestStore } from '../../../store/rest.ts'
 const buildDefaultRequest = () => ({ method: HTTP_METHODS[1], path: '', body: '' })
 const buildDefaultResponse = () => ({ status: '', ok: false, bodyText: '' })
 
+// Etat partage entre tous les appels du composable, pour que les raccourcis clavier globaux
+// (changement/reouverture d'onglet) voient les memes onglets que le composant RestQueryFormTabs.
+const tabs = ref([] as IdbRestQueryTab[])
+const closedTabsStack: Omit<IdbRestQueryTab, 'id'>[] = []
+let tabsLoaded = false
+
 export const useRestQueryTabs = () => {
   const { restQueryTabs } = useIdbStore()
   const restStore = useRestStore()
-  const tabs = ref([] as IdbRestQueryTab[])
 
   const addTab = async () => {
     const newTab = {
@@ -29,6 +34,22 @@ export const useRestQueryTabs = () => {
     restQueryTabs.update(Object.assign({}, toRaw(tab), { label }))
   }
 
+  const duplicateTab = async (index: number) => {
+    if (index < 0 || index >= tabs.value.length) return
+
+    const sourceTab = tabs.value[index]
+    const newTab = {
+      name: `tab-${Date.now()}`,
+      label: `${sourceTab.label} (copy)`,
+      request: JSON.parse(JSON.stringify(toRaw(sourceTab.request))),
+      response: JSON.parse(JSON.stringify(toRaw(sourceTab.response)))
+    }
+    const key = await restQueryTabs.insert(newTab)
+    const newIdbTab = await restQueryTabs.get(key)
+    tabs.value.splice(index + 1, 0, newIdbTab)
+    restStore.activeTabIndex = index + 1
+  }
+
   const removeTab = async (index: number) => {
     if (index === restStore.activeTabIndex) {
       if (tabs.value.length > 1) {
@@ -37,7 +58,14 @@ export const useRestQueryTabs = () => {
     } else if (index < restStore.activeTabIndex) {
       restStore.activeTabIndex = restStore.activeTabIndex - 1
     }
-    await restQueryTabs.remove(tabs.value[index].id)
+    const removedTab = tabs.value[index]
+    closedTabsStack.push({
+      name: removedTab.name,
+      label: removedTab.label,
+      request: toRaw(removedTab.request),
+      response: toRaw(removedTab.response)
+    })
+    await restQueryTabs.remove(removedTab.id)
     tabs.value.splice(index, 1)
     if (tabs.value.length === 0) {
       restStore.activeTabIndex = 0
@@ -46,7 +74,20 @@ export const useRestQueryTabs = () => {
     }
   }
 
+  const reopenLastClosedTab = async () => {
+    const closedTab = closedTabsStack.pop()
+    if (!closedTab) return
+
+    const key = await restQueryTabs.insert(closedTab)
+    const newIdbTab = await restQueryTabs.get(key)
+    tabs.value.push(newIdbTab)
+    restStore.activeTabIndex = tabs.value.length - 1
+  }
+
   const loadTabs = async () => {
+    if (tabsLoaded) return
+    tabsLoaded = true
+
     tabs.value = await restQueryTabs.getAll()
 
     if (tabs.value.length === 0) {
@@ -80,6 +121,8 @@ export const useRestQueryTabs = () => {
     tabs,
     addTab,
     updateTab,
-    removeTab
+    duplicateTab,
+    removeTab,
+    reopenLastClosedTab
   }
 }

@@ -135,25 +135,6 @@
             />
 
             <row-menu-action
-              method="indexPutSettings"
-              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: true } } } }"
-              :text="t('indices.index_row.options.set_readonly.text')"
-              :growl="t('indices.index_row.options.set_readonly.growl', { index: index.index })"
-              :confirm="t('indices.index_row.options.set_readonly.confirm', { index: index.index })"
-              icon="lock"
-              @done="emitReloadAndCloseMenu"
-            />
-
-            <row-menu-action
-              method="indexPutSettings"
-              :method-params="{ indices: [props.index.index], body: { index: { blocks: { write: false } } } }"
-              :text="t('indices.index_row.options.set_writable.text')"
-              :growl="t('indices.index_row.options.set_writable.growl', { index: index.index })"
-              icon="lock_open"
-              @done="emitReloadAndCloseMenu"
-            />
-
-            <row-menu-action
               v-if="index.status === 'open' && !connectionStore.serverless"
               method="indexClose"
               :method-params="{ indices: [props.index.index] }"

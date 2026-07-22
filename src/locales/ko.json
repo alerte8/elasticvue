@@ -44,6 +44,65 @@
     },
     "theme_switcher": {
       "title": "테마 변경"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "키보드 단축키",
+      "sections": {
+        "navigation": "탐색",
+        "tabs": "탭",
+        "zoom": "확대/축소",
+        "search": "검색",
+        "rest": "REST",
+        "editor": "코드 편집기",
+        "filters": "필터"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "어디서나: 탐색 바의 다음 섹션으로 전환 (홈, 노드, 샤드, 인덱스, 검색, REST, 보안, 스냅샷, 설정)"
+        },
+        "cycle_tab": {
+          "description": "검색 또는 REST: 다음 열린 탭으로 전환"
+        },
+        "reopen_tab": {
+          "description": "검색 또는 REST: 마지막으로 닫은 탭 다시 열기"
+        },
+        "zoom": {
+          "description": "어디서나: 인터페이스 확대/축소"
+        },
+        "reset_zoom": {
+          "description": "데스크톱 앱 전용: 확대/축소를 100%로 재설정"
+        },
+        "run_search": {
+          "description": "검색: 현재 쿼리 실행"
+        },
+        "send_rest_body": {
+          "description": "REST: 현재 요청 보내기"
+        },
+        "send_rest_path": {
+          "description": "REST: 경로 필드에서 요청 보내기"
+        },
+        "suggestions": {
+          "description": "검색: 쿼리 필드의 자동 완성 제안 표시"
+        },
+        "clear_search": {
+          "description": "검색: 제안 닫기, 제안이 없으면 쿼리를 '*'로 재설정"
+        },
+        "navigate_suggestions": {
+          "description": "검색: 제안 목록에서 선택 항목을 위아래로 이동"
+        },
+        "apply_suggestion": {
+          "description": "검색: 강조된 제안 적용"
+        },
+        "beautify": {
+          "description": "모든 코드 편집기: 내용을 정리/포맷"
+        },
+        "indent": {
+          "description": "모든 코드 편집기: 들여쓰기 삽입"
+        },
+        "clear_filter": {
+          "description": "모든 필터 필드: 필터 지우기"
+        }
+      }
     }
   },
   "defaults": {

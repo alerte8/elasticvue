@@ -45,6 +45,65 @@
     },
     "theme_switcher": {
       "title": "Cambia tema"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "Scorciatoie da tastiera",
+      "sections": {
+        "navigation": "Navigazione",
+        "tabs": "Schede",
+        "zoom": "Zoom",
+        "search": "Ricerca",
+        "rest": "REST",
+        "editor": "Editor di codice",
+        "filters": "Filtri"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "Ovunque: passa alla sezione successiva della barra di navigazione (Home, Nodi, Shard, Indici, Ricerca, REST, Sicurezza, Snapshot, Impostazioni)"
+        },
+        "cycle_tab": {
+          "description": "Ricerca o REST: passa alla scheda successiva aperta"
+        },
+        "reopen_tab": {
+          "description": "Ricerca o REST: riapre l'ultima scheda chiusa"
+        },
+        "zoom": {
+          "description": "Ovunque: aumenta o riduce lo zoom dell'interfaccia"
+        },
+        "reset_zoom": {
+          "description": "Solo app desktop: ripristina lo zoom al 100%"
+        },
+        "run_search": {
+          "description": "Ricerca: esegue la query corrente"
+        },
+        "send_rest_body": {
+          "description": "REST: invia la richiesta corrente"
+        },
+        "send_rest_path": {
+          "description": "REST: invia la richiesta dal campo del percorso"
+        },
+        "suggestions": {
+          "description": "Ricerca: mostra i suggerimenti di completamento automatico per il campo query"
+        },
+        "clear_search": {
+          "description": "Ricerca: chiude i suggerimenti, oppure reimposta la query a '*' se non sono mostrati"
+        },
+        "navigate_suggestions": {
+          "description": "Ricerca: sposta la selezione su o giù nell'elenco dei suggerimenti"
+        },
+        "apply_suggestion": {
+          "description": "Ricerca: applica il suggerimento evidenziato"
+        },
+        "beautify": {
+          "description": "Qualsiasi editor di codice: formatta il contenuto"
+        },
+        "indent": {
+          "description": "Qualsiasi editor di codice: inserisce un'indentazione"
+        },
+        "clear_filter": {
+          "description": "Qualsiasi campo filtro: cancella il filtro"
+        }
+      }
     }
   },
   "defaults": {

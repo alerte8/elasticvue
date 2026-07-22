@@ -44,6 +44,65 @@
     },
     "theme_switcher": {
       "title": "切換主題"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "鍵盤快捷鍵",
+      "sections": {
+        "navigation": "導覽",
+        "tabs": "分頁",
+        "zoom": "縮放",
+        "search": "搜尋",
+        "rest": "REST",
+        "editor": "程式碼編輯器",
+        "filters": "篩選"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "任何位置：切換到導覽列中的下一個區段（首頁、節點、分片、索引、搜尋、REST、安全性、快照、設定）"
+        },
+        "cycle_tab": {
+          "description": "搜尋或 REST：切換到下一個開啟的分頁"
+        },
+        "reopen_tab": {
+          "description": "搜尋或 REST：重新開啟最後關閉的分頁"
+        },
+        "zoom": {
+          "description": "任何位置：放大或縮小介面"
+        },
+        "reset_zoom": {
+          "description": "僅限桌面應用程式：將縮放重設為 100%"
+        },
+        "run_search": {
+          "description": "搜尋：執行目前的查詢"
+        },
+        "send_rest_body": {
+          "description": "REST：傳送目前的請求"
+        },
+        "send_rest_path": {
+          "description": "REST：從路徑欄位傳送請求"
+        },
+        "suggestions": {
+          "description": "搜尋：顯示查詢欄位的自動完成建議"
+        },
+        "clear_search": {
+          "description": "搜尋：關閉建議；若未顯示建議，則將查詢重設為 '*'"
+        },
+        "navigate_suggestions": {
+          "description": "搜尋：在建議清單中上下移動選取項目"
+        },
+        "apply_suggestion": {
+          "description": "搜尋：套用醒目提示的建議"
+        },
+        "beautify": {
+          "description": "任何程式碼編輯器：美化/格式化內容"
+        },
+        "indent": {
+          "description": "任何程式碼編輯器：插入縮排"
+        },
+        "clear_filter": {
+          "description": "任何篩選欄位：清除篩選"
+        }
+      }
     }
   },
   "defaults": {

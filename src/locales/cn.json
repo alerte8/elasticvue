@@ -45,6 +45,65 @@
     },
     "theme_switcher": {
       "title": "更改主题"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "键盘快捷键",
+      "sections": {
+        "navigation": "导航",
+        "tabs": "标签页",
+        "zoom": "缩放",
+        "search": "搜索",
+        "rest": "REST",
+        "editor": "代码编辑器",
+        "filters": "过滤器"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "任意位置：切换到导航栏中的下一个部分（首页、节点、分片、索引、搜索、REST、安全、快照、设置）"
+        },
+        "cycle_tab": {
+          "description": "搜索或 REST：切换到下一个打开的标签页"
+        },
+        "reopen_tab": {
+          "description": "搜索或 REST：重新打开最后关闭的标签页"
+        },
+        "zoom": {
+          "description": "任意位置：放大或缩小界面"
+        },
+        "reset_zoom": {
+          "description": "仅限桌面应用：将缩放重置为 100%"
+        },
+        "run_search": {
+          "description": "搜索：执行当前查询"
+        },
+        "send_rest_body": {
+          "description": "REST：发送当前请求"
+        },
+        "send_rest_path": {
+          "description": "REST：从路径字段发送请求"
+        },
+        "suggestions": {
+          "description": "搜索：显示查询字段的自动完成建议"
+        },
+        "clear_search": {
+          "description": "搜索：关闭建议；如果未显示建议，则将查询重置为 '*'"
+        },
+        "navigate_suggestions": {
+          "description": "搜索：在建议列表中上下移动选择"
+        },
+        "apply_suggestion": {
+          "description": "搜索：应用高亮的建议"
+        },
+        "beautify": {
+          "description": "任意代码编辑器：美化/格式化内容"
+        },
+        "indent": {
+          "description": "任意代码编辑器：插入缩进"
+        },
+        "clear_filter": {
+          "description": "任意过滤字段：清除过滤器"
+        }
+      }
     }
   },
   "defaults": {

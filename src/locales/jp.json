@@ -45,6 +45,65 @@
     },
     "theme_switcher": {
       "title": "テーマを変更"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "キーボードショートカット",
+      "sections": {
+        "navigation": "ナビゲーション",
+        "tabs": "タブ",
+        "zoom": "ズーム",
+        "search": "検索",
+        "rest": "REST",
+        "editor": "コードエディタ",
+        "filters": "フィルタ"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "どこでも: ナビゲーションバーの次のセクションに切り替える（ホーム、ノード、シャード、インデックス、検索、REST、セキュリティ、スナップショット、設定）"
+        },
+        "cycle_tab": {
+          "description": "検索または REST: 次に開いているタブに切り替える"
+        },
+        "reopen_tab": {
+          "description": "検索または REST: 最後に閉じたタブを再度開く"
+        },
+        "zoom": {
+          "description": "どこでも: インターフェースを拡大縮小する"
+        },
+        "reset_zoom": {
+          "description": "デスクトップアプリのみ: ズームを100%にリセットする"
+        },
+        "run_search": {
+          "description": "検索: 現在のクエリを実行する"
+        },
+        "send_rest_body": {
+          "description": "REST: 現在のリクエストを送信する"
+        },
+        "send_rest_path": {
+          "description": "REST: パス欄からリクエストを送信する"
+        },
+        "suggestions": {
+          "description": "検索: クエリ欄のオートコンプリート候補を表示する"
+        },
+        "clear_search": {
+          "description": "検索: 候補を閉じる。候補が表示されていない場合はクエリを '*' にリセットする"
+        },
+        "navigate_suggestions": {
+          "description": "検索: 候補リストの選択を上下に移動する"
+        },
+        "apply_suggestion": {
+          "description": "検索: ハイライトされた候補を適用する"
+        },
+        "beautify": {
+          "description": "任意のコードエディタ: 内容を整形する"
+        },
+        "indent": {
+          "description": "任意のコードエディタ: インデントを挿入する"
+        },
+        "clear_filter": {
+          "description": "任意のフィルタ欄: フィルタをクリアする"
+        }
+      }
     }
   },
   "defaults": {

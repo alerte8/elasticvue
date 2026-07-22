@@ -51,6 +51,65 @@
     },
     "theme_switcher": {
       "title": "Changer de thème"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "Raccourcis clavier",
+      "sections": {
+        "navigation": "Navigation",
+        "tabs": "Onglets",
+        "zoom": "Zoom",
+        "search": "Recherche",
+        "rest": "REST",
+        "editor": "Éditeur de code",
+        "filters": "Filtres"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "Partout : passe à la section suivante du bandeau de navigation (Accueil, Nœuds, Partitions, Index, Rechercher, REST, Sécurité, Sauvegardes, Réglages)"
+        },
+        "cycle_tab": {
+          "description": "Rechercher ou REST : passe à l'onglet ouvert suivant"
+        },
+        "reopen_tab": {
+          "description": "Rechercher ou REST : rouvre le dernier onglet fermé"
+        },
+        "zoom": {
+          "description": "Partout : zoome ou dézoome l'interface"
+        },
+        "reset_zoom": {
+          "description": "Application de bureau uniquement : réinitialise le zoom à 100%"
+        },
+        "run_search": {
+          "description": "Rechercher : exécute la requête en cours"
+        },
+        "send_rest_body": {
+          "description": "REST : envoie la requête en cours"
+        },
+        "send_rest_path": {
+          "description": "REST : envoie la requête depuis le champ du chemin"
+        },
+        "suggestions": {
+          "description": "Rechercher : affiche les suggestions de saisie automatique du champ de requête"
+        },
+        "clear_search": {
+          "description": "Rechercher : ferme les suggestions, ou réinitialise la requête à '*' si aucune n'est affichée"
+        },
+        "navigate_suggestions": {
+          "description": "Rechercher : déplace la sélection dans la liste de suggestions"
+        },
+        "apply_suggestion": {
+          "description": "Rechercher : applique la suggestion sélectionnée"
+        },
+        "beautify": {
+          "description": "Tout éditeur de code : met en forme le contenu"
+        },
+        "indent": {
+          "description": "Tout éditeur de code : insère une indentation"
+        },
+        "clear_filter": {
+          "description": "Tout champ de filtre : efface le filtre"
+        }
+      }
     }
   },
   "defaults": {

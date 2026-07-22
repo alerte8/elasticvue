@@ -51,6 +51,65 @@
     },
     "theme_switcher": {
       "title": "Change theme"
+    },
+    "keyboard_shortcuts_help": {
+      "title": "Keyboard shortcuts",
+      "sections": {
+        "navigation": "Navigation",
+        "tabs": "Tabs",
+        "zoom": "Zoom",
+        "search": "Search",
+        "rest": "REST",
+        "editor": "Code editor",
+        "filters": "Filters"
+      },
+      "shortcuts": {
+        "cycle_feature": {
+          "description": "Anywhere: switch to the next section in the navigation bar (Home, Nodes, Shards, Indices, Search, REST, Security, Snapshots, Settings)"
+        },
+        "cycle_tab": {
+          "description": "Search or REST: switch to the next open tab"
+        },
+        "reopen_tab": {
+          "description": "Search or REST: reopen the last closed tab"
+        },
+        "zoom": {
+          "description": "Anywhere: zoom the interface in or out"
+        },
+        "reset_zoom": {
+          "description": "Desktop app only: reset the zoom level to 100%"
+        },
+        "run_search": {
+          "description": "Search: run the current query"
+        },
+        "send_rest_body": {
+          "description": "REST: send the current request"
+        },
+        "send_rest_path": {
+          "description": "REST: send the current request from the path field"
+        },
+        "suggestions": {
+          "description": "Search: show autocomplete suggestions for the query field"
+        },
+        "clear_search": {
+          "description": "Search: close suggestions, or reset the query to '*' if none are shown"
+        },
+        "navigate_suggestions": {
+          "description": "Search: move the selection up or down in the suggestion list"
+        },
+        "apply_suggestion": {
+          "description": "Search: apply the highlighted suggestion"
+        },
+        "beautify": {
+          "description": "Any code editor: beautify/format the content"
+        },
+        "indent": {
+          "description": "Any code editor: insert an indentation"
+        },
+        "clear_filter": {
+          "description": "Any filter field: clear the filter"
+        }
+      }
     }
   },
   "defaults": {

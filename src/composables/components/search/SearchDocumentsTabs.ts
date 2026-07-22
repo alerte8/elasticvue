@@ -3,6 +3,10 @@ import { DEFAULT_PAGINATION, DEFAULT_SEARCH_QUERY } from '../../../consts.ts'
 import { SearchState, useSearchStore } from '../../../store/search.ts'
 import { storeToRefs } from 'pinia'
 
+// Pile partagee entre tous les appels du composable, pour que le raccourci de reouverture
+// d'onglet (Ctrl+Shift+T) retrouve le dernier onglet ferme quel que soit le composant appelant.
+const closedTabsStack: SearchState[] = []
+
 export const usesearchDocumentsFormTabs = () => {
   const searchStore = useSearchStore()
   const { tabs, activeTab: activeTabName } = storeToRefs(searchStore)
@@ -62,7 +66,16 @@ export const usesearchDocumentsFormTabs = () => {
       activeTabName.value = tabs.value[0].name
     }
 
+    closedTabsStack.push(JSON.parse(JSON.stringify(tabs.value[index])))
     tabs.value.splice(index, 1)
+  }
+
+  function reopenLastClosedTab () {
+    const closedTab = closedTabsStack.pop()
+    if (!closedTab) return
+
+    tabs.value.push(closedTab)
+    activeTabName.value = closedTab.name
   }
 
   function refreshActiveTab () {
@@ -79,6 +92,7 @@ export const usesearchDocumentsFormTabs = () => {
     duplicateTab,
     updateTab,
     removeTab,
+    reopenLastClosedTab,
     refreshActiveTab,
     searchStore
   }

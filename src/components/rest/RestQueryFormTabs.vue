@@ -2,7 +2,8 @@
   <q-card>
     <q-tabs v-model="restStore.activeTabIndex" align="left" outside-arrows>
       <template v-for="(tab, index) in tabs" :key="tab.name">
-        <q-tab :name="index" style="white-space: nowrap; flex-shrink: 0">
+        <q-tab :name="index" style="white-space: nowrap; flex-shrink: 0"
+               @mousedown.middle.prevent.stop="onTabMiddleClick($event, index as number)">
           <div class="flex">
             {{ tab.label }}
 
@@ -47,8 +48,16 @@ import { useRestStore } from '../../store/rest.ts'
 import CustomInput from '../shared/CustomInput.vue'
 const emit = defineEmits(['reloadHistory', 'reloadSavedQueries'])
 
-const { tabs, addTab, updateTab, removeTab, setTabContent } = useRestQueryTabs()
+const { tabs, addTab, updateTab, duplicateTab, removeTab, setTabContent } = useRestQueryTabs()
 const restStore = useRestStore()
+
+function onTabMiddleClick (event: MouseEvent, index: number) {
+  if (event.altKey) {
+    duplicateTab(index)
+  } else {
+    removeTab(index)
+  }
+}
 
 defineExpose({ setTabContent, addTab })
 </script>

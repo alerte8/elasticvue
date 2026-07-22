@@ -38,6 +38,7 @@
   import TauriUpdateCheck from './components/base/TauriUpdateCheck.vue'
   import { buildConfig } from './buildConfig.ts'
   import { useZoomShortcuts } from './helpers/zoomShortcuts.ts'
+  import { useGlobalKeyboardShortcuts } from './composables/GlobalKeyboardShortcuts.ts'
 
   const themeStore = useThemeStore()
   const connectionStore = useConnectionStore()
@@ -64,6 +65,8 @@
   }
 
   useZoomShortcuts(resetZoom)
+
+  const { handleKeydown } = useGlobalKeyboardShortcuts()
 
   const applyZoom = (newZoomValue: number) => {
     const el = layoutRef.value?.$el
@@ -105,10 +108,14 @@
     setAppThemeCss(themeStore.appTheme)
     setupThemeListener()
     window.addEventListener('wheel', handleWheel,{ passive: false })
+    window.addEventListener('keydown', handleKeydown)
   })
-  
 
-  onBeforeUnmount(() => window.removeEventListener('wheel', handleWheel))
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('wheel', handleWheel)
+    window.removeEventListener('keydown', handleKeydown)
+  })
 
 </script>
 
