@@ -67,6 +67,15 @@
         "reopen_tab": {
           "description": "検索または REST: 最後に閉じたタブを再度開く"
         },
+        "duplicate_active_tab": {
+          "description": "検索または REST: アクティブなタブを現在のクエリごと複製する"
+        },
+        "close_tab": {
+          "description": "検索または REST: ポインタが指しているタブを閉じる"
+        },
+        "duplicate_tab": {
+          "description": "検索または REST: ポインタが指しているタブを現在のクエリごと複製する"
+        },
         "zoom": {
           "description": "どこでも: インターフェースを拡大縮小する"
         },

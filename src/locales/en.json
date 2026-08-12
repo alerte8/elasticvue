@@ -73,6 +73,15 @@
         "reopen_tab": {
           "description": "Search or REST: reopen the last closed tab"
         },
+        "duplicate_active_tab": {
+          "description": "Search or REST: duplicate the active tab with its current query"
+        },
+        "close_tab": {
+          "description": "Search or REST: close the hovered tab"
+        },
+        "duplicate_tab": {
+          "description": "Search or REST: duplicate the hovered tab with its current query"
+        },
         "zoom": {
           "description": "Anywhere: zoom the interface in or out"
         },

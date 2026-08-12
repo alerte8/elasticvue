@@ -73,6 +73,15 @@
         "reopen_tab": {
           "description": "Rechercher ou REST : rouvre le dernier onglet fermé"
         },
+        "duplicate_active_tab": {
+          "description": "Rechercher ou REST : duplique l'onglet actif avec sa requête en cours"
+        },
+        "close_tab": {
+          "description": "Rechercher ou REST : ferme l'onglet survolé"
+        },
+        "duplicate_tab": {
+          "description": "Rechercher ou REST : duplique l'onglet survolé avec sa requête en cours"
+        },
         "zoom": {
           "description": "Partout : zoome ou dézoome l'interface"
         },

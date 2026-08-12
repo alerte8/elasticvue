@@ -67,6 +67,15 @@
         "reopen_tab": {
           "description": "搜索或 REST：重新打开最后关闭的标签页"
         },
+        "duplicate_active_tab": {
+          "description": "搜索或 REST：复制当前标签页及其当前查询"
+        },
+        "close_tab": {
+          "description": "搜索或 REST：关闭鼠标指向的标签页"
+        },
+        "duplicate_tab": {
+          "description": "搜索或 REST：复制鼠标指向的标签页及其当前查询"
+        },
         "zoom": {
           "description": "任意位置：放大或缩小界面"
         },

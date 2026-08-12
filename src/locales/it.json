@@ -67,6 +67,15 @@
         "reopen_tab": {
           "description": "Ricerca o REST: riapre l'ultima scheda chiusa"
         },
+        "duplicate_active_tab": {
+          "description": "Ricerca o REST: duplica la scheda attiva con la query corrente"
+        },
+        "close_tab": {
+          "description": "Ricerca o REST: chiude la scheda sotto il puntatore"
+        },
+        "duplicate_tab": {
+          "description": "Ricerca o REST: duplica la scheda sotto il puntatore con la query corrente"
+        },
         "zoom": {
           "description": "Ovunque: aumenta o riduce lo zoom dell'interfaccia"
         },

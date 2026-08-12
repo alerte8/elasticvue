@@ -66,6 +66,15 @@
         "reopen_tab": {
           "description": "搜尋或 REST：重新開啟最後關閉的分頁"
         },
+        "duplicate_active_tab": {
+          "description": "搜尋或 REST：複製目前分頁及其目前查詢"
+        },
+        "close_tab": {
+          "description": "搜尋或 REST：關閉滑鼠指向的分頁"
+        },
+        "duplicate_tab": {
+          "description": "搜尋或 REST：複製滑鼠指向的分頁及其目前查詢"
+        },
         "zoom": {
           "description": "任何位置：放大或縮小介面"
         },

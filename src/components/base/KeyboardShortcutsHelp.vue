@@ -74,7 +74,10 @@ const sections = computed(() => [
     title: t('base.keyboard_shortcuts_help.sections.tabs'),
     shortcuts: [
       { combo: 'Ctrl+Tab', description: t('base.keyboard_shortcuts_help.shortcuts.cycle_tab.description') },
-      { combo: 'Ctrl+Shift+T', description: t('base.keyboard_shortcuts_help.shortcuts.reopen_tab.description') }
+      { combo: 'Ctrl+Shift+T', description: t('base.keyboard_shortcuts_help.shortcuts.reopen_tab.description') },
+      { combo: 'Ctrl+Alt+D', description: t('base.keyboard_shortcuts_help.shortcuts.duplicate_active_tab.description') },
+      { combo: 'Middle click', description: t('base.keyboard_shortcuts_help.shortcuts.close_tab.description') },
+      { combo: 'Alt+Middle click', description: t('base.keyboard_shortcuts_help.shortcuts.duplicate_tab.description') }
     ]
   },
   {

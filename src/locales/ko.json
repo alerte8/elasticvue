@@ -66,6 +66,15 @@
         "reopen_tab": {
           "description": "검색 또는 REST: 마지막으로 닫은 탭 다시 열기"
         },
+        "duplicate_active_tab": {
+          "description": "검색 또는 REST: 활성 탭을 현재 쿼리와 함께 복제"
+        },
+        "close_tab": {
+          "description": "검색 또는 REST: 마우스로 가리킨 탭 닫기"
+        },
+        "duplicate_tab": {
+          "description": "검색 또는 REST: 마우스로 가리킨 탭을 현재 쿼리와 함께 복제"
+        },
         "zoom": {
           "description": "어디서나: 인터페이스 확대/축소"
         },

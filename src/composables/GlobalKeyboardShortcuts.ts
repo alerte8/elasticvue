@@ -53,6 +53,19 @@ export const useGlobalKeyboardShortcuts = () => {
     }
   }
 
+  const duplicateActiveTab = () => {
+    if (route.name === 'search') {
+      const { activeTabIndex, duplicateTab } = usesearchDocumentsFormTabs()
+      if (activeTabIndex.value < 0) return
+      duplicateTab(activeTabIndex.value)
+    } else if (route.name === 'rest') {
+      const restStore = useRestStore()
+      const { tabs, duplicateTab } = useRestQueryTabs()
+      if (restStore.activeTabIndex < 0 || restStore.activeTabIndex >= tabs.value.length) return
+      duplicateTab(restStore.activeTabIndex)
+    }
+  }
+
   const handleKeydown = (event: KeyboardEvent) => {
     if (!event.ctrlKey) return
 
@@ -69,9 +82,19 @@ export const useGlobalKeyboardShortcuts = () => {
       return
     }
 
-    if (event.shiftKey && event.key.toLowerCase() === 't' && (route.name === 'search' || route.name === 'rest')) {
+    if (route.name !== 'search' && route.name !== 'rest') return
+
+    if (event.shiftKey && !event.altKey && event.key.toLowerCase() === 't') {
       event.preventDefault()
       reopenClosedTab()
+      return
+    }
+
+    // Avec Alt enfonce, event.key depend de la disposition clavier (Alt+d donne '∂' sur macOS),
+    // d'ou le test sur event.code qui designe la touche physique.
+    if (event.altKey && !event.shiftKey && (event.code === 'KeyD' || event.key.toLowerCase() === 'd')) {
+      event.preventDefault()
+      duplicateActiveTab()
     }
   }
 
