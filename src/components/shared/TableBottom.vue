@@ -14,12 +14,9 @@
         menu-self="bottom left"
       >
         <template #option="{ itemProps, opt }">
-          <q-item v-bind="itemProps" :clickable="opt.enabled">
+          <q-item v-bind="itemProps">
             <q-item-section>
-              <q-item-label :class="{ disabled: !opt.enabled }">{{ opt.label }}</q-item-label>
-            </q-item-section>
-            <q-item-section v-if="opt.needsConfirm" side>
-              <q-toggle :model-value="opt.enabled" @click.stop="() => confirmAll(opt)" />
+              <q-item-label>{{ opt.label }}</q-item-label>
             </q-item-section>
           </q-item>
         </template>
@@ -67,7 +64,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useTranslation } from '../../composables/i18n.ts'
 
 export type TableBottomScope = {
   pagesNumber: number
@@ -101,20 +97,11 @@ const props = defineProps<{
   total: number
   modelValue: any
 }>()
-const t = useTranslation()
 
 const options = ref(props.rowsPerPage || [])
 const perPage = ref(options.value.find((opt) => opt.value === props.modelValue))
 
 const emit = defineEmits(['update:modelValue', 'rowsPerPageAccepted'])
-const confirmAll = (opt: { enabled: boolean; label: string }) => {
-  if (opt.enabled) {
-    opt.enabled = false
-  } else {
-    if (confirm(t('shared.table_bottom.rows_per_page.confirm', { value: opt.label }))) opt.enabled = true
-  }
-  emit('rowsPerPageAccepted', opt.enabled)
-}
 watch(perPage, (newValue) => newValue && emit('update:modelValue', newValue.value))
 const firstRowIndex = computed(() => props.scope.pagination.rowsPerPage * (props.scope.pagination.page - 1) + 1)
 const lastRowIndex = computed(() =>

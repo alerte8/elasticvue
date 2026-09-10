@@ -35,6 +35,10 @@ This fork adds the following on top of upstream elasticvue:
 * **Search results table** — custom column management (order, visibility, drag & drop), manual
   multi-column sorting, copy selected columns only with Shift pressed
 * **Clipboard tools** — paste multiple documents from the clipboard; delete all filtered documents
+* **Keyboard shortcuts** — Ctrl+Shift+Tab cycles top-level sections, Ctrl+Tab cycles open tabs,
+  Ctrl+Shift+T reopens the last closed tab, Ctrl+Alt+D duplicates the active tab; middle-click /
+  Alt+middle-click on Search and REST tabs closes / duplicates them; full list in the "Keyboard
+  shortcuts" help modal (header icon)
 * **Global zoom** — Ctrl + mouse wheel, persisted and restored on reload
 * **No phone-home** — update checks and telemetry are fully disabled in this build
 

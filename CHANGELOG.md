@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.16.0-custom (2026-09-10)
+
+Still based on upstream `v1.15.0`.
+
+### Fork features
+
+* Connection security: passwords for saved clusters are no longer persisted to local storage by
+  default. An opt-in "Remember connection passwords" setting (Global settings) restores the
+  previous behavior; when disabled, a password prompt appears on every app launch / cluster
+  switch, and passwords are excluded from settings backups
+* Keyboard shortcuts: Ctrl+Shift+Tab cycles top-level sections, Ctrl+Tab cycles open tabs,
+  Ctrl+Shift+T reopens the last closed tab, Ctrl+Alt+D duplicates the active tab; middle-click /
+  Alt+middle-click on Search and REST tabs closes / duplicates them; full list in the new
+  "Keyboard shortcuts" help modal (header icon)
+* Indices table: the row actions menu (index info, stats, aliases, reindex, clone, forcemerge,
+  open/close, delete, export, ...) now opens with a right click on the row instead of a
+  dedicated button
+* Records-per-page selector: picking "1000" no longer requires an extra confirmation dialog
+
+### Sync & fixes
+
+* fix Tauri clipboard permissions — copy-to-clipboard was failing at runtime with
+  "clipboard-manager.write_text not allowed"
+* fix duplicated "set read-only" / "set writable" entries in the index row and bulk-actions menus
+* move the theme and language switchers into the header, remove the footer bar
+* regenerate Tauri capability schemas for updated plugin versions
+* align `tauri.conf.json` and the browser extension manifests version with `package.json`
+
 ## 1.15.0-custom (2026-07-14)
 
 Custom fork ([alerte8/elasticvue](https://github.com/alerte8/elasticvue)) rebased on upstream `v1.15.0`.
